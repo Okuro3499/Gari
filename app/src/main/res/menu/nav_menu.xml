@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="Home"/>
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/ic_baseline_edit_24"
+        android:title="Profile"/>
+    <item
+        android:id="@+id/myVehicles"
+        android:icon="@drawable/ic_baseline_folder_24"
+        android:title="My Vehicles"/>
+    <item
+        android:id="@+id/logout"
+        android:icon="@drawable/ic_baseline_exit_to_app_24"
+        android:title="Logout"/>
+
+    <item android:title="FAQ">
+        <menu>
+            <item
+                android:id="@+id/about"
+                android:icon="@drawable/ic_baseline_info_24"
+                android:title="About Gari"/>
+            <item
+                android:id="@+id/help"
+                android:icon="@drawable/ic_baseline_help_outline_24"
+                android:title="Need Assistance?"/>
+        </menu>
+    </item>
+
+
+
+
+</menu>
