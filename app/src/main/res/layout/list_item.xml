@@ -55,7 +55,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tvDrive"
+            android:id="@+id/tvDriveOption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvCarName"
@@ -83,7 +83,7 @@
             android:id="@+id/tvTransmission"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvDrive"
+            android:layout_below="@id/tvDriveOption"
             android:layout_marginStart="2dp"
             android:layout_marginTop="2dp"
             android:layout_toEndOf="@+id/titleTransmission"
@@ -113,7 +113,19 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="2dp"
             android:layout_toEndOf="@+id/titlePrice"
-            android:text="3500 Per Day"
+            android:text="3500"
+            android:textColor="@color/black"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/titleRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTransmission"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@+id/tvPrice"
+            android:text="@string/per_day"
             android:textColor="@color/black"
             android:textSize="18sp"/>
 

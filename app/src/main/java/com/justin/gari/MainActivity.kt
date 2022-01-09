@@ -1,130 +1,55 @@
 package com.justin.gari
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.navigation.NavigationView
+import com.justin.gari.api.ApiService
 import kotlinx.android.synthetic.main.activity_main.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
     lateinit var toggle: ActionBarDrawerToggle
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
         val navView: NavigationView = findViewById(R.id.nav_view)
-        val arrayList = ArrayList<carModel>()
-        arrayList.add(
-            carModel(
-                R.drawable.premio,
-                "Toyota Premio",
-                "Self Drive/Chauffered",
-                "Automatic",
-                "3500 per day",
-                "Available"
-            )
-        )
-        arrayList.add(
-            carModel(
-                R.drawable.lexus,
-                "Lexus",
-                "Self Drive/Chauffered",
-                "Automatic",
-                "3500 per day",
-                "Available"
-            )
-        )
-        arrayList.add(
-            carModel(
-                R.drawable.note,
-                "Nissan Note",
-                "Self Drive/Chauffered",
-                "Automatic",
-                "3500 per day",
-                "Available"
-            )
-        )
-        arrayList.add(
-            carModel(
-                R.drawable.passo,
-                "Toyota Passo",
-                "Self Drive/Chauffered",
-                "Automatic",
-                "3500 per day",
-                "Available"
-            )
-        )
-        arrayList.add(
-            carModel(
-                R.drawable.rumion,
-                "Toyota Rumion",
-                "Self Drive/Chauffered",
-                "Automatic",
-                "3500 per day",
-                "Available"
-            )
-        )
-        arrayList.add(
-            carModel(
-                R.drawable.wish,
-                "Toyota Wish",
-                "Self Drive/Chauffered",
-                "Automatic",
-                "3500 per day",
-                "Available"
-            )
-        )
-        arrayList.add(
-            carModel(
-                R.drawable.prado,
-                "Toyota Prado",
-                "Self Drive/Chauffered",
-                "Automatic",
-                "3500 per day",
-                "Available"
-            )
-        )
-        arrayList.add(
-            carModel(
-                R.drawable.axio,
-                "Toyota Axio",
-                "Self Drive/Chauffered",
-                "Automatic",
-                "3500 per day",
-                "Available"
-            )
-        )
-        arrayList.add(
-            carModel(
-                R.drawable.demio,
-                "Mazda Demio",
-                "Self Drive/Chauffered",
-                "Automatic",
-                "3500 per day",
-                "Available"
-            )
-        )
-        arrayList.add(
-            carModel(
-                R.drawable.fit,
-                "Honda Fit",
-                "Self Drive/Chauffered",
-                "Automatic",
-                "3500 per day",
-                "Available"
-            )
-        )
+//        recyclerview.layoutManager = LinearLayoutManager(this)
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
 
-        val adapter = carAdapter(arrayList, this)
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://apigari.herokuapp.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
-        recyclerview.layoutManager = LinearLayoutManager(this)
-        recyclerview.adapter = adapter
+        val api = retrofit.create(ApiService::class.java)
+        api.getAllCars().enqueue(object : Callback<CarModel> {
+            override fun onResponse(call: Call<CarModel>, response: Response<CarModel>) {
+                if (response.isSuccessful) {
+                    recyclerview.apply {
+                        layoutManager = LinearLayoutManager(this@MainActivity)
+                        adapter = CarAdapter(response.body()!!.cars)
+                    }
+//                    d("Gideon", "onResponse: ${response.body()!!.cars?.get(0)}")
+                }
+            }
 
+            override fun onFailure(call: Call<CarModel>, t: Throwable) {
+                Log.e("Gideon", "onFailure: ${t.message}")
+            }
+        })
 
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
         drawerLayout.addDrawerListener(toggle)
