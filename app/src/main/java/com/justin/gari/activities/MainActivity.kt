@@ -1,4 +1,4 @@
-package com.justin.gari
+package com.justin.gari.activities
 
 import android.os.Bundle
 import android.util.Log
@@ -10,13 +10,15 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.navigation.NavigationView
+import com.justin.gari.models.CarModel
+import com.justin.gari.R
+import com.justin.gari.adapters.CarAdapter
+import com.justin.gari.api.ApiClient
 import com.justin.gari.api.ApiService
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
     lateinit var toggle: ActionBarDrawerToggle
@@ -26,16 +28,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
         val navView: NavigationView = findViewById(R.id.nav_view)
-//        recyclerview.layoutManager = LinearLayoutManager(this)
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://apigari.herokuapp.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val api = retrofit.create(ApiService::class.java)
-        api.getAllCars().enqueue(object : Callback<CarModel> {
+        val apiClient = ApiClient.buildService(ApiService::class.java)
+        apiClient.getAllCars().enqueue(object : Callback<CarModel> {
             override fun onResponse(call: Call<CarModel>, response: Response<CarModel>) {
                 if (response.isSuccessful) {
                     recyclerview.apply {

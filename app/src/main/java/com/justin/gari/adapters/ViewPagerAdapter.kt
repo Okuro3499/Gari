@@ -1,4 +1,4 @@
-package com.justin.gari
+package com.justin.gari.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

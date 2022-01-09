@@ -1,4 +1,4 @@
-package com.justin.gari
+package com.justin.gari.activities
 
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -14,6 +14,7 @@ import com.denzcoskun.imageslider.ImageSlider
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
 import com.google.android.material.navigation.NavigationView
+import com.justin.gari.R
 import kotlinx.android.synthetic.main.activity_detail.*
 import java.util.*
 

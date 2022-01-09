@@ -1,12 +1,14 @@
-package com.justin.gari
+package com.justin.gari.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.justin.gari.models.Cars
+import com.justin.gari.R
 
-class CarAdapter(val carList: List<Cars>,) : RecyclerView.Adapter<CarAdapter.ViewHolder>() {
+class CarAdapter(val carList: List<Cars>) : RecyclerView.Adapter<CarAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layout = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)

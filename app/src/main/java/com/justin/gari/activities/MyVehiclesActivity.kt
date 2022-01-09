@@ -1,7 +1,11 @@
-package com.justin.gari
+package com.justin.gari.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.justin.gari.fragments.HistoryFragment
+import com.justin.gari.R
+import com.justin.gari.fragments.SavedFragment
+import com.justin.gari.adapters.ViewPagerAdapter
 import kotlinx.android.synthetic.main.activity_my_vehicles.*
 
 class MyVehiclesActivity : AppCompatActivity() {
