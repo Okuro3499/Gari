@@ -223,26 +223,26 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/titleSeats"
+            android:id="@+id/titlePassengers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/titleRegistration"
             android:layout_marginStart="10dp"
             android:layout_marginTop="2dp"
             android:layout_toEndOf="@id/tvDriveOption"
-            android:text="@string/seats"
+            android:text="@string/passengers"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tvSeats"
+            android:id="@+id/tvPassengers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvRegistration"
             android:layout_marginStart="2dp"
             android:layout_marginTop="2dp"
-            android:layout_toEndOf="@+id/titleSeats"
+            android:layout_toEndOf="@+id/titlePassengers"
             android:text="5"
             android:textColor="@color/black"
             android:textSize="20sp" />

@@ -41,7 +41,7 @@
     <string name="engine">Engine:</string>
     <string name="color">Color:</string>
     <string name="registration">Registration:</string>
-    <string name="seats">Seats:</string>
+    <string name="passengers">Passengers:</string>
     <string name="doors">Doors:</string>
     <string name="company">Company:</string>
     <string name="per_day">per day</string>

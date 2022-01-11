@@ -15,6 +15,7 @@ import com.justin.gari.R
 import com.justin.gari.adapters.CarAdapter
 import com.justin.gari.api.ApiClient
 import com.justin.gari.api.ApiService
+import com.justin.gari.models.Cars
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -34,14 +35,14 @@ class MainActivity : AppCompatActivity() {
         apiClient.getAllCars().enqueue(object : Callback<CarModel> {
             override fun onResponse(call: Call<CarModel>, response: Response<CarModel>) {
                 if (response.isSuccessful) {
+                    Log.e("Gideon", "onSuccess: ${response.body()}")
+
                     recyclerview.apply {
                         layoutManager = LinearLayoutManager(this@MainActivity)
-                        adapter = CarAdapter(response.body()!!.cars)
+                        adapter = CarAdapter(response.body()!!.cars, context)
                     }
-//                    d("Gideon", "onResponse: ${response.body()!!.cars?.get(0)}")
                 }
             }
-
             override fun onFailure(call: Call<CarModel>, t: Throwable) {
                 Log.e("Gideon", "onFailure: ${t.message}")
             }
@@ -82,7 +83,6 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

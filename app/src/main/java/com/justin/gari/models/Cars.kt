@@ -4,6 +4,10 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 data class Cars (
+    @SerializedName("car_id")
+    @Expose
+    val car_id: String?,
+
     @SerializedName("car_name")
     @Expose
     val car_name: String?,
@@ -30,7 +34,7 @@ data class Cars (
 
     @SerializedName("passengers")
     @Expose
-    val passengers: Int?,
+    val passengers: String?,
 
     @SerializedName("company")
     @Expose
@@ -38,9 +42,9 @@ data class Cars (
 
     @SerializedName("price")
     @Expose
-    val price: Int?,
+    val price: String?,
 
     @SerializedName("doors")
     @Expose
-    val doors: Int?
+    val doors: String?
 )
