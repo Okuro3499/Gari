@@ -6,11 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.justin.gari.R
 import com.justin.gari.activities.DetailActivity
-import com.justin.gari.models.Cars
+import com.justin.gari.models.carModels.Cars
 
 class CarAdapter(private val carList: List<Cars>, val context: Context) : RecyclerView.Adapter<CarAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

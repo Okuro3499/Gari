@@ -1,11 +1,13 @@
 package com.justin.gari.activities
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.util.Log.d
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.DatePicker
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -18,12 +20,23 @@ import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
 import com.justin.gari.api.ApiClient
 import com.justin.gari.api.ApiService
-import com.justin.gari.models.SingleCarModel
+import com.justin.gari.models.carModels.SingleCarModel
+import kotlinx.android.synthetic.main.activity_detail.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
+import kotlin.collections.ArrayList
 
-class DetailActivity : AppCompatActivity() {
+class DetailActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
+    var day = 0
+    var month = 0
+    var year = 0
+
+    var savedDay = 0
+    var savedMonth = 0
+    var savedYear = 0
+
     lateinit var toggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,7 +80,7 @@ class DetailActivity : AppCompatActivity() {
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-
+        //receiving intents
         val carId = intent.getStringExtra("car_id")
         val carName = intent.getStringExtra("car_name")
         val status = intent.getStringExtra("status")
@@ -106,6 +119,8 @@ class DetailActivity : AppCompatActivity() {
             }
         })
 
+        pickDate()
+
         navView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.home -> Toast.makeText(applicationContext, "Clicked Home", Toast.LENGTH_SHORT)
@@ -141,10 +156,32 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun getDateCalendar(){
+        val cal = Calendar.getInstance()
+        day = cal.get(Calendar.DAY_OF_MONTH)
+        month = cal.get(Calendar.MONTH)
+        year = cal.get(Calendar.YEAR)
+    }
+
+    private fun pickDate() {
+        ETDFrom.setOnClickListener {
+            getDateCalendar()
+            DatePickerDialog(this, this, year,month,day).show()
+        }
+    }
+
+
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) {
             true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        savedDay = dayOfMonth
+        savedMonth = month
+        savedYear = year
     }
 }

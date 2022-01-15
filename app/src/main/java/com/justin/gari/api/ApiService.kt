@@ -1,10 +1,12 @@
 package com.justin.gari.api
 
-import com.justin.gari.models.CarModel
-import com.justin.gari.models.SingleCarModel
+import com.justin.gari.models.UserLogin
+import com.justin.gari.models.carModels.CarModel
+import com.justin.gari.models.carModels.SingleCarModel
+import com.justin.gari.models.UserLoginResponse
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Path
+import retrofit2.http.*
+import retrofit2.http.POST
 
 interface ApiService {
     @GET("/api/v1/cars")
@@ -12,4 +14,7 @@ interface ApiService {
 
     @GET("/api/v1/cars/{car_id}")
     fun getCarDetails(@Path("car_id") car_id: String?): Call<SingleCarModel>
+
+    @POST("api/v1/auth/login/client")
+    fun loginUser(@Body userLogin: UserLogin?): Call<UserLoginResponse?>?
 }

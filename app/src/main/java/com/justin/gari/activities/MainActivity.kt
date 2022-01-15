@@ -17,7 +17,7 @@ import com.justin.gari.R
 import com.justin.gari.adapters.CarAdapter
 import com.justin.gari.api.ApiClient
 import com.justin.gari.api.ApiService
-import com.justin.gari.models.CarModel
+import com.justin.gari.models.carModels.CarModel
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity() {
         swipeRefresh.setOnRefreshListener {
             getAllData()
         }
-
 
         val apiClient = ApiClient.buildService(ApiService::class.java)
         apiClient.getAllCars().enqueue(object : Callback<CarModel> {

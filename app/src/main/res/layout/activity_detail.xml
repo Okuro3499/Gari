@@ -8,621 +8,640 @@
     android:fitsSystemWindows="true"
     tools:context=".activities.DetailActivity">
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.denzcoskun.imageslider.ImageSlider
-            android:id="@+id/imageSlider"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="210dp"
-            android:layout_marginBottom="4dp"
-            app:iss_auto_cycle="true"
-            app:iss_corner_radius="5"
-            app:iss_delay="0"
-            app:iss_error_image="@android:color/darker_gray"
-            app:iss_period="1000"
-            app:iss_placeholder="@android:color/darker_gray"
-            app:iss_selected_dot="@drawable/default_selected_dot"
-            app:iss_unselected_dot="@drawable/default_unselected_dot"
-            tools:ignore="MissingConstraints" />
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/titleCarName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/imageSlider"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="2dp"
-            android:text="@string/model"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <com.denzcoskun.imageslider.ImageSlider
+                android:id="@+id/imageSlider"
+                android:layout_width="match_parent"
+                android:layout_height="210dp"
+                android:layout_marginBottom="4dp"
+                app:iss_auto_cycle="true"
+                app:iss_corner_radius="5"
+                app:iss_delay="0"
+                app:iss_error_image="@android:color/darker_gray"
+                app:iss_period="1000"
+                app:iss_placeholder="@android:color/darker_gray"
+                app:iss_selected_dot="@drawable/default_selected_dot"
+                app:iss_unselected_dot="@drawable/default_unselected_dot"
+                tools:ignore="MissingConstraints" />
 
-        <TextView
-            android:id="@+id/tvCarName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/imageSlider"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@+id/titleCarName"
-            android:text="Toyota Premio"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/titleCarName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imageSlider"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="2dp"
+                android:text="@string/model"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/titleTransmission"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleCarName"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="2dp"
-            android:text="@string/transmission"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvCarName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imageSlider"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@+id/titleCarName"
+                android:text="Toyota Premio"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/tvTransmission"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvCarName"
-            android:layout_marginTop="2dp"
-            android:layout_marginStart="2dp"
-            android:layout_toEndOf="@+id/titleTransmission"
-            android:text="Automatic"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/titleTransmission"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleCarName"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="2dp"
+                android:text="@string/transmission"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/titleEngine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleTransmission"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="2dp"
-            android:text="@string/engine"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvTransmission"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvCarName"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@+id/titleTransmission"
+                android:text="Automatic"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/tvEngine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvTransmission"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@+id/titleEngine"
-            android:text="Petrol"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/titleEngine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleTransmission"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="2dp"
+                android:text="@string/engine"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/titleDriveOption"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleEngine"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="2dp"
-            android:text="@string/drive"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvEngine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvTransmission"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@+id/titleEngine"
+                android:text="Petrol"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/tvDriveOption"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvEngine"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/titleDriveOption"
-            android:text="Self Drive/Chauffered"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/titleDriveOption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleEngine"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="2dp"
+                android:text="@string/drive"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/titleDoors"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleDriveOption"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="2dp"
-            android:text="@string/doors"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvDriveOption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvEngine"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/titleDriveOption"
+                android:text="Self Drive/Chauffeured"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/tvDoors"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvDriveOption"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/titleDoors"
-            android:text="4"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/titleDoors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleDriveOption"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="2dp"
+                android:text="@string/doors"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/titleStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/imageSlider"
-            android:layout_marginStart="59dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/tvCarName"
-            android:text="@string/status"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvDoors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvDriveOption"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/titleDoors"
+                android:text="4"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/tvStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/imageSlider"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/titleStatus"
-            android:text="Available"
-            android:textColor="@color/green"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/titleStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imageSlider"
+                android:layout_marginStart="59dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/tvCarName"
+                android:text="@string/status"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/titleColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleStatus"
-            android:layout_marginStart="34dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/tvTransmission"
-            android:text="@string/color"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imageSlider"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/titleStatus"
+                android:text="Available"
+                android:textColor="@color/green"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/tvColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvStatus"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@+id/titleColor"
-            android:text="White"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/titleColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleStatus"
+                android:layout_marginStart="34dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/tvTransmission"
+                android:text="@string/color"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/titleRegistration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleColor"
-            android:layout_marginStart="109dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/tvEngine"
-            android:text="@string/registration"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvStatus"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@+id/titleColor"
+                android:text="White"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/tvRegistration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvColor"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@+id/titleRegistration"
-            android:text="KAU 636R"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/titleRegistration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleColor"
+                android:layout_marginStart="109dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/tvEngine"
+                android:text="@string/registration"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/titlePassengers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleRegistration"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/tvDriveOption"
-            android:text="@string/passengers"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvRegistration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvColor"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@+id/titleRegistration"
+                android:text="KAU 636R"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/tvPassengers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvRegistration"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@+id/titlePassengers"
-            android:text="5"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/titlePassengers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleRegistration"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/tvDriveOption"
+                android:text="@string/passengers"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/titleCompany"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleDoors"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="2dp"
-            android:text="@string/company"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvPassengers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvRegistration"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@+id/titlePassengers"
+                android:text="5"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/tvCompany"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvDoors"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/titleCompany"
-            android:text="Vapor Gas Supplies"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/titleCompany"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleDoors"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="2dp"
+                android:text="@string/company"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/titleFeatures"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleCompany"
-            android:layout_marginStart="9dp"
-            android:layout_marginTop="9dp"
-            android:text="@string/features"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvCompany"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvDoors"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/titleCompany"
+                android:text="Vapor Gas Supplies"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/titleFeature1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleFeatures"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="2dp"
-            android:text="1."
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/titleFeatures"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleCompany"
+                android:layout_marginStart="9dp"
+                android:layout_marginTop="9dp"
+                android:text="@string/features"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvFeature1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleFeatures"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/titleFeature1"
-            android:text="AC"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/titleFeature1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleFeatures"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="2dp"
+                android:text="1."
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/titleFeature2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleFeature1"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="2dp"
-            android:text="2."
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvFeature1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleFeatures"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/titleFeature1"
+                android:text="AC"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/tvFeature2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleFeature1"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/titleFeature2"
-            android:text="Power Steering"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/titleFeature2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleFeature1"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="2dp"
+                android:text="2."
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/titleFeature3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleFeature2"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="2dp"
-            android:text="3."
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvFeature2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleFeature1"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/titleFeature2"
+                android:text="Power Steering"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/tvFeature3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleFeature2"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/titleFeature3"
-            android:text="Power Windows"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/titleFeature3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleFeature2"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="2dp"
+                android:text="3."
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/titleFeature4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleFeatures"
-            android:layout_marginStart="130dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/tvFeature1"
-            android:text="4."
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvFeature3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleFeature2"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/titleFeature3"
+                android:text="Power Windows"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/tvFeature4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleFeatures"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/titleFeature4"
-            android:text="SRS"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/titleFeature4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleFeatures"
+                android:layout_marginStart="130dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/tvFeature1"
+                android:text="4."
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/titleFeature5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleFeature4"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/tvFeature2"
-            android:text="5."
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvFeature4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleFeatures"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/titleFeature4"
+                android:text="SRS"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/tvFeature5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleFeature4"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/titleFeature5"
-            android:text="ABS"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/titleFeature5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleFeature4"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/tvFeature2"
+                android:text="5."
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/titleBook"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleFeature3"
-            android:layout_marginStart="9dp"
-            android:layout_marginTop="9dp"
-            android:text="@string/book"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvFeature5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleFeature4"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/titleFeature5"
+                android:text="ABS"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/titlePrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleBook"
-            android:layout_marginStart="9dp"
-            android:layout_marginTop="2dp"
-            android:text="@string/ksh"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/titleBook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleFeature3"
+                android:layout_marginStart="9dp"
+                android:layout_marginTop="9dp"
+                android:text="@string/book"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleBook"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/titlePrice"
-            android:text="3500"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/titlePrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleBook"
+                android:layout_marginStart="9dp"
+                android:layout_marginTop="2dp"
+                android:text="@string/ksh"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvRate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleBook"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/tvPrice"
-            android:text="@string/per_day"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/tvPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleBook"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/titlePrice"
+                android:text="3500"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/titleFrom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titlePrice"
-            android:layout_marginStart="9dp"
-            android:layout_marginTop="2dp"
-            android:text="@string/from"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleBook"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/tvPrice"
+                android:text="@string/per_day"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/ETDFrom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleFrom"
-            android:layout_marginStart="9dp"
-            android:layout_marginTop="2dp"
-            android:background="@drawable/circular_corners"
-            android:ems="10"
-            android:hint="@string/dd_mm_yyyy"
-            android:inputType="date"
-            android:textColor="@color/black"
-            android:textColorHint="@color/underline"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/titleFrom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titlePrice"
+                android:layout_marginStart="9dp"
+                android:layout_marginTop="2dp"
+                android:text="@string/from"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/titleTo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titlePrice"
-            android:layout_marginStart="160dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/titleFrom"
-            android:text="@string/to"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <EditText
+                android:id="@+id/ETDFrom"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleFrom"
+                android:layout_marginStart="9dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/custom_input"
+                android:drawableStart="@drawable/ic_baseline_date_range_24"
+                android:drawablePadding="12dp"
+                android:ems="10"
+                android:hint="@string/dd_mm_yyyy"
+                android:inputType="date"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/underline"
+                android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/ETDTo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleTo"
-            android:layout_marginStart="9dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/ETDFrom"
-            android:background="@drawable/circular_corners"
-            android:ems="10"
-            android:hint="@string/dd_mm_yyyy"
-            android:inputType="date"
-            android:textColor="@color/black"
-            android:textColorHint="@color/underline"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/titleTo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titlePrice"
+                android:layout_marginStart="160dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/titleFrom"
+                android:text="@string/to"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/titleTotal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ETDFrom"
-            android:layout_marginStart="9dp"
-            android:layout_marginTop="2dp"
-            android:text="@string/total"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <EditText
+                android:id="@+id/ETDTo"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleTo"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="9dp"
+                android:layout_toEndOf="@id/ETDFrom"
+                android:background="@drawable/custom_input"
+                android:drawableStart="@drawable/ic_baseline_date_range_24"
+                android:drawablePadding="12dp"
+                android:ems="10"
+                android:hint="@string/dd_mm_yyyy"
+                android:inputType="date"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/underline"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/tvTotalDays"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ETDFrom"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/titleTotal"
-            android:text="2"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/titleTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ETDFrom"
+                android:layout_marginStart="9dp"
+                android:layout_marginTop="2dp"
+                android:text="@string/total"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/titleDays"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ETDFrom"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/tvTotalDays"
-            android:text="@string/days"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/tvTotalDays"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ETDFrom"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/titleTotal"
+                android:text="2"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/titleAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ETDFrom"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/titleDays"
-            android:text="@string/ksh"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/titleDays"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ETDFrom"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/tvTotalDays"
+                android:text="@string/days"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/tvTotalAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ETDFrom"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@id/titleAmount"
-            android:text="7000"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/titleAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ETDFrom"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/titleDays"
+                android:text="@string/ksh"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/titleDrive2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/titleTotal"
-            android:layout_marginStart="9dp"
-            android:layout_marginTop="2dp"
-            android:text="@string/drive"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvTotalAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ETDFrom"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/titleAmount"
+                android:text="7000"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
 
-        <Spinner
-            android:id="@+id/driveSpinner"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleTotal"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@+id/titleDrive2" />
+            <TextView
+                android:id="@+id/titleDrive2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/titleTotal"
+                android:layout_marginStart="9dp"
+                android:layout_marginTop="2dp"
+                android:text="@string/drive"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/titleDestination"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleDrive2"
-            android:layout_marginStart="9dp"
-            android:layout_marginTop="2dp"
-            android:text="@string/destination"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <Spinner
+                android:id="@+id/driveSpinner"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleTotal"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@+id/titleDrive2"
+                android:background="@drawable/custom_input" />
 
-        <EditText
-            android:id="@+id/etDestination"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleDrive2"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@+id/titleDestination" />
+            <TextView
+                android:id="@+id/titleDestination"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleDrive2"
+                android:layout_marginStart="9dp"
+                android:layout_marginTop="2dp"
+                android:text="@string/destination"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/btBook"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleDestination"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="50dp"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            android:text="@string/book_now" />
+            <EditText
+                android:id="@+id/etDestination"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleDrive2"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@+id/titleDestination"
+                android:background="@drawable/custom_input"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp" />
 
-    </RelativeLayout>
+            <Button
+                android:id="@+id/btBook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleDestination"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="50dp"
+                android:text="@string/book_now"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+    </ScrollView>
+
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
