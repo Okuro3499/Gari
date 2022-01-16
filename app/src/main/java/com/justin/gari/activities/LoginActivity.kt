@@ -29,8 +29,8 @@ class LoginActivity : AppCompatActivity() {
         loginButton.setOnClickListener {
             Toast.makeText(this@LoginActivity, "Login Clicked", Toast.LENGTH_LONG).show()
 
-            val email = (R.id.etEmailAddress).toString()
-            val password = (R.id.etPassword).toString().trim()
+            val email = findViewById<EditText>(R.id.etEmailAddress).text.toString().trim()
+            val password = findViewById<EditText>(R.id.etPassword).text.toString().trim()
 
             val loginInfo = UserLogin(email, password)
             val apiClient = ApiClient.buildService(ApiService::class.java)
@@ -39,12 +39,10 @@ class LoginActivity : AppCompatActivity() {
                     call: Call<UserLoginResponse?>,
                     response: Response<UserLoginResponse?>
                 ) {
-                    Toast.makeText(this@LoginActivity, "Login Success", Toast.LENGTH_LONG).show()
-                    Log.e("Gideon", "onSuccess: $email")
-                    Log.e("Gideon", "onSuccess: $response")
-
                     if (response.isSuccessful) {
-                        Log.e("Gideon", "onSuccess: ${response.body()}")
+                        Toast.makeText(this@LoginActivity, "Login Clicked", Toast.LENGTH_LONG)
+                            .show()
+                        Log.e("Gideon", "onSuccess: ${response.body()!!.accessToken}")
                     }
                 }
 
@@ -53,7 +51,6 @@ class LoginActivity : AppCompatActivity() {
                     Log.e("Gideon", "onFailure: ${t.message}")
                 }
             })
-
         }
 
         val button = findViewById<TextView>(R.id.tvNoAccount)
