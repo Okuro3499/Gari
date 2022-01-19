@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.justin.gari.R
 import com.justin.gari.api.ApiClient
 import com.justin.gari.api.ApiService
+import com.justin.gari.models.NewUserResponse
+import com.justin.gari.models.User
 import com.justin.gari.models.UserLogin
 import com.justin.gari.models.UserLoginResponse
 import kotlinx.android.synthetic.main.activity_login.*
@@ -27,26 +29,22 @@ class LoginActivity : AppCompatActivity() {
 
         val loginButton = findViewById<Button>(R.id.btLogin)
         loginButton.setOnClickListener {
-            Toast.makeText(this@LoginActivity, "Login Clicked", Toast.LENGTH_LONG).show()
-
             val email = findViewById<EditText>(R.id.etEmailAddress).text.toString().trim()
             val password = findViewById<EditText>(R.id.etPassword).text.toString().trim()
 
             val loginInfo = UserLogin(email, password)
             val apiClient = ApiClient.buildService(ApiService::class.java)
-            apiClient.loginUser(loginInfo)?.enqueue(object : Callback<UserLoginResponse?> {
-                override fun onResponse(
-                    call: Call<UserLoginResponse?>,
-                    response: Response<UserLoginResponse?>
+            apiClient.loginUser(loginInfo).enqueue(object : Callback<UserLoginResponse> {
+                override fun onResponse(call: Call<UserLoginResponse>, response: Response<UserLoginResponse>
                 ) {
                     if (response.isSuccessful) {
-                        Toast.makeText(this@LoginActivity, "Login Clicked", Toast.LENGTH_LONG)
+                        Toast.makeText(this@LoginActivity, "Login Successful", Toast.LENGTH_LONG)
                             .show()
-                        Log.e("Gideon", "onSuccess: ${response.body()!!.accessToken}")
+                        Log.e("Gideon", "onSuccess: ${response.body()}")
                     }
                 }
 
-                override fun onFailure(call: Call<UserLoginResponse?>, t: Throwable) {
+                override fun onFailure(call: Call<UserLoginResponse>, t: Throwable) {
                     Toast.makeText(this@LoginActivity, "Login Failed", Toast.LENGTH_LONG).show()
                     Log.e("Gideon", "onFailure: ${t.message}")
                 }

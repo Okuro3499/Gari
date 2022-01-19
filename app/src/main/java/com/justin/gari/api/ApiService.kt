@@ -1,5 +1,7 @@
 package com.justin.gari.api
 
+import com.justin.gari.models.NewUserResponse
+import com.justin.gari.models.User
 import com.justin.gari.models.UserLogin
 import com.justin.gari.models.carModels.CarModel
 import com.justin.gari.models.carModels.SingleCarModel
@@ -16,5 +18,8 @@ interface ApiService {
     fun getCarDetails(@Path("car_id") car_id: String?): Call<SingleCarModel>
 
     @POST("api/v1/auth/login/client")
-    fun loginUser(@Body userLogin: UserLogin?): Call<UserLoginResponse?>?
+    fun loginUser(@Body userLogin: UserLogin?): Call<UserLoginResponse>
+
+    @POST("/api/v1/auth/register/client")
+    fun createUser(@Body newUser: User?) : Call<NewUserResponse>
 }
