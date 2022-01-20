@@ -38,14 +38,25 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tvName"
+                android:id="@+id/tvFirstName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvComplete"
                 android:layout_marginStart="6dp"
                 android:layout_marginTop="2dp"
                 android:layout_toEndOf="@+id/titleName"
-                android:text="Gideon Okuro"
+                android:text="Gideon"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tvLastName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvComplete"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@+id/tvFirstName"
+                android:text="Okuro"
                 android:textColor="@color/black" />
 
             <TextView
@@ -63,7 +74,7 @@
                 android:id="@+id/tvEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tvName"
+                android:layout_below="@+id/tvFirstName"
                 android:layout_marginStart="6dp"
                 android:layout_marginTop="2dp"
                 android:layout_toEndOf="@+id/titleEmail"

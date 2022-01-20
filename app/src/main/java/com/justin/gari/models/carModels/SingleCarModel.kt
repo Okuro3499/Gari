@@ -6,5 +6,5 @@ import com.google.gson.annotations.SerializedName
 data class SingleCarModel(
     @Expose
     @SerializedName("single_car")
-    var single_car: List<Cars>
+    var single_car: Cars
 )

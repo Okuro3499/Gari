@@ -1,9 +1,11 @@
 package com.justin.gari.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.justin.gari.R
@@ -64,10 +66,10 @@ class RegisterActivity : AppCompatActivity() {
             })
         }
 
-//        val button = findViewById<TextView>(R.id.btRegister)
-//        button.setOnClickListener{
-//            val intent = Intent(this, ProfileCompleteActivity::class.java)
-//            startActivity(intent)
-//        }
+        val button = findViewById<TextView>(R.id.tvNoAccount)
+        button.setOnClickListener{
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

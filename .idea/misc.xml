@@ -19,7 +19,7 @@
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_my_vehicles.xml" value="0.10552536231884058" />
-        <entry key="app/src/main/res/layout/activity_profile_complete.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_profile_complete.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.38686131386861317" />
         <entry key="app/src/main/res/layout/fragment_history.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_saved.xml" value="0.20520833333333333" />
