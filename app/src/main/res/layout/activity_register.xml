@@ -6,205 +6,205 @@
     android:layout_height="match_parent"
     tools:context=".activities.RegisterActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/ivLogo"
-            android:layout_width="199dp"
-            android:layout_height="120dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            app:srcCompat="@drawable/logo"
-            android:contentDescription="companyLogo" />
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="199dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        app:srcCompat="@drawable/logo"
+        android:contentDescription="companyLogo" />
 
-        <EditText
-            android:id="@+id/etFirstName"
-            android:layout_width="140dp"
-            android:layout_height="39dp"
-            android:layout_below="@id/ivLogo"
-            android:layout_marginStart="32dp"
-            android:background="@drawable/custom_input"
-            android:ems="10"
-            android:hint="@string/first_name"
-            android:inputType="text"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:textColor="@color/black" />
+    <EditText
+        android:id="@+id/etFirstName"
+        android:layout_width="140dp"
+        android:layout_height="39dp"
+        android:layout_below="@id/ivLogo"
+        android:layout_marginStart="32dp"
+        android:background="@drawable/custom_input"
+        android:ems="10"
+        android:hint="@string/first_name"
+        android:inputType="text"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColor="@color/black" />
 
-        <EditText
-            android:id="@+id/etLastName"
-            android:layout_width="140dp"
-            android:layout_height="39dp"
-            android:layout_below="@id/ivLogo"
-            android:layout_marginStart="18dp"
-            android:layout_toEndOf="@+id/etFirstName"
-            android:background="@drawable/custom_input"
-            android:ems="10"
-            android:hint="@string/last_name"
-            android:inputType="text"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:textColor="@color/black" />
+    <EditText
+        android:id="@+id/etLastName"
+        android:layout_width="140dp"
+        android:layout_height="39dp"
+        android:layout_below="@id/ivLogo"
+        android:layout_marginStart="18dp"
+        android:layout_toEndOf="@+id/etFirstName"
+        android:background="@drawable/custom_input"
+        android:ems="10"
+        android:hint="@string/last_name"
+        android:inputType="text"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColor="@color/black" />
 
-        <EditText
-            android:id="@+id/etEmailAddress"
-            android:layout_width="300dp"
-            android:layout_height="39dp"
-            android:layout_below="@+id/etFirstName"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/custom_input"
-            android:ems="10"
-            android:hint="@string/mail"
-            android:inputType="textEmailAddress"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:textColor="@color/black" />
+    <EditText
+        android:id="@+id/etEmailAddress"
+        android:layout_width="300dp"
+        android:layout_height="39dp"
+        android:layout_below="@+id/etFirstName"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/custom_input"
+        android:ems="10"
+        android:hint="@string/mail"
+        android:inputType="textEmailAddress"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColor="@color/black" />
 
-        <EditText
-            android:id="@+id/etMobile"
-            android:layout_width="300dp"
-            android:layout_height="39dp"
-            android:layout_below="@+id/etEmailAddress"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/custom_input"
-            android:ems="10"
-            android:hint="@string/mobil"
-            android:inputType="phone"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:textColor="@color/black" />
-
-
-        <EditText
-            android:id="@+id/etCounty"
-            android:layout_width="140dp"
-            android:layout_height="39dp"
-            android:layout_below="@+id/etMobile"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/custom_input"
-            android:ems="10"
-            android:hint="@string/countie"
-            android:inputType="text"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:textColor="@color/black" />
-
-        <EditText
-            android:id="@+id/etDistrict"
-            android:layout_width="140dp"
-            android:layout_height="39dp"
-            android:layout_below="@+id/etMobile"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@+id/etCounty"
-            android:background="@drawable/custom_input"
-            android:ems="10"
-            android:hint="@string/distric"
-            android:inputType="text"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:textColor="@color/black" />
+    <EditText
+        android:id="@+id/etMobile"
+        android:layout_width="300dp"
+        android:layout_height="39dp"
+        android:layout_below="@+id/etEmailAddress"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/custom_input"
+        android:ems="10"
+        android:hint="@string/mobil"
+        android:inputType="phone"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColor="@color/black" />
 
 
-        <EditText
-            android:id="@+id/etEstate"
-            android:layout_width="140dp"
-            android:layout_height="39dp"
-            android:layout_below="@+id/etCounty"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/custom_input"
-            android:ems="10"
-            android:hint="@string/estat"
-            android:inputType="text"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:textColor="@color/black" />
+    <EditText
+        android:id="@+id/etCounty"
+        android:layout_width="140dp"
+        android:layout_height="39dp"
+        android:layout_below="@+id/etMobile"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/custom_input"
+        android:ems="10"
+        android:hint="@string/countie"
+        android:inputType="text"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColor="@color/black" />
 
-        <EditText
-            android:id="@+id/etLandMark"
-            android:layout_width="140dp"
-            android:layout_height="39dp"
-            android:layout_below="@+id/etDistrict"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@+id/etEstate"
-            android:background="@drawable/custom_input"
-            android:ems="10"
-            android:hint="@string/landmak"
-            android:inputType="text"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:textColor="@color/black" />
+    <EditText
+        android:id="@+id/etDistrict"
+        android:layout_width="140dp"
+        android:layout_height="39dp"
+        android:layout_below="@+id/etMobile"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/etCounty"
+        android:background="@drawable/custom_input"
+        android:ems="10"
+        android:hint="@string/distric"
+        android:inputType="text"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColor="@color/black" />
 
-        <EditText
-            android:id="@+id/etPassword"
-            android:layout_width="250dp"
-            android:layout_height="39dp"
-            android:layout_below="@+id/etEstate"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/custom_input"
-            android:ems="10"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:textColor="@color/black" />
 
-        <ImageButton
-            android:id="@+id/ibShow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/etEstate"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="18dp"
-            android:layout_toEndOf="@+id/etPassword"
-            android:background="@color/white"
-            app:srcCompat="@drawable/outline_visibility_black_24dp" />
+    <EditText
+        android:id="@+id/etEstate"
+        android:layout_width="140dp"
+        android:layout_height="39dp"
+        android:layout_below="@+id/etCounty"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/custom_input"
+        android:ems="10"
+        android:hint="@string/estat"
+        android:inputType="text"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColor="@color/black" />
 
-        <EditText
-            android:id="@+id/etcPassword"
-            android:layout_width="300dp"
-            android:layout_height="39dp"
-            android:layout_below="@+id/etPassword"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/custom_input"
-            android:ems="10"
-            android:hint="@string/confirm_password"
-            android:inputType="textPassword"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:textColor="@color/black" />
+    <EditText
+        android:id="@+id/etLandMark"
+        android:layout_width="140dp"
+        android:layout_height="39dp"
+        android:layout_below="@+id/etDistrict"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/etEstate"
+        android:background="@drawable/custom_input"
+        android:ems="10"
+        android:hint="@string/landmak"
+        android:inputType="text"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColor="@color/black" />
 
-        <Button
-            android:id="@+id/btRegister"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/etcPassword"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="10dp"
-            android:text="@string/register" />
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="250dp"
+        android:layout_height="39dp"
+        android:layout_below="@+id/etEstate"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/custom_input"
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColor="@color/black" />
 
-        <TextView
-            android:id="@+id/tvNoAccount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/btRegister"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="10dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="@string/already_have_an_account_login"
-            android:textSize="16sp" />
-    </RelativeLayout>
+    <ImageButton
+        android:id="@+id/ibShow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etEstate"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="18dp"
+        android:layout_toEndOf="@+id/etPassword"
+        android:background="@color/white"
+        app:srcCompat="@drawable/outline_visibility_black_24dp" />
+
+    <EditText
+        android:id="@+id/etcPassword"
+        android:layout_width="300dp"
+        android:layout_height="39dp"
+        android:layout_below="@+id/etPassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/custom_input"
+        android:ems="10"
+        android:hint="@string/confirm_password"
+        android:inputType="textPassword"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColor="@color/black" />
+
+    <Button
+        android:id="@+id/btRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etcPassword"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="10dp"
+        android:text="@string/register" />
+
+    <TextView
+        android:id="@+id/tvNoAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btRegister"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/already_have_an_account_login"
+        android:textSize="16sp" />
+  </RelativeLayout>
 </ScrollView>

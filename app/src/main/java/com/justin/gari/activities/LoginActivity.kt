@@ -10,12 +10,11 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.justin.gari.R
 import com.justin.gari.api.ApiClient
 import com.justin.gari.api.ApiService
-import com.justin.gari.models.UserLogin
-import com.justin.gari.models.UserLoginResponse
+import com.justin.gari.models.userModels.loginModel.UserLogin
+import com.justin.gari.models.userModels.loginModel.UserLoginResponse
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
@@ -37,6 +36,7 @@ class LoginActivity : AppCompatActivity() {
             val password = findViewById<EditText>(R.id.etPassword).text.toString().trim()
 
             val editor: SharedPreferences.Editor = sharedPreferences.edit()
+            Toast.makeText(this@LoginActivity, "Login clicked", Toast.LENGTH_LONG).show()
 
             val loginInfo = UserLogin(email, password)
             val apiClient = ApiClient.buildService(ApiService::class.java)
@@ -60,8 +60,6 @@ class LoginActivity : AppCompatActivity() {
                         editor.putString("landmark", response.body()!!.user.landmark)
                         editor.putString("token", response.body()!!.accessToken)
                         editor.apply()
-
-
 
                         val intent = Intent(this@LoginActivity, ProfileCompleteActivity::class.java)
                         startActivity(intent)

@@ -7,38 +7,38 @@
     android:layout_height="match_parent"
     tools:context=".activities.MyVehiclesActivity">
 
-    <RelativeLayout
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        app:tabBackground="@color/purple_500"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/white"
+        app:tabMode="fixed"
+        app:tabTextColor="@android:color/white"
+        tools:ignore="MissingConstraints" />
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabBackground="@color/purple_500"
-            app:tabGravity="fill"
-            app:tabIndicatorColor="@color/white"
-            app:tabMode="fixed"
-            app:tabTextColor="@android:color/white"
-            tools:ignore="MissingConstraints" />
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/tabs">
-
-        </androidx.viewpager.widget.ViewPager>
-
-    </RelativeLayout>
-
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header"
-        app:menu="@menu/nav_menu" />
+        android:layout_below="@id/tabs">
+
+    </androidx.viewpager.widget.ViewPager>
+
+  </RelativeLayout>
+
+  <com.google.android.material.navigation.NavigationView
+      android:id="@+id/nav_view"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_gravity="start"
+      android:fitsSystemWindows="true"
+      app:headerLayout="@layout/nav_header"
+      app:menu="@menu/nav_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

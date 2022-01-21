@@ -1,6 +1,7 @@
-package com.justin.gari.models
+package com.justin.gari.models.userModels.loginModel
 
 import com.google.gson.annotations.SerializedName
+import com.justin.gari.models.userModels.User
 
 data class UserLoginResponse(
     @SerializedName("user") val user: User,

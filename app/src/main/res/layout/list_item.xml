@@ -8,13 +8,13 @@
     app:cardUseCompatPadding="true">
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="16dp">
 
         <ImageView
             android:id="@+id/tvImage"
-            android:layout_width="120dp"
+            android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@drawable/premio" />
 
@@ -27,7 +27,7 @@
             android:layout_toEndOf="@+id/tvImage"
             android:text="@string/model"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="16.5sp"
             android:textStyle="bold" />
 
         <TextView
@@ -39,7 +39,7 @@
             android:layout_toEndOf="@+id/titleCarName"
             android:text="Toyota Premio"
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textSize="16.5sp" />
 
         <TextView
             android:id="@+id/titleDriveOption"
@@ -51,7 +51,7 @@
             android:layout_toEndOf="@+id/tvImage"
             android:text="@string/drive"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="16.5sp"
             android:textStyle="bold" />
 
         <TextView
@@ -64,7 +64,7 @@
             android:layout_toEndOf="@+id/titleCarName"
             android:text="Self Drive/Chauffered"
             android:textColor="@color/black"
-            android:textSize="18sp"/>
+            android:textSize="16.5sp"/>
 
         <TextView
             android:id="@+id/titleTransmission"
@@ -76,7 +76,7 @@
             android:layout_toEndOf="@+id/tvImage"
             android:text="@string/transmission"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="16.5sp"
             android:textStyle="bold" />
 
         <TextView
@@ -89,7 +89,7 @@
             android:layout_toEndOf="@+id/titleTransmission"
             android:text="Automatic"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="16.5sp"
              />
 
         <TextView
@@ -102,7 +102,7 @@
             android:layout_toEndOf="@+id/tvImage"
             android:text="@string/price"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="16.5sp"
             android:textStyle="bold" />
 
         <TextView
@@ -110,12 +110,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvTransmission"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="2dp"
             android:layout_marginTop="2dp"
             android:layout_toEndOf="@+id/titlePrice"
             android:text="3500"
             android:textColor="@color/black"
-            android:textSize="18sp"/>
+            android:textSize="16.5sp"/>
 
         <TextView
             android:id="@+id/titleRate"
@@ -127,7 +127,7 @@
             android:layout_toEndOf="@+id/tvPrice"
             android:text="@string/per_day"
             android:textColor="@color/black"
-            android:textSize="18sp"/>
+            android:textSize="16.5sp"/>
 
         <TextView
             android:id="@+id/titleStatus"
@@ -139,7 +139,7 @@
             android:layout_toEndOf="@+id/tvImage"
             android:text="@string/status"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="16.5sp"
             android:textStyle="bold" />
 
         <TextView
@@ -147,12 +147,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvPrice"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="2dp"
             android:layout_marginTop="2dp"
             android:layout_toEndOf="@+id/titleStatus"
             android:text="Available"
             android:textColor="@color/green"
-            android:textSize="18sp" />
+            android:textSize="16.5sp" />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

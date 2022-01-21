@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.justin.gari.R
 import com.justin.gari.api.ApiClient
 import com.justin.gari.api.ApiService
-import com.justin.gari.models.UserDetailsResponse
+import com.justin.gari.models.userModels.UserDetailsResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

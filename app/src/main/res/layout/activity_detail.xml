@@ -13,7 +13,7 @@
         android:layout_height="match_parent">
 
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <com.denzcoskun.imageslider.ImageSlider
@@ -36,11 +36,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/imageSlider"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="2dp"
                 android:text="@string/model"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -53,18 +53,18 @@
                 android:layout_toEndOf="@+id/titleCarName"
                 android:text="Toyota Premio"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleTransmission"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/titleCarName"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="2dp"
                 android:text="@string/transmission"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -77,18 +77,18 @@
                 android:layout_toEndOf="@+id/titleTransmission"
                 android:text="Automatic"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleEngine"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/titleTransmission"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="2dp"
                 android:text="@string/engine"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -101,55 +101,66 @@
                 android:layout_toEndOf="@+id/titleEngine"
                 android:text="Petrol"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="16.5sp" />
+
+            <TextView
+                android:id="@+id/titleRegistration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/titleEngine"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="2dp"
+                android:text="@string/registration"
+                android:textColor="@color/black"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvRegistration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvEngine"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@+id/titleRegistration"
+                android:text="KAU 636R"
+                android:textColor="@color/black"
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleDriveOption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/titleEngine"
-                android:layout_marginStart="10dp"
+                android:layout_below="@+id/titleRegistration"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="2dp"
                 android:text="@string/drive"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvDriveOption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tvEngine"
+                android:layout_below="@id/tvRegistration"
                 android:layout_marginStart="2dp"
                 android:layout_marginTop="2dp"
                 android:layout_toEndOf="@id/titleDriveOption"
                 android:text="Self Drive/Chauffeured"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="16.5sp" />
 
-            <TextView
-                android:id="@+id/titleDoors"
+            <ImageButton
+                android:id="@+id/imageButton2"
+                android:background="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/titleDriveOption"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="2dp"
-                android:text="@string/doors"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvDoors"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tvDriveOption"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="2dp"
-                android:layout_toEndOf="@id/titleDoors"
-                android:text="4"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="4dp"
+                android:layout_below="@id/tvDoors"
+                android:layout_toEndOf="@id/tvDriveOption"
+                app:srcCompat="@drawable/ic_baseline_favorite_border_50" />
 
             <TextView
                 android:id="@+id/titleStatus"
@@ -161,7 +172,7 @@
                 android:layout_toEndOf="@id/tvCarName"
                 android:text="@string/status"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -174,7 +185,7 @@
                 android:layout_toEndOf="@id/titleStatus"
                 android:text="Available"
                 android:textColor="@color/green"
-                android:textSize="20sp" />
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleColor"
@@ -186,7 +197,7 @@
                 android:layout_toEndOf="@id/tvTransmission"
                 android:text="@string/color"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -199,92 +210,92 @@
                 android:layout_toEndOf="@+id/titleColor"
                 android:text="White"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/titleRegistration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/titleColor"
-                android:layout_marginStart="109dp"
-                android:layout_marginTop="2dp"
-                android:layout_toEndOf="@id/tvEngine"
-                android:text="@string/registration"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvRegistration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tvColor"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="2dp"
-                android:layout_toEndOf="@+id/titleRegistration"
-                android:text="KAU 636R"
-                android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titlePassengers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/titleRegistration"
-                android:layout_marginStart="10dp"
+                android:layout_below="@id/titleColor"
+                android:layout_marginStart="110dp"
                 android:layout_marginTop="2dp"
-                android:layout_toEndOf="@id/tvDriveOption"
+                android:layout_toEndOf="@id/tvEngine"
                 android:text="@string/passengers"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvPassengers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tvRegistration"
+                android:layout_below="@id/tvColor"
                 android:layout_marginStart="2dp"
                 android:layout_marginTop="2dp"
                 android:layout_toEndOf="@+id/titlePassengers"
                 android:text="5"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="16.5sp" />
+
+            <TextView
+                android:id="@+id/titleDoors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titlePassengers"
+                android:layout_marginStart="45dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@+id/tvRegistration"
+                android:text="@string/doors"
+                android:textColor="@color/black"
+                android:textSize="16.5sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvDoors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvPassengers"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_toEndOf="@id/titleDoors"
+                android:text="4"
+                android:textColor="@color/black"
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleCompany"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/titleDoors"
-                android:layout_marginStart="10dp"
+                android:layout_below="@id/titleDriveOption"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="2dp"
                 android:text="@string/company"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvCompany"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tvDoors"
+                android:layout_below="@id/tvDriveOption"
                 android:layout_marginStart="2dp"
                 android:layout_marginTop="2dp"
                 android:layout_toEndOf="@id/titleCompany"
                 android:text="Vapor Gas Supplies"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleFeatures"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/titleCompany"
-                android:layout_marginStart="9dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="9dp"
                 android:text="@string/features"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -292,11 +303,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/titleFeatures"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="2dp"
                 android:text="1."
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -309,18 +320,18 @@
                 android:layout_toEndOf="@id/titleFeature1"
                 android:text="AC"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleFeature2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/titleFeature1"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="2dp"
                 android:text="2."
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -333,18 +344,18 @@
                 android:layout_toEndOf="@id/titleFeature2"
                 android:text="Power Steering"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleFeature3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/titleFeature2"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="2dp"
                 android:text="3."
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -357,7 +368,7 @@
                 android:layout_toEndOf="@id/titleFeature3"
                 android:text="Power Windows"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleFeature4"
@@ -369,7 +380,7 @@
                 android:layout_toEndOf="@id/tvFeature1"
                 android:text="4."
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -382,7 +393,7 @@
                 android:layout_toEndOf="@id/titleFeature4"
                 android:text="SRS"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleFeature5"
@@ -394,7 +405,7 @@
                 android:layout_toEndOf="@id/tvFeature2"
                 android:text="5."
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -407,18 +418,18 @@
                 android:layout_toEndOf="@id/titleFeature5"
                 android:text="ABS"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleBook"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/titleFeature3"
-                android:layout_marginStart="9dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="9dp"
                 android:text="@string/book"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -426,11 +437,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/titleBook"
-                android:layout_marginStart="9dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="2dp"
                 android:text="@string/ksh"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -443,7 +454,7 @@
                 android:layout_toEndOf="@id/titlePrice"
                 android:text="3500"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/tvRate"
@@ -455,18 +466,18 @@
                 android:layout_toEndOf="@id/tvPrice"
                 android:text="@string/per_day"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleFrom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/titlePrice"
-                android:layout_marginStart="9dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="2dp"
                 android:text="@string/from"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <EditText
@@ -474,7 +485,7 @@
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/titleFrom"
-                android:layout_marginStart="9dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="2dp"
                 android:background="@drawable/custom_input"
                 android:drawableStart="@drawable/ic_baseline_date_range_24"
@@ -486,7 +497,7 @@
                 android:paddingEnd="12dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/underline"
-                android:textSize="20sp" />
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleTo"
@@ -498,7 +509,7 @@
                 android:layout_toEndOf="@id/titleFrom"
                 android:text="@string/to"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <EditText
@@ -520,18 +531,18 @@
                 android:paddingEnd="12dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/underline"
-                android:textSize="20sp" />
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ETDFrom"
-                android:layout_marginStart="9dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="2dp"
                 android:text="@string/total"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -544,7 +555,7 @@
                 android:layout_toEndOf="@id/titleTotal"
                 android:text="2"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleDays"
@@ -556,7 +567,7 @@
                 android:layout_toEndOf="@id/tvTotalDays"
                 android:text="@string/days"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleAmount"
@@ -568,7 +579,7 @@
                 android:layout_toEndOf="@id/titleDays"
                 android:text="@string/ksh"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/tvTotalAmount"
@@ -580,18 +591,18 @@
                 android:layout_toEndOf="@id/titleAmount"
                 android:text="7000"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleDrive2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/titleTotal"
-                android:layout_marginStart="9dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="2dp"
                 android:text="@string/drive"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <Spinner
@@ -609,11 +620,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/titleDrive2"
-                android:layout_marginStart="9dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="2dp"
                 android:text="@string/destination"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <EditText

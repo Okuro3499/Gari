@@ -1,7 +1,11 @@
 package com.justin.gari.api
 
-import com.justin.gari.models.*
 import com.justin.gari.models.carModels.*
+import com.justin.gari.models.userModels.UserDetailsResponse
+import com.justin.gari.models.userModels.loginModel.UserLogin
+import com.justin.gari.models.userModels.loginModel.UserLoginResponse
+import com.justin.gari.models.userModels.signUpModel.NewUserData
+import com.justin.gari.models.userModels.signUpModel.NewUserResponse
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -16,7 +20,7 @@ interface ApiService {
     fun loginUser(@Body userLogin: UserLogin?): Call<UserLoginResponse>
 
     @POST("/api/v1/auth/register/client")
-    fun createUser(@Body newUser: User?) : Call<NewUserResponse>
+    fun createUser(@Body newUser: NewUserData?) : Call<NewUserResponse>
 
     @GET("/api/v1/client/{client_id}")
     fun getUserDetails(@Path("client_id") client_id: String?): Call<UserDetailsResponse>

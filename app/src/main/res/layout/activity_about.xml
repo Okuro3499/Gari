@@ -7,73 +7,73 @@
     android:layout_height="match_parent"
     tools:context=".activities.AboutActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tvAbout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
-            android:text="About Gari"
-            android:textColor="@color/black"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvVersion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvAbout"
-            android:layout_marginStart="20dp"
-            android:text="Version:"
-            android:textColor="@color/black"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvVersion1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvAbout"
-            android:layout_marginStart="20dp"
-            android:layout_toEndOf="@id/tvVersion"
-            android:text="0.0.1"
-            android:textColor="@color/black"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/ivUpdate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvVersion"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:srcCompat="@drawable/outline_update_black_24dp" />
-
-        <TextView
-            android:id="@+id/tvUpdate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvVersion1"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@id/ivUpdate"
-            android:text="Check for Updates"
-            android:textColor="@color/black"
-            android:textStyle="bold" />
-    </RelativeLayout>
-
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
+    <TextView
+        android:id="@+id/tvAbout"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header"
-        app:menu="@menu/nav_menu" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:text="About Gari"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvAbout"
+        android:layout_marginStart="20dp"
+        android:text="Version:"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvVersion1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvAbout"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@id/tvVersion"
+        android:text="0.0.1"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/ivUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvVersion"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:srcCompat="@drawable/outline_update_black_24dp" />
+
+    <TextView
+        android:id="@+id/tvUpdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvVersion1"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@id/ivUpdate"
+        android:text="Check for Updates"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
+  </RelativeLayout>
+
+  <com.google.android.material.navigation.NavigationView
+      android:id="@+id/nav_view"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_gravity="start"
+      android:fitsSystemWindows="true"
+      app:headerLayout="@layout/nav_header"
+      app:menu="@menu/nav_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
