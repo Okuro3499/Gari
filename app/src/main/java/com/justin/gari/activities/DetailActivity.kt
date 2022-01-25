@@ -1,15 +1,12 @@
 package com.justin.gari.activities
 
-import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import android.util.Log.d
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.DatePicker
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
@@ -19,8 +16,9 @@ import com.denzcoskun.imageslider.models.SlideModel
 import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
 import com.justin.gari.api.ApiClient
-import com.justin.gari.api.ApiService
 import com.justin.gari.models.carModels.SingleCarModel
+import com.justin.gari.models.saveCarModels.SaveCar
+import com.justin.gari.models.saveCarModels.SaveCarResponse
 import kotlinx.android.synthetic.main.activity_detail.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,22 +26,20 @@ import retrofit2.Response
 import java.util.*
 import kotlin.collections.ArrayList
 
-class DetailActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
-    var day = 0
-    var month = 0
-    var year = 0
-
-    var savedDay = 0
-    var savedMonth = 0
-    var savedYear = 0
-
+class DetailActivity : AppCompatActivity() {
+    private val sharedPrefFile = "sharedPrefData"
+    private lateinit var apiClient: ApiClient
     lateinit var toggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
+
+        val sharedPreferences: SharedPreferences =
+            getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+
         val carNameTextView = findViewById<TextView>(R.id.tvCarName)
-//        val driveOptionTextView = findViewById<TextView>(R.id.tvDriveOption)
+        val driveOptionTextView = findViewById<TextView>(R.id.tvDriveOption)
         val transmissionTextView = findViewById<TextView>(R.id.tvTransmission)
         val priceTextView = findViewById<TextView>(R.id.tvPrice)
         val engineTextView = findViewById<TextView>(R.id.tvEngine)
@@ -53,15 +49,15 @@ class DetailActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
         val companyTextView = findViewById<TextView>(R.id.tvCompany)
         val doorsTextView = findViewById<TextView>(R.id.tvDoors)
         val statusTextView = findViewById<TextView>(R.id.tvStatus)
-//      val statusTextView = findViewById<TextView>(R.id.tvStatus)
+        val feature1TextView = findViewById<TextView>(R.id.tvFeature1)
+        val feature2TextView = findViewById<TextView>(R.id.tvFeature2)
+        val feature3TextView = findViewById<TextView>(R.id.tvFeature3)
+        val feature4TextView = findViewById<TextView>(R.id.tvFeature4)
+        val feature5TextView = findViewById<TextView>(R.id.tvFeature5)
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
         val navView: NavigationView = findViewById(R.id.nav_view)
-        val button = findViewById<Button>(R.id.btBook)
-        button.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-        }
+
 
         val imageSlider = findViewById<ImageSlider>(R.id.imageSlider)
         val imageList = ArrayList<SlideModel>()
@@ -82,44 +78,78 @@ class DetailActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
         //receiving intents
         val carId = intent.getStringExtra("car_id")
-        val carName = intent.getStringExtra("car_name")
-        val status = intent.getStringExtra("status")
-        val transmission = intent.getStringExtra("transmission")
-        val engine = intent.getStringExtra("engine")
-        val color = intent.getStringExtra("color")
-        val registration = intent.getStringExtra("registration")
-        val passengers = intent.getStringExtra("passengers")
-        val company = intent.getStringExtra("company")
-        val price = intent.getStringExtra("price")
-        val doors = intent.getStringExtra("doors")
 
-        val apiClient = ApiClient.buildService(ApiService::class.java)
-        apiClient.getCarDetails(carId).enqueue(object : Callback<SingleCarModel> {
-            override fun onResponse(
-                call: Call<SingleCarModel>,
-                response: Response<SingleCarModel>
-            ) {
-                if (response.isSuccessful) {
-                    carNameTextView.text = carName
-                    statusTextView.text = status
-                    transmissionTextView.text = transmission
-                    engineTextView.text = engine
-                    colorTextView.text = color
-                    registrationTextView.text = registration
-                    passengersTextView.text = passengers
-                    companyTextView.text = company
-                    priceTextView.text = price
-                    doorsTextView.text = doors
+        apiClient = ApiClient
+        apiClient.getApiService(this).getCarDetails(carId)
+            .enqueue(object : Callback<SingleCarModel> {
+                override fun onResponse(
+                    call: Call<SingleCarModel>,
+                    response: Response<SingleCarModel>
+                ) {
+                    if (response.isSuccessful) {
+                        carNameTextView.text = response.body()!!.single_car.car_name.toString()
+                        statusTextView.text = response.body()!!.single_car.status.toString()
+                        transmissionTextView.text =
+                            response.body()!!.single_car.transmission.toString()
+                        engineTextView.text = response.body()!!.single_car.engine.toString()
+                        colorTextView.text = response.body()!!.single_car.color.toString()
+                        registrationTextView.text =
+                            response.body()!!.single_car.registration.toString()
+                        passengersTextView.text = response.body()!!.single_car.passengers.toString()
+                        companyTextView.text = response.body()!!.single_car.company.toString()
+                        priceTextView.text = response.body()!!.single_car.price.toString()
+                        doorsTextView.text = response.body()!!.single_car.doors.toString()
+                        driveOptionTextView.text = response.body()!!.single_car.drive.toString()
+                        feature1TextView.text = response.body()!!.single_car.feature_1.toString()
+                        feature2TextView.text = response.body()!!.single_car.feature_2.toString()
+                        feature3TextView.text = response.body()!!.single_car.feature_3.toString()
+                        feature4TextView.text = response.body()!!.single_car.feature_4.toString()
+                        feature5TextView.text = response.body()!!.single_car.feature_5.toString()
+                    }
                 }
-                d("Gideon", "onSuccess: ${response.body()!!.single_car}")
-            }
 
-            override fun onFailure(call: Call<SingleCarModel>, t: Throwable) {
-                Log.e("Gideon", "onFailure: ${t.message}")
-            }
-        })
+                override fun onFailure(call: Call<SingleCarModel>, t: Throwable) {
+                    Log.e("Gideon", "onFailure: ${t.message}")
+                }
+            })
 
-        pickDate()
+        val saveBt = findViewById<ImageButton>(R.id.ibSave)
+        saveBt.setOnClickListener {
+            val car_id = carId
+            val client_id = sharedPreferences.getString("client_id", "default")
+            val saveInfo = SaveCar(car_id, client_id)
+
+            apiClient.getApiService(this).saveCar(saveInfo)
+                .enqueue(object : Callback<SaveCarResponse> {
+                    override fun onResponse(
+                        call: Call<SaveCarResponse>, response: Response<SaveCarResponse>
+                    ) {
+
+                        if (response.isSuccessful) {
+                            Toast.makeText(
+                                this@DetailActivity,
+                                "Saved Successfully",
+                                Toast.LENGTH_LONG
+                            )
+                                .show()
+
+                            Log.e("Gideon", "onSuccess: ${response.body()}")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<SaveCarResponse>, t: Throwable) {
+                        Toast.makeText(this@DetailActivity, "${t.message}", Toast.LENGTH_LONG)
+                            .show()
+                        Log.e("Gideon", "onFailure: ${t.message}")
+                    }
+                })
+        }
+
+        val bookBt = findViewById<Button>(R.id.btBook)
+        bookBt.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
 
         navView.setNavigationItemSelectedListener {
             when (it.itemId) {
@@ -156,32 +186,10 @@ class DetailActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
         }
     }
 
-    private fun getDateCalendar(){
-        val cal = Calendar.getInstance()
-        day = cal.get(Calendar.DAY_OF_MONTH)
-        month = cal.get(Calendar.MONTH)
-        year = cal.get(Calendar.YEAR)
-    }
-
-    private fun pickDate() {
-        ETDFrom.setOnClickListener {
-            getDateCalendar()
-            DatePickerDialog(this, this, year,month,day).show()
-        }
-    }
-
-
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) {
             true
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        savedDay = dayOfMonth
-        savedMonth = month
-        savedYear = year
     }
 }

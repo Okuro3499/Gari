@@ -1,19 +1,29 @@
 package com.justin.gari.api
 
+import android.content.Context
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
-    private val client = OkHttpClient.Builder().build()
+    private lateinit var apiService: ApiService
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl("https://apigari.herokuapp.com/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .client(client)
-        .build()
+    fun getApiService(context: Context): ApiService {
+        if (!::apiService.isInitialized) {
+            val retrofit = Retrofit.Builder()
+                .baseUrl("https://apigari.herokuapp.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okhttpClient(context))
+                .build()
 
-    fun <T> buildService(service: Class<T>): T{
-        return retrofit.create(service)
+            apiService = retrofit.create(ApiService::class.java)
+        }
+        return apiService
+    }
+
+    private fun okhttpClient(context: Context): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(AuthInterceptor(context))
+            .build()
     }
 }

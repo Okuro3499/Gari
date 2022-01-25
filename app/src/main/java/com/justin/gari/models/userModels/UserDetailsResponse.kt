@@ -5,5 +5,5 @@ import com.google.gson.annotations.SerializedName
 
 data class UserDetailsResponse(
     @Expose
-    @SerializedName("single_client") val single_client: User,
+    @SerializedName("single_client") val single_client: User
 )

@@ -17,6 +17,7 @@ import com.justin.gari.R
 import com.justin.gari.adapters.CarAdapter
 import com.justin.gari.api.ApiClient
 import com.justin.gari.api.ApiService
+import com.justin.gari.api.SessionManager
 import com.justin.gari.models.carModels.CarModel
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
@@ -26,6 +27,7 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity() {
     lateinit var toggle: ActionBarDrawerToggle
     private lateinit var swipeRefresh: SwipeRefreshLayout
+    private lateinit var apiClient: ApiClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,11 +43,11 @@ class MainActivity : AppCompatActivity() {
             getAllData()
         }
 
-        val apiClient = ApiClient.buildService(ApiService::class.java)
-        apiClient.getAllCars().enqueue(object : Callback<CarModel> {
+        apiClient = ApiClient
+        apiClient.getApiService(this).getAllCars().enqueue(object : Callback<CarModel> {
             override fun onResponse(call: Call<CarModel>, response: Response<CarModel>) {
                 if (response.isSuccessful) {
-                    Log.e("Gideon", "onSuccess: ${response.body()}")
+//                    Log.e("Gideon", "onSuccess: ${response.body()}")
                     recyclerview.apply {
                         shimmerFrameLayout.stopShimmer();
                         shimmerFrameLayout.visibility = View.GONE;
@@ -105,8 +107,8 @@ class MainActivity : AppCompatActivity() {
         if (swipeRefresh.isRefreshing) {
             swipeRefresh.isRefreshing = false
 
-            val apiClient = ApiClient.buildService(ApiService::class.java)
-            apiClient.getAllCars().enqueue(object : Callback<CarModel> {
+            apiClient = ApiClient
+            apiClient.getApiService(this).getAllCars().enqueue(object : Callback<CarModel> {
                 override fun onResponse(call: Call<CarModel>, response: Response<CarModel>) {
                     if (response.isSuccessful) {
                         recyclerview.apply {

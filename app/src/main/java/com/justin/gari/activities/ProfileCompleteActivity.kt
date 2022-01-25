@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.justin.gari.R
 import com.justin.gari.api.ApiClient
-import com.justin.gari.api.ApiService
 import com.justin.gari.models.userModels.UserDetailsResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,13 +17,14 @@ import retrofit2.Response
 
 class ProfileCompleteActivity : AppCompatActivity() {
     private val sharedPrefFile = "sharedPrefData"
-//    private val sharedPreferences: SharedPreferences = this.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+    private lateinit var apiClient: ApiClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_complete)
         val sharedPreferences: SharedPreferences =
             getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+
         val firstName = findViewById<TextView>(R.id.tvFirstName)
         val lastName = findViewById<TextView>(R.id.tvLastName)
         val email = findViewById<TextView>(R.id.tvEmail)
@@ -36,33 +36,34 @@ class ProfileCompleteActivity : AppCompatActivity() {
 
         val clientId = sharedPreferences.getString("client_id", "default")
 
-        val apiClient = ApiClient.buildService(ApiService::class.java)
-        apiClient.getUserDetails(clientId).enqueue(object : Callback<UserDetailsResponse> {
-            override fun onResponse(
-                call: Call<UserDetailsResponse>,
-                response: Response<UserDetailsResponse>
-            ) {
-                if (response.isSuccessful) {
-                    Log.e("Gideon", "onSuccess: ${response.body()}")
-                    firstName.text = response.body()!!.single_client.first_name.toString()
-                    lastName.text = response.body()!!.single_client.last_name.toString()
-                    email.text = response.body()!!.single_client.email.toString()
-                    mobile.text = response.body()!!.single_client.mobile.toString()
-                    county.text = response.body()!!.single_client.county.toString()
-                    district.text = response.body()!!.single_client.district.toString()
-                    estate.text = response.body()!!.single_client.estate.toString()
-                    landMark.text = response.body()!!.single_client.landmark.toString()
+        apiClient = ApiClient
+        apiClient.getApiService(this).getUserDetails(clientId)
+            .enqueue(object : Callback<UserDetailsResponse> {
+                override fun onResponse(
+                    call: Call<UserDetailsResponse>,
+                    response: Response<UserDetailsResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        Log.e("Gideon", "onSuccess: ${response.body()}")
+                        firstName.text = response.body()!!.single_client.first_name.toString()
+                        lastName.text = response.body()!!.single_client.last_name.toString()
+                        email.text = response.body()!!.single_client.email.toString()
+                        mobile.text = response.body()!!.single_client.mobile.toString()
+                        county.text = response.body()!!.single_client.county.toString()
+                        district.text = response.body()!!.single_client.district.toString()
+                        estate.text = response.body()!!.single_client.estate.toString()
+                        landMark.text = response.body()!!.single_client.landmark.toString()
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<UserDetailsResponse>, t: Throwable) {
-                Log.e("Gideon", "onFailure: ${t.message}")
-            }
-        })
+                override fun onFailure(call: Call<UserDetailsResponse>, t: Throwable) {
+                    Log.e("Gideon", "onFailure: ${t.message}")
+                }
+            })
 
         val button = findViewById<Button>(R.id.btSubmit)
         button.setOnClickListener {
-            val intent = Intent(this, AboutActivity::class.java)
+            val intent = Intent(this, DetailActivity::class.java)
             startActivity(intent)
         }
     }

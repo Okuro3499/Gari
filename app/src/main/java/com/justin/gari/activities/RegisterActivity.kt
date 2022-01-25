@@ -18,6 +18,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class RegisterActivity : AppCompatActivity() {
+    private lateinit var apiClient: ApiClient
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
@@ -35,8 +37,8 @@ class RegisterActivity : AppCompatActivity() {
             val password = findViewById<EditText>(R.id.etPassword).text.toString().trim()
 
             val signUpInfo = NewUserData(email, first_name, last_name, mobile, county, district, estate, landmark, password)
-            val apiClient = ApiClient.buildService(ApiService::class.java)
-            apiClient.createUser(signUpInfo).enqueue(object : Callback<NewUserResponse> {
+            apiClient = ApiClient
+            apiClient.getApiService(this).createUser(signUpInfo).enqueue(object : Callback<NewUserResponse> {
 
                 override fun onResponse(
                     call: Call<NewUserResponse>, response: Response<NewUserResponse>
