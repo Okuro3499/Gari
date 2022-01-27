@@ -5,7 +5,7 @@ xmlns:tools="http://schemas.android.com/tools"
 android:id="@+id/drawerLayout"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context=".fragments.SavedFragment">
+tools:context=".fragments.BookingsFragment">
 
 <com.facebook.shimmer.ShimmerFrameLayout
     android:id="@+id/shimmerLayout"

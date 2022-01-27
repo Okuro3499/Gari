@@ -16,8 +16,6 @@ import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
 import com.justin.gari.adapters.CarAdapter
 import com.justin.gari.api.ApiClient
-import com.justin.gari.api.ApiService
-import com.justin.gari.api.SessionManager
 import com.justin.gari.models.carModels.CarModel
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
@@ -47,7 +45,6 @@ class MainActivity : AppCompatActivity() {
         apiClient.getApiService(this).getAllCars().enqueue(object : Callback<CarModel> {
             override fun onResponse(call: Call<CarModel>, response: Response<CarModel>) {
                 if (response.isSuccessful) {
-//                    Log.e("Gideon", "onSuccess: ${response.body()}")
                     recyclerview.apply {
                         shimmerFrameLayout.stopShimmer();
                         shimmerFrameLayout.visibility = View.GONE;
@@ -73,6 +70,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         navView.setNavigationItemSelectedListener {
+
             when (it.itemId) {
                 R.id.home -> Toast.makeText(applicationContext, "Clicked Home", Toast.LENGTH_SHORT)
                     .show()

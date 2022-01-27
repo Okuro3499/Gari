@@ -7,58 +7,56 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.justin.gari.R
-import com.justin.gari.adapters.SavedCarAdapter
+import com.justin.gari.adapters.BookingCarAdapter
 import com.justin.gari.api.ApiClient
-import com.justin.gari.models.saveCarModels.SavedCarResponse
+import com.justin.gari.models.bookingCarModels.BookingsResponse
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
-class SavedFragment : Fragment() {
+class BookingsFragment : Fragment() {
     private lateinit var apiClient: ApiClient
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerview)
-        val shimmerFrameLayout = view?.findViewById<ShimmerFrameLayout>(R.id.shimmerLayout);
-        shimmerFrameLayout?.startShimmer();
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_saved, container, false)
+        return inflater.inflate(R.layout.fragment_bookings, container, false)
     }
 
-    @Override
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val shimmerFrameLayout = view?.findViewById<ShimmerFrameLayout>(R.id.shimmerLayout);
-        shimmerFrameLayout?.startShimmer();
+
+        val shimmerFrameLayout = view?.findViewById<ShimmerFrameLayout>(R.id.shimmerLayout)
+        shimmerFrameLayout?.startShimmer()
 
         apiClient = ApiClient
         context?.let {
-            apiClient.getApiService(it).getSavedCars("1")
-                .enqueue(object : Callback<SavedCarResponse> {
+            apiClient.getApiService(it).getBookedCars("1")
+                .enqueue(object : Callback<BookingsResponse> {
                     override fun onResponse(
-                        call: Call<SavedCarResponse>,
-                        response: Response<SavedCarResponse>
+                        call: Call<BookingsResponse>,
+                        response: Response<BookingsResponse>
                     ) {
+//                        Log.e("Gideon", "onSuccess: $clientId")
                         if (response.isSuccessful) {
+
                             recyclerview.apply {
-                                shimmerFrameLayout?.stopShimmer();
-                                shimmerFrameLayout?.visibility = View.GONE;
+                                shimmerFrameLayout?.stopShimmer()
+                                shimmerFrameLayout?.visibility = View.GONE
                                 layoutManager = LinearLayoutManager(context)
-                                adapter = SavedCarAdapter(response.body()!!.saved_cars, context)
+                                adapter =
+                                    BookingCarAdapter(response.body()!!.myBooked_cars, context)
                             }
                         }
                     }
 
-                    override fun onFailure(call: Call<SavedCarResponse>, t: Throwable) {
-                        shimmerFrameLayout?.stopShimmer();
-                        shimmerFrameLayout?.visibility = View.GONE;
+                    override fun onFailure(call: Call<BookingsResponse>, t: Throwable) {
+                        shimmerFrameLayout?.stopShimmer()
+                        shimmerFrameLayout?.visibility = View.GONE
                         //                Toast.makeText(this@MainActivity, "Check internet connectivity", Toast.LENGTH_LONG)
                         //                    .show()
                         Log.e("Gideon", "onFailure: ${t.message}")

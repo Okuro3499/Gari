@@ -1,9 +1,12 @@
 package com.justin.gari.api
 
+import com.justin.gari.models.bookingCarModels.BookingsResponse
+import com.justin.gari.models.bookingCarModels.BookingsResponseObject
 import com.justin.gari.models.carModels.CarModel
 import com.justin.gari.models.carModels.SingleCarModel
 import com.justin.gari.models.saveCarModels.SaveCar
 import com.justin.gari.models.saveCarModels.SaveCarResponse
+import com.justin.gari.models.saveCarModels.SavedCarResponse
 import com.justin.gari.models.userModels.UserDetailsResponse
 import com.justin.gari.models.userModels.loginModel.UserLogin
 import com.justin.gari.models.userModels.loginModel.UserLoginResponse
@@ -34,4 +37,10 @@ interface ApiService {
 
     @POST("/api/v1/save")
     fun saveCar(@Body saveCar: SaveCar?): Call<SaveCarResponse>
+
+    @GET("/api/v1/saved/{client_id}")
+    fun getSavedCars(@Path("client_id") client_id: String?): Call<SavedCarResponse>
+
+    @GET("/api/v1/clientBookings/{client_id}")
+    fun getBookedCars(@Path("client_id") client_id: String?): Call<BookingsResponse>
 }

@@ -1,6 +1,7 @@
 package com.justin.gari.api
 
 import android.content.Context
+import com.justin.gari.fragments.SavedFragment
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

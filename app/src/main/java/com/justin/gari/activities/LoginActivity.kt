@@ -60,9 +60,9 @@ class LoginActivity : AppCompatActivity() {
 
                             Log.e("Gideon", "onSuccess: ${response.body()}")
                             editor.putString("client_id", response.body()!!.user.client_id)
-//                        editor.putString("first_name", response.body()!!.user.first_name)
-//                        editor.putString("last_name", response.body()!!.user.last_name)
-//                        editor.putString("email", response.body()!!.user.email)
+                            editor.putString("first_name", response.body()!!.user.first_name)
+                            editor.putString("last_name", response.body()!!.user.last_name)
+                            editor.putString("email", response.body()!!.user.email)
 //                        editor.putString("mobile", response.body()!!.user.mobile)
 //                        editor.putString("county", response.body()!!.user.county)
 //                        editor.putString("district", response.body()!!.user.district)
@@ -70,6 +70,7 @@ class LoginActivity : AppCompatActivity() {
 //                        editor.putString("landmark", response.body()!!.user.landmark)
 //                        editor.putString("token", response.body()!!.accessToken)
                             editor.apply()
+                            
                             response.body()!!.accessToken?.let { it1 ->
                                 sessionManager.saveAuthToken(
                                     it1
@@ -77,7 +78,7 @@ class LoginActivity : AppCompatActivity() {
                             }
 
                             val intent =
-                                Intent(this@LoginActivity, ProfileCompleteActivity::class.java)
+                                Intent(this@LoginActivity, MyVehiclesActivity::class.java)
                             startActivity(intent)
                         }
                     }
