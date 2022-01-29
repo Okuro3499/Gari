@@ -587,7 +587,7 @@
                 android:layout_marginStart="2dp"
                 android:layout_marginTop="2dp"
                 android:layout_toEndOf="@id/titleAmount"
-                android:text="7000"
+                android:text="0"
                 android:textColor="@color/black"
                 android:textSize="16.5sp" />
 

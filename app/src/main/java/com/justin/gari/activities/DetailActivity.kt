@@ -68,6 +68,8 @@ class DetailActivity : AppCompatActivity() {
         dateFrom = findViewById<View>(R.id.ETDFrom) as EditText
         dateTo = findViewById<View>(R.id.ETDTo) as EditText
 
+
+
         //open date from dialog
         val date1 = OnDateSetListener { view, yearFrom, monthFrom, dayFrom ->
             myCalendarFrom[Calendar.YEAR] = yearFrom
@@ -267,8 +269,22 @@ class DetailActivity : AppCompatActivity() {
         val diff = toDate2!!.time - fromDate1!!.time
         val days = (TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)).toString()
         totalDays.text = days
+
+        multiplyPriceAndDays()
     }
 
+    private fun multiplyPriceAndDays() {
+        val totalDays = findViewById<TextView>(R.id.tvTotalAmount)
+        val price = tvPrice.text.toString()
+        val noOfDays = tvTotalDays.text.toString()
+        val finalPrice = price.toInt()
+        val finalNoOfDays =noOfDays.toInt()
+
+        var total = StringBuilder().apply {
+            append(finalPrice * finalNoOfDays)
+        }
+        totalDays.text = total
+    }
 
     //items selected from navigation view
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
