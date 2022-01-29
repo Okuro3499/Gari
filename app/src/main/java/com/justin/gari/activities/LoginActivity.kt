@@ -36,6 +36,7 @@ class LoginActivity : AppCompatActivity() {
         val sharedPreferences: SharedPreferences =
             getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
 
+        //Login into user account
         val loginButton = findViewById<Button>(R.id.btLogin)
         loginButton.setOnClickListener {
             val email = findViewById<EditText>(R.id.etEmailAddress).text.toString().trim()
@@ -63,14 +64,8 @@ class LoginActivity : AppCompatActivity() {
                             editor.putString("first_name", response.body()!!.user.first_name)
                             editor.putString("last_name", response.body()!!.user.last_name)
                             editor.putString("email", response.body()!!.user.email)
-//                        editor.putString("mobile", response.body()!!.user.mobile)
-//                        editor.putString("county", response.body()!!.user.county)
-//                        editor.putString("district", response.body()!!.user.district)
-//                        editor.putString("estate", response.body()!!.user.estate)
-//                        editor.putString("landmark", response.body()!!.user.landmark)
-//                        editor.putString("token", response.body()!!.accessToken)
                             editor.apply()
-                            
+
                             response.body()!!.accessToken?.let { it1 ->
                                 sessionManager.saveAuthToken(
                                     it1
@@ -90,6 +85,7 @@ class LoginActivity : AppCompatActivity() {
                 })
         }
 
+        //Go to register activity if not registered
         val button = findViewById<TextView>(R.id.tvNoAccount)
         button.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)

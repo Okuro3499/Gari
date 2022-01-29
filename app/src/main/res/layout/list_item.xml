@@ -61,10 +61,10 @@
             android:layout_below="@id/tvCarName"
             android:layout_marginStart="2dp"
             android:layout_marginTop="2dp"
-            android:layout_toEndOf="@+id/titleCarName"
+            android:layout_toEndOf="@+id/titleDriveOption"
             android:text="Self Drive/Chauffered"
             android:textColor="@color/black"
-            android:textSize="16.5sp"/>
+            android:textSize="16.5sp" />
 
         <TextView
             android:id="@+id/titleTransmission"

@@ -67,4 +67,6 @@
     <string name="already_have_an_account_login">Already have an account? Login</string>
     <string name="don_t_have_an_account_register">Don’t have an account? Register</string>
     <string name="email_address">Email Address</string>
+    <string name="radio_selfDrive">Self Drive</string>
+    <string name="radio_chauffeured">Chauffeured</string>
 </resources>

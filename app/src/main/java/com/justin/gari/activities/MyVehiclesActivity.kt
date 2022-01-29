@@ -24,11 +24,6 @@ class MyVehiclesActivity : AppCompatActivity() {
 
         viewPager.adapter = adapter
         tabs.setupWithViewPager(viewPager)
-
-//        tabs.getTabAt(0)!!.(R.string.History)
-//        tabs.getTabAt(1)!!.setText(R.string.Saved)
-
-
-
     }
 }
+

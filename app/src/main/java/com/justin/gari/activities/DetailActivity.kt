@@ -1,11 +1,14 @@
 package com.justin.gari.activities
 
+import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -23,18 +26,23 @@ import kotlinx.android.synthetic.main.activity_detail.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 class DetailActivity : AppCompatActivity() {
     private val sharedPrefFile = "sharedPrefData"
     private lateinit var apiClient: ApiClient
     lateinit var toggle: ActionBarDrawerToggle
+    private val myCalendarFrom: Calendar = Calendar.getInstance()
+    private val myCalendarTo: Calendar = Calendar.getInstance()
+    var dateFrom: EditText? = null
+    var dateTo: EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
-
         val sharedPreferences: SharedPreferences =
             getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
 
@@ -54,10 +62,55 @@ class DetailActivity : AppCompatActivity() {
         val feature3TextView = findViewById<TextView>(R.id.tvFeature3)
         val feature4TextView = findViewById<TextView>(R.id.tvFeature4)
         val feature5TextView = findViewById<TextView>(R.id.tvFeature5)
-
         val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
         val navView: NavigationView = findViewById(R.id.nav_view)
+        val radioDriveGroup: RadioGroup = findViewById(R.id.radioDriveGroup)
+        dateFrom = findViewById<View>(R.id.ETDFrom) as EditText
+        dateTo = findViewById<View>(R.id.ETDTo) as EditText
 
+        //open date from dialog
+        val date1 = OnDateSetListener { view, yearFrom, monthFrom, dayFrom ->
+            myCalendarFrom[Calendar.YEAR] = yearFrom
+            myCalendarFrom[Calendar.MONTH] = monthFrom
+            myCalendarFrom[Calendar.DAY_OF_MONTH] = dayFrom
+            updateLabelFrom()
+        }
+        dateFrom!!.setOnClickListener {
+            DatePickerDialog(
+                this@DetailActivity,
+                date1,
+                myCalendarFrom[Calendar.YEAR],
+                myCalendarFrom[Calendar.MONTH],
+                myCalendarFrom[Calendar.DAY_OF_MONTH]
+            ).show()
+        }
+
+        //open date to dialog
+        val date2 = OnDateSetListener { view, yearTo, monthTo, dayTo ->
+            myCalendarTo[Calendar.YEAR] = yearTo
+            myCalendarTo[Calendar.MONTH] = monthTo
+            myCalendarTo[Calendar.DAY_OF_MONTH] = dayTo
+            updateLabelTo()
+        }
+        dateTo!!.setOnClickListener {
+            DatePickerDialog(
+                this@DetailActivity,
+                date2,
+                myCalendarTo[Calendar.YEAR],
+                myCalendarTo[Calendar.MONTH],
+                myCalendarTo[Calendar.DAY_OF_MONTH]
+            ).show()
+        }
+
+        // Get radio group selected item using on checked change listener
+        radioDriveGroup.setOnCheckedChangeListener { group, checkedId ->
+            val radio: RadioButton = findViewById(checkedId)
+            Toast.makeText(
+                applicationContext,
+                " ${radio.text}",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
 
         val imageSlider = findViewById<ImageSlider>(R.id.imageSlider)
         val imageList = ArrayList<SlideModel>()
@@ -68,7 +121,6 @@ class DetailActivity : AppCompatActivity() {
         imageList.add(SlideModel(R.drawable.dash))
         imageList.add(SlideModel(R.drawable.speedometer))
         imageList.add(SlideModel(R.drawable.pre))
-
         imageSlider.setImageList(imageList, ScaleTypes.FIT)
 
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
@@ -76,9 +128,9 @@ class DetailActivity : AppCompatActivity() {
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        //get car details
         //receiving intents
         val carId = intent.getStringExtra("car_id")
-
         apiClient = ApiClient
         apiClient.getApiService(this).getCarDetails(carId)
             .enqueue(object : Callback<SingleCarModel> {
@@ -89,12 +141,10 @@ class DetailActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         carNameTextView.text = response.body()!!.single_car.car_name.toString()
                         statusTextView.text = response.body()!!.single_car.status.toString()
-                        transmissionTextView.text =
-                            response.body()!!.single_car.transmission.toString()
+                        transmissionTextView.text = response.body()!!.single_car.transmission.toString()
                         engineTextView.text = response.body()!!.single_car.engine.toString()
                         colorTextView.text = response.body()!!.single_car.color.toString()
-                        registrationTextView.text =
-                            response.body()!!.single_car.registration.toString()
+                        registrationTextView.text = response.body()!!.single_car.registration.toString()
                         passengersTextView.text = response.body()!!.single_car.passengers.toString()
                         companyTextView.text = response.body()!!.single_car.company.toString()
                         priceTextView.text = response.body()!!.single_car.price.toString()
@@ -105,6 +155,7 @@ class DetailActivity : AppCompatActivity() {
                         feature3TextView.text = response.body()!!.single_car.feature_3.toString()
                         feature4TextView.text = response.body()!!.single_car.feature_4.toString()
                         feature5TextView.text = response.body()!!.single_car.feature_5.toString()
+
                     }
                 }
 
@@ -113,6 +164,7 @@ class DetailActivity : AppCompatActivity() {
                 }
             })
 
+        //save car for future bookings
         val saveBt = findViewById<ImageButton>(R.id.ibSave)
         saveBt.setOnClickListener {
             val car_id = carId
@@ -122,17 +174,15 @@ class DetailActivity : AppCompatActivity() {
             apiClient.getApiService(this).saveCar(saveInfo)
                 .enqueue(object : Callback<SaveCarResponse> {
                     override fun onResponse(
-                        call: Call<SaveCarResponse>, response: Response<SaveCarResponse>
+                        call: Call<SaveCarResponse>,
+                        response: Response<SaveCarResponse>
                     ) {
-
                         if (response.isSuccessful) {
                             Toast.makeText(
                                 this@DetailActivity,
                                 "Saved Successfully",
                                 Toast.LENGTH_LONG
-                            )
-                                .show()
-
+                            ).show()
                             Log.e("Gideon", "onSuccess: ${response.body()}")
                         }
                     }
@@ -145,12 +195,14 @@ class DetailActivity : AppCompatActivity() {
                 })
         }
 
+        //make car booking
         val bookBt = findViewById<Button>(R.id.btBook)
         bookBt.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
 
+        //open side navigation view
         navView.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.home -> Toast.makeText(applicationContext, "Clicked Home", Toast.LENGTH_SHORT)
@@ -186,6 +238,39 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
+    //get date from
+    private fun updateLabelFrom() {
+        val myFormatFrom = "dd/MM/yyyy"
+        val dateFormatFrom = SimpleDateFormat(myFormatFrom, Locale.US)
+        dateFrom?.setText(dateFormatFrom.format(myCalendarFrom.time))
+    }
+
+    //get date to
+    private fun updateLabelTo() {
+        val myFormatTo = "dd/MM/yyyy"
+        val dateFormatTo = SimpleDateFormat(myFormatTo, Locale.US)
+        dateTo?.setText(dateFormatTo.format(myCalendarTo.time))
+        differenceBetweenDays()
+
+    }
+
+    //get the difference between to and from
+    private fun differenceBetweenDays() {
+        val totalDays = findViewById<TextView>(R.id.tvTotalDays)
+
+        val myFormat = SimpleDateFormat("dd/MM/yyyy", Locale.US)
+        val toDate = dateTo!!.text.toString()
+        val fromDate = dateFrom!!.text.toString()
+
+        val fromDate1 = myFormat.parse(fromDate)
+        val toDate2 = myFormat.parse(toDate)
+        val diff = toDate2!!.time - fromDate1!!.time
+        val days = (TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)).toString()
+        totalDays.text = days
+    }
+
+
+    //items selected from navigation view
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) {
             true
