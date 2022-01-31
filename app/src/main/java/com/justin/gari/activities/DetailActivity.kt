@@ -12,11 +12,10 @@ import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
-import com.denzcoskun.imageslider.ImageSlider
-import com.denzcoskun.imageslider.constants.ScaleTypes
-import com.denzcoskun.imageslider.models.SlideModel
+import androidx.viewpager.widget.ViewPager
 import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
+import com.justin.gari.adapters.SliderPageAdapter
 import com.justin.gari.api.ApiClient
 import com.justin.gari.models.bookingCarModels.BookCar
 import com.justin.gari.models.bookingCarModels.BookCarResponse
@@ -30,8 +29,6 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.collections.ArrayList
-
 
 class DetailActivity : AppCompatActivity() {
     private val sharedPrefFile = "sharedPrefData"
@@ -73,6 +70,7 @@ class DetailActivity : AppCompatActivity() {
         dateTo = findViewById<View>(R.id.ETDTo) as EditText
         selfDrive = findViewById<View>(R.id.radioSelfDrive) as RadioButton
         chauffeured = findViewById<View>(R.id.radioChauffeured) as RadioButton
+        val viewPager = findViewById<ViewPager>(R.id.view_pager)
 
         //open date from dialog
         val date1 = OnDateSetListener { view, yearFrom, monthFrom, dayFrom ->
@@ -108,17 +106,6 @@ class DetailActivity : AppCompatActivity() {
             ).show()
         }
 
-        val imageSlider = findViewById<ImageSlider>(R.id.imageSlider)
-        val imageList = ArrayList<SlideModel>()
-
-        imageList.add(SlideModel(R.drawable.premio))
-        imageList.add(SlideModel(R.drawable.rear))
-        imageList.add(SlideModel(R.drawable.seats))
-        imageList.add(SlideModel(R.drawable.dash))
-        imageList.add(SlideModel(R.drawable.speedometer))
-        imageList.add(SlideModel(R.drawable.pre))
-        imageSlider.setImageList(imageList, ScaleTypes.FIT)
-
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
@@ -135,6 +122,19 @@ class DetailActivity : AppCompatActivity() {
                     response: Response<SingleCarModel>
                 ) {
                     if (response.isSuccessful) {
+                        //fetching images to slider
+                        val imageUrls = arrayOf(
+                            response.body()!!.single_car.front_view.toString(),
+                            response.body()!!.single_car.back_view.toString(),
+                            response.body()!!.single_car.right_view.toString(),
+                            response.body()!!.single_car.left_view.toString(),
+                            response.body()!!.single_car.interior_1.toString(),
+                            response.body()!!.single_car.interior_2.toString()
+                        )
+
+                        val adapter = SliderPageAdapter(this@DetailActivity, imageUrls)
+                        viewPager.adapter = adapter
+
                         carNameTextView.text = response.body()!!.single_car.car_name.toString()
                         statusTextView.text = response.body()!!.single_car.status.toString()
                         transmissionTextView.text =
@@ -346,3 +346,21 @@ class DetailActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 }
+
+//class MainActivity : AppCompatActivity() {
+//    private val imageUrls = arrayOf(
+//        "https://cdn.pixabay.com/photo/2016/11/11/23/34/cat-1817970_960_720.jpg",
+//        "https://cdn.pixabay.com/photo/2017/12/21/12/26/glowworm-3031704_960_720.jpg",
+//        "https://cdn.pixabay.com/photo/2017/12/24/09/09/road-3036620_960_720.jpg",
+//        "https://cdn.pixabay.com/photo/2017/11/07/00/07/fantasy-2925250_960_720.jpg",
+//        "https://cdn.pixabay.com/photo/2017/10/10/15/28/butterfly-2837589_960_720.jpg"
+//    )
+//
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        setContentView(R.layout.activity_main)
+//        val viewPager = findViewById<ViewPager>(R.id.view_pager)
+//        val adapter = ViewPagerAdapter(this, imageUrls)
+//        viewPager.adapter = adapter
+//    }
+//}

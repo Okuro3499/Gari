@@ -5,11 +5,13 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.justin.gari.R
 import com.justin.gari.activities.DetailActivity
 import com.justin.gari.models.carModels.Cars
+import com.squareup.picasso.Picasso
 
 class CarAdapter(private val carList: List<Cars>, val context: Context) :
     RecyclerView.Adapter<CarAdapter.ViewHolder>() {
@@ -48,11 +50,13 @@ class CarAdapter(private val carList: List<Cars>, val context: Context) :
         private val transmissionTextView: TextView = itemView.findViewById(R.id.tvTransmission)
         private val priceTextView: TextView = itemView.findViewById(R.id.tvPrice)
         private val statusTextView: TextView = itemView.findViewById(R.id.tvStatus)
+        private val imageView: ImageView =itemView.findViewById(R.id.tvImage)
 
         fun bindView(cars: Cars) {
             carNameTextView.text = cars.car_name
             driveOptionTextView.text = cars.drive
             transmissionTextView.text = cars.transmission
+            Picasso.get().load(cars.front_view).into(imageView);
 //            itemView.tvImage.setImageResource(model.image)
             priceTextView.text = cars.price
             statusTextView.text = cars.status
