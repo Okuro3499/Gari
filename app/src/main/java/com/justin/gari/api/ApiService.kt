@@ -1,5 +1,7 @@
 package com.justin.gari.api
 
+import com.justin.gari.models.bookingCarModels.BookCar
+import com.justin.gari.models.bookingCarModels.BookCarResponse
 import com.justin.gari.models.bookingCarModels.BookingsResponse
 import com.justin.gari.models.bookingCarModels.BookingsResponseObject
 import com.justin.gari.models.carModels.CarModel
@@ -13,10 +15,7 @@ import com.justin.gari.models.userModels.loginModel.UserLoginResponse
 import com.justin.gari.models.userModels.signUpModel.NewUserData
 import com.justin.gari.models.userModels.signUpModel.NewUserResponse
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface ApiService {
 
@@ -43,4 +42,10 @@ interface ApiService {
 
     @GET("/api/v1/clientBookings/{client_id}")
     fun getBookedCars(@Path("client_id") client_id: String?): Call<BookingsResponse>
+
+    @POST("/api/v1/booking")
+    fun bookingCar(@Body bookCar: BookCar?): Call<BookCarResponse>
+
+    @PATCH("/api/v1/cars/status/:car_id")
+    fun changeStatus(@Path("car_id") car_id: String?)
 }

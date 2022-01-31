@@ -50,6 +50,7 @@ class LoginActivity : AppCompatActivity() {
                     override fun onResponse(
                         call: Call<UserLoginResponse>, response: Response<UserLoginResponse>
                     ) {
+                        Log.e("Gideon", "onSuccess: $response")
                         if (response.isSuccessful) {
 
                             Toast.makeText(

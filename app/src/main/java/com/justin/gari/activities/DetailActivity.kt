@@ -3,7 +3,6 @@ package com.justin.gari.activities
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -19,6 +18,8 @@ import com.denzcoskun.imageslider.models.SlideModel
 import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
 import com.justin.gari.api.ApiClient
+import com.justin.gari.models.bookingCarModels.BookCar
+import com.justin.gari.models.bookingCarModels.BookCarResponse
 import com.justin.gari.models.carModels.SingleCarModel
 import com.justin.gari.models.saveCarModels.SaveCar
 import com.justin.gari.models.saveCarModels.SaveCarResponse
@@ -31,6 +32,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
+
 class DetailActivity : AppCompatActivity() {
     private val sharedPrefFile = "sharedPrefData"
     private lateinit var apiClient: ApiClient
@@ -39,6 +41,9 @@ class DetailActivity : AppCompatActivity() {
     private val myCalendarTo: Calendar = Calendar.getInstance()
     var dateFrom: EditText? = null
     var dateTo: EditText? = null
+    var selfDrive: RadioButton? = null
+    var chauffeured: RadioButton? = null
+    var selectedDrive: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,11 +69,10 @@ class DetailActivity : AppCompatActivity() {
         val feature5TextView = findViewById<TextView>(R.id.tvFeature5)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
         val navView: NavigationView = findViewById(R.id.nav_view)
-        val radioDriveGroup: RadioGroup = findViewById(R.id.radioDriveGroup)
         dateFrom = findViewById<View>(R.id.ETDFrom) as EditText
         dateTo = findViewById<View>(R.id.ETDTo) as EditText
-
-
+        selfDrive = findViewById<View>(R.id.radioSelfDrive) as RadioButton
+        chauffeured = findViewById<View>(R.id.radioChauffeured) as RadioButton
 
         //open date from dialog
         val date1 = OnDateSetListener { view, yearFrom, monthFrom, dayFrom ->
@@ -104,16 +108,6 @@ class DetailActivity : AppCompatActivity() {
             ).show()
         }
 
-        // Get radio group selected item using on checked change listener
-        radioDriveGroup.setOnCheckedChangeListener { group, checkedId ->
-            val radio: RadioButton = findViewById(checkedId)
-            Toast.makeText(
-                applicationContext,
-                " ${radio.text}",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-
         val imageSlider = findViewById<ImageSlider>(R.id.imageSlider)
         val imageList = ArrayList<SlideModel>()
 
@@ -143,10 +137,12 @@ class DetailActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         carNameTextView.text = response.body()!!.single_car.car_name.toString()
                         statusTextView.text = response.body()!!.single_car.status.toString()
-                        transmissionTextView.text = response.body()!!.single_car.transmission.toString()
+                        transmissionTextView.text =
+                            response.body()!!.single_car.transmission.toString()
                         engineTextView.text = response.body()!!.single_car.engine.toString()
                         colorTextView.text = response.body()!!.single_car.color.toString()
-                        registrationTextView.text = response.body()!!.single_car.registration.toString()
+                        registrationTextView.text =
+                            response.body()!!.single_car.registration.toString()
                         passengersTextView.text = response.body()!!.single_car.passengers.toString()
                         companyTextView.text = response.body()!!.single_car.company.toString()
                         priceTextView.text = response.body()!!.single_car.price.toString()
@@ -157,7 +153,6 @@ class DetailActivity : AppCompatActivity() {
                         feature3TextView.text = response.body()!!.single_car.feature_3.toString()
                         feature4TextView.text = response.body()!!.single_car.feature_4.toString()
                         feature5TextView.text = response.body()!!.single_car.feature_5.toString()
-
                     }
                 }
 
@@ -200,8 +195,65 @@ class DetailActivity : AppCompatActivity() {
         //make car booking
         val bookBt = findViewById<Button>(R.id.btBook)
         bookBt.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+            //selected radio button
+            if (selfDrive!!.isChecked) {
+                selectedDrive = selfDrive!!.text.toString()
+            } else if (chauffeured!!.isChecked) {
+                selectedDrive = chauffeured!!.text.toString()
+            }
+
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
+            dateFrom?.setText(dateFormat.format(myCalendarFrom.time))
+            dateTo?.setText(dateFormat.format(myCalendarTo.time))
+
+            val car_id = carId
+            val client_id = sharedPreferences.getString("client_id", "default")
+            val book_date_from = dateFrom!!.text.toString().trim()
+            val book_date_to = dateTo!!.text.toString().trim()
+            val destination = findViewById<EditText>(R.id.etDestination).text.toString().trim()
+            val drive = selectedDrive
+            val total_days = tvTotalDays.text.toString().trim()
+            val total_amount = tvTotalAmount.text.toString().trim()
+            val bookingInfo = BookCar(
+                car_id,
+                client_id,
+                book_date_from,
+                book_date_to,
+                destination,
+                drive,
+                total_days,
+                total_amount
+            )
+
+            apiClient.getApiService(this).bookingCar(bookingInfo)
+                .enqueue(object : Callback<BookCarResponse> {
+                    override fun onResponse(
+                        call: Call<BookCarResponse>,
+                        response: Response<BookCarResponse>
+                    ) {
+
+                        if (response.isSuccessful) {
+
+//                            apiClient.getApiService(this@DetailActivity).changeStatus(carId)
+
+                            Toast.makeText(
+                                this@DetailActivity,
+                                "Booked Successfully",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            Log.e("Gideon", "onSuccess: ${response.body()!!.book_car}")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<BookCarResponse>, t: Throwable) {
+                        Toast.makeText(this@DetailActivity, "${t.message}", Toast.LENGTH_LONG)
+                            .show()
+                        Log.e("Gideon", "onFailure: ${t.message}")
+                    }
+                })
+
+//            val intent = Intent(this, LoginActivity::class.java)
+//            startActivity(intent)
         }
 
         //open side navigation view
@@ -241,14 +293,14 @@ class DetailActivity : AppCompatActivity() {
     }
 
     //get date from
-    private fun updateLabelFrom() {
+    fun updateLabelFrom() {
         val myFormatFrom = "dd/MM/yyyy"
         val dateFormatFrom = SimpleDateFormat(myFormatFrom, Locale.US)
         dateFrom?.setText(dateFormatFrom.format(myCalendarFrom.time))
     }
 
     //get date to
-    private fun updateLabelTo() {
+    fun updateLabelTo() {
         val myFormatTo = "dd/MM/yyyy"
         val dateFormatTo = SimpleDateFormat(myFormatTo, Locale.US)
         dateTo?.setText(dateFormatTo.format(myCalendarTo.time))
@@ -257,7 +309,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     //get the difference between to and from
-    private fun differenceBetweenDays() {
+    fun differenceBetweenDays() {
         val totalDays = findViewById<TextView>(R.id.tvTotalDays)
 
         val myFormat = SimpleDateFormat("dd/MM/yyyy", Locale.US)
@@ -273,12 +325,12 @@ class DetailActivity : AppCompatActivity() {
         multiplyPriceAndDays()
     }
 
-    private fun multiplyPriceAndDays() {
+    fun multiplyPriceAndDays() {
         val totalDays = findViewById<TextView>(R.id.tvTotalAmount)
         val price = tvPrice.text.toString()
         val noOfDays = tvTotalDays.text.toString()
         val finalPrice = price.toInt()
-        val finalNoOfDays =noOfDays.toInt()
+        val finalNoOfDays = noOfDays.toInt()
 
         var total = StringBuilder().apply {
             append(finalPrice * finalNoOfDays)
