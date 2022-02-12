@@ -26,9 +26,9 @@ class RegisterActivity : AppCompatActivity() {
 
         val registerButton = findViewById<Button>(R.id.btRegister)
         registerButton.setOnClickListener {
-            val email = findViewById<EditText>(R.id.etEmailAddress).text.toString().trim()
             val first_name = findViewById<EditText>(R.id.etFirstName).text.toString().trim()
             val last_name = findViewById<EditText>(R.id.etLastName).text.toString().trim()
+            val email = findViewById<EditText>(R.id.etEmailAddress).text.toString().trim()
             val mobile = findViewById<EditText>(R.id.etMobile).text.toString().trim()
             val county = findViewById<EditText>(R.id.etCounty).text.toString().trim()
             val district = findViewById<EditText>(R.id.etDistrict).text.toString().trim()
@@ -36,7 +36,7 @@ class RegisterActivity : AppCompatActivity() {
             val landmark = findViewById<EditText>(R.id.etLandMark).text.toString().trim()
             val password = findViewById<EditText>(R.id.etPassword).text.toString().trim()
 
-            val signUpInfo = NewUserData(email, first_name, last_name, mobile, county, district, estate, landmark, password)
+            val signUpInfo = NewUserData(first_name, last_name, email, mobile, county, district, estate, landmark, password)
             apiClient = ApiClient
             apiClient.getApiService(this).createUser(signUpInfo).enqueue(object : Callback<NewUserResponse> {
 

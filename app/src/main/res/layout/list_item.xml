@@ -15,8 +15,7 @@
         <ImageView
             android:id="@+id/tvImage"
             android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/premio" />
+            android:layout_height="100dp"/>
 
         <TextView
             android:id="@+id/titleCarName"

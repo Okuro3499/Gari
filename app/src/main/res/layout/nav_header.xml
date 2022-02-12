@@ -1,46 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
     android:layout_marginStart="16dp"
+    android:layout_marginTop="16dp"
     android:background="@color/white"
     android:orientation="vertical">
 
-  <de.hdodenhof.circleimageview.CircleImageView
-      android:id="@+id/profile_image"
-      android:layout_width="60dp"
-      android:layout_height="60dp"
-      android:src="@drawable/giddie"
-      app:civ_border_color="#C4C4C4"
-      app:civ_border_width="1dp"/>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/giddie"
+        app:civ_border_color="#C4C4C4"
+        app:civ_border_width="1dp" />
 
-  <TextView
-      android:id="@+id/username"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:paddingTop="8dp"
-      android:text="Gideon Okuro"
-      android:textColor="@color/black"
-      android:textSize="20dp"
-      android:textStyle="bold" />
+    <TextView
+        android:id="@+id/firstName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:layout_below="@+id/profile_image"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
-  <TextView
-      android:id="@+id/email"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="gideonollonde@gmail.com"
-      android:textColor="@color/black"
-      android:textSize="16dp"/>
+    <TextView
+        android:id="@+id/lastName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:layout_below="@+id/profile_image"
+        android:layout_marginStart="4dp"
+        android:layout_toEndOf="@+id/firstName"
+        android:textColor="@color/black"
 
-  <View
-      android:layout_width="match_parent"
-      android:layout_height="1dp"
-      android:layout_marginTop="30dp"
-      android:background="@color/underline"/>
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/firstName"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/black"
+        android:textSize="16.5sp" />
 
-</LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/email"
+        android:background="@color/underline" />
+</RelativeLayout>

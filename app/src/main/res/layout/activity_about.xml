@@ -18,7 +18,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"
-        android:text="About Gari"
+        android:text="@string/about_gari"
         android:textColor="@color/black"
         android:textStyle="bold" />
 
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tvAbout"
         android:layout_marginStart="20dp"
-        android:text="Version:"
+        android:text="@string/version"
         android:textColor="@color/black"
         android:textStyle="bold" />
 
@@ -39,7 +39,7 @@
         android:layout_below="@id/tvAbout"
         android:layout_marginStart="20dp"
         android:layout_toEndOf="@id/tvVersion"
-        android:text="0.0.1"
+        android:text="@string/_0_0_1"
         android:textColor="@color/black"
         android:textStyle="bold" />
 
@@ -52,7 +52,8 @@
         android:layout_marginTop="10dp"
         android:clickable="true"
         android:focusable="true"
-        app:srcCompat="@drawable/outline_update_black_24dp" />
+        app:srcCompat="@drawable/outline_update_black_24dp"
+        android:contentDescription="@string/updatebutton" />
 
     <TextView
         android:id="@+id/tvUpdate"
@@ -62,7 +63,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@id/ivUpdate"
-        android:text="Check for Updates"
+        android:text="@string/check_for_updates"
         android:textColor="@color/black"
         android:textStyle="bold" />
   </RelativeLayout>

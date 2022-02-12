@@ -14,27 +14,32 @@
         <entry key="..\:/work/Gari/app/src/main/res/layout/list_item.xml" value="0.17119565217391305" />
         <entry key="..\:/work/Gari/app/src/main/res/layout/nav_header.xml" value="0.1503623188405797" />
         <entry key="..\:/work/Gari/app/src/main/res/layout/shimmer_layout.xml" value="0.15579710144927536" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.22135416666666666" />
+        <entry key="app/src/main/res/drawable/baseline_delete_forever_black_24dp.xml" value="0.11979166666666667" />
         <entry key="app/src/main/res/drawable/circular_corners.xml" value="0.22135416666666666" />
         <entry key="app/src/main/res/drawable/custom_input.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_exit_to_app_24.xml" value="0.22135416666666666" />
         <entry key="app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.22135416666666666" />
         <entry key="app/src/main/res/drawable/ic_baseline_fingerprint_24.xml" value="0.22135416666666666" />
         <entry key="app/src/main/res/drawable/ic_baseline_folder_24.xml" value="0.22135416666666666" />
+        <entry key="app/src/main/res/drawable/ic_baseline_help_outline_24.xml" value="0.22135416666666666" />
         <entry key="app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.22135416666666666" />
         <entry key="app/src/main/res/drawable/ic_baseline_info_24.xml" value="0.22135416666666666" />
         <entry key="app/src/main/res/drawable/ic_baseline_remove_red_eye_24.xml" value="0.22135416666666666" />
+        <entry key="app/src/main/res/drawable/outline_visibility_black_24dp.xml" value="0.22135416666666666" />
         <entry key="app/src/main/res/layout-w1240dp/activity_login.xml" value="0.1318607764390897" />
         <entry key="app/src/main/res/layout-w936dp/activity_login.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_about.xml" value="0.41041666666666665" />
+        <entry key="app/src/main/res/layout/activity_about.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_detail.xml" value="0.321483771251932" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_my_vehicles.xml" value="0.21" />
-        <entry key="app/src/main/res/layout/activity_profile_complete.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/activity_profile_complete.xml" value="0.24492385786802032" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.38686131386861317" />
+        <entry key="app/src/main/res/layout/fragment_bookings.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_history.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_saved.xml" value="0.20520833333333333" />
-        <entry key="app/src/main/res/layout/list_item.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/fragment_saved.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/list_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/nav_header.xml" value="0.33" />
         <entry key="app/src/main/res/layout/shimmer_layout.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/layout/slider_item.xml" value="0.1" />

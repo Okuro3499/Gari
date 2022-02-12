@@ -17,7 +17,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         app:srcCompat="@drawable/logo"
-        android:contentDescription="companyLogo" />
+        android:contentDescription="@string/companylogo" />
 
     <EditText
         android:id="@+id/etFirstName"
@@ -167,7 +167,8 @@
         android:layout_marginTop="18dp"
         android:layout_toEndOf="@+id/etPassword"
         android:background="@color/white"
-        app:srcCompat="@drawable/outline_visibility_black_24dp" />
+        app:srcCompat="@drawable/outline_visibility_black_24dp"
+        android:contentDescription="@string/visibility_toggle" />
 
     <EditText
         android:id="@+id/etcPassword"

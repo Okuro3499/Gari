@@ -1,12 +1,18 @@
 package com.justin.gari.activities
 
+import android.content.ContentValues.TAG
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var toggle: ActionBarDrawerToggle
     private lateinit var swipeRefresh: SwipeRefreshLayout
     private lateinit var apiClient: ApiClient
+    private val sharedPrefFile = "sharedPrefData"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +41,8 @@ class MainActivity : AppCompatActivity() {
         val navView: NavigationView = findViewById(R.id.nav_view)
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
         swipeRefresh = findViewById(R.id.swipeRefresh)
+        val sharedPreferences: SharedPreferences =
+            getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
         val shimmerFrameLayout = findViewById<ShimmerFrameLayout>(R.id.shimmerLayout);
         shimmerFrameLayout.startShimmer();
 
@@ -69,36 +78,55 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        navView.setNavigationItemSelectedListener {
+        val firstNameHeader = sharedPreferences.getString("first_name", "default")
+        val lastNameHeader = sharedPreferences.getString("last_name", "default")
+        val emailHeader = sharedPreferences.getString("email", "default")
+        val header: View = navView.getHeaderView(0)
+        val firstNameTv = header.findViewById<View>(R.id.firstName) as TextView
+        val lastNameTv = header.findViewById<View>(R.id.lastName) as TextView
+        val emailTv = header.findViewById<View>(R.id.email) as TextView
+        firstNameTv.text = firstNameHeader.toString()
+        lastNameTv.text = lastNameHeader.toString()
+        emailTv.text = emailHeader.toString()
 
-            when (it.itemId) {
-                R.id.home -> Toast.makeText(applicationContext, "Clicked Home", Toast.LENGTH_SHORT)
-                    .show()
-                R.id.profile -> Toast.makeText(
-                    applicationContext,
-                    "Clicked Profile",
-                    Toast.LENGTH_SHORT
-                ).show()
-                R.id.myVehicles -> Toast.makeText(
-                    applicationContext,
-                    "Clicked My Vehicles",
-                    Toast.LENGTH_SHORT
-                ).show()
-                R.id.logout -> Toast.makeText(
-                    applicationContext,
-                    "Clicked Logout",
-                    Toast.LENGTH_SHORT
-                ).show()
-                R.id.about -> Toast.makeText(
-                    applicationContext,
-                    "Clicked About",
-                    Toast.LENGTH_SHORT
-                ).show()
-                R.id.help -> Toast.makeText(applicationContext, "Clicked Help", Toast.LENGTH_SHORT)
-                    .show()
+        navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
+            Log.i(TAG, "onNavigationItemSelected: " + item.itemId)
+            when (item.itemId) {
+                R.id.home -> {
+                    startActivity(Intent(this@MainActivity, MainActivity::class.java))
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.profile -> {
+                    val intentProfile =
+                        Intent(this@MainActivity, ProfileCompleteActivity::class.java)
+                    startActivity(intentProfile)
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.myVehicles -> {
+                    val intentMyVehicles = Intent(this@MainActivity, MyVehiclesActivity::class.java)
+                    startActivity(intentMyVehicles)
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.logout -> {
+                    val intentLogin = Intent(this@MainActivity, LoginActivity::class.java)
+                    startActivity(intentLogin)
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.about -> {
+                    val intentAbout = Intent(this@MainActivity, AboutActivity::class.java)
+                    startActivity(intentAbout)
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.help -> {
+                    val intentHelp = Intent(this@MainActivity, LoginActivity::class.java)
+                    startActivity(intentHelp)
+                    return@OnNavigationItemSelectedListener true
+                }
             }
-            true
-        }
+            drawerLayout.closeDrawer(GravityCompat.START)
+            Log.i(TAG, "onNavigationItemSelected: nothing clicked")
+            false
+        })
     }
 
     private fun getAllData() {

@@ -24,6 +24,7 @@
                 android:layout_marginBottom="20dp"
                 android:text="@string/complete_profile"
                 android:textColor="@color/black"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -31,10 +32,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvComplete"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="2dp"
                 android:text="@string/name"
                 android:textColor="@color/black"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -42,32 +44,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvComplete"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="60dp"
                 android:layout_marginTop="2dp"
-                android:layout_toEndOf="@+id/titleName"
-                android:text="Gideon"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/tvLastName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvComplete"
-                android:layout_marginStart="2dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="2dp"
                 android:layout_toEndOf="@+id/tvFirstName"
-                android:text="Okuro"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/titleName"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="2dp"
                 android:text="@string/email"
                 android:textColor="@color/black"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -75,21 +77,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvFirstName"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="60dp"
                 android:layout_marginTop="2dp"
-                android:layout_toEndOf="@+id/titleEmail"
-                android:text="gideonollonde@gmail.com"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleMobile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/titleEmail"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="2dp"
                 android:text="@string/mobile"
                 android:textColor="@color/black"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -97,21 +99,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvEmail"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="67dp"
                 android:layout_marginTop="2dp"
-                android:layout_toEndOf="@+id/titleMobile"
-                android:text="+254729240756"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleCounty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/titleMobile"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="2dp"
                 android:text="@string/county"
                 android:textColor="@color/black"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -119,22 +121,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvMobile"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="69dp"
                 android:layout_marginTop="2dp"
-                android:layout_toEndOf="@+id/titleCounty"
-                android:text="Nairobi"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleDistrict"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/titleMobile"
-                android:layout_marginStart="100dp"
+                android:layout_marginStart="160dp"
                 android:layout_marginTop="2dp"
-                android:layout_toEndOf="@+id/titleCounty"
                 android:text="@string/district"
                 android:textColor="@color/black"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -145,18 +146,19 @@
                 android:layout_marginStart="6dp"
                 android:layout_marginTop="2dp"
                 android:layout_toEndOf="@+id/titleDistrict"
-                android:text="Njiru"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleEstate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/titleCounty"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="2dp"
                 android:text="@string/estate"
                 android:textColor="@color/black"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -164,22 +166,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvCounty"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="65dp"
                 android:layout_marginTop="2dp"
-                android:layout_toEndOf="@+id/titleEstate"
-                android:text="Dandora"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleLandmark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/titleDistrict"
-                android:layout_marginStart="100dp"
+                android:layout_marginStart="160dp"
                 android:layout_marginTop="2dp"
-                android:layout_toEndOf="@+id/titleEstate"
                 android:text="@string/landmark"
                 android:textColor="@color/black"
+                android:textSize="16.5sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -190,8 +191,8 @@
                 android:layout_marginStart="6dp"
                 android:layout_marginTop="2dp"
                 android:layout_toEndOf="@+id/titleLandmark"
-                android:text="Legio Maria Church"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleDlUpload"
@@ -200,11 +201,10 @@
                 android:layout_below="@id/tvEstate"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:layout_marginTop="20dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:text="@string/upload_scanned_photo_of_drivers_licence"
-                android:textColor="@color/black" />
+                android:layout_marginTop="15dp"
+                android:text="@string/upload_scanned_photo_of_drivers_license"
+                android:textColor="@color/black"
+                android:textSize="16.5sp" />
 
             <ImageView
                 android:id="@+id/ivDl"
@@ -214,18 +214,27 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="8dp"
-                app:srcCompat="@drawable/dl" />
+                android:contentDescription="@string/driving_license_photo"
+                app:srcCompat="@drawable/click" />
+
+            <Button
+                android:id="@+id/btDlUpload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ivDl"
+                android:layout_centerInParent="true"
+                android:text="@string/upload"
+                android:textSize="16.5sp"
+                tools:ignore="DuplicateSpeakableTextCheck" />
 
             <TextView
                 android:id="@+id/titleIdUpload"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ivDl"
+                android:layout_below="@id/btDlUpload"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="10dp"
-                android:clickable="true"
-                android:focusable="true"
                 android:text="@string/upload_scanned_photo_of_identification_card_passport"
                 android:textColor="@color/black" />
 
@@ -237,18 +246,26 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="8dp"
-                app:srcCompat="@drawable/id" />
+                android:contentDescription="@string/identification_card_photo"
+                app:srcCompat="@drawable/click" />
+
+            <Button
+                android:id="@+id/btIdUpload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ivId"
+                android:layout_centerInParent="true"
+                android:text="@string/upload"
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titlePhotoUpload"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ivId"
+                android:layout_below="@id/btIdUpload"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="10dp"
-                android:clickable="true"
-                android:focusable="true"
                 android:text="@string/upload_a_clear_image_showing_your_face"
                 android:textColor="@color/black" />
 
@@ -260,13 +277,24 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="8dp"
-                app:srcCompat="@drawable/photo" />
+                android:contentDescription="@string/user_photo"
+                app:srcCompat="@drawable/click" />
+
+            <Button
+                android:id="@+id/btUserPhotoUpload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ivPhoto"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@string/upload"
+                android:textSize="16.5sp" />
 
             <TextView
                 android:id="@+id/titleEmergencyContact"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ivPhoto"
+                android:layout_below="@id/btUserPhotoUpload"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/enter_emergency_contacts"
@@ -291,6 +319,7 @@
                 android:layout_below="@+id/tvContact1"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
+                android:autofillHints=""
                 android:background="@drawable/custom_input"
                 android:ems="10"
                 android:hint="@string/full_name"
@@ -306,6 +335,7 @@
                 android:layout_below="@+id/etFullName"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
+                android:autofillHints=""
                 android:background="@drawable/custom_input"
                 android:ems="10"
                 android:hint="@string/relationship"
@@ -321,6 +351,7 @@
                 android:layout_below="@+id/etRelationShip"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
+                android:autofillHints=""
                 android:background="@drawable/custom_input"
                 android:ems="10"
                 android:hint="@string/mobil"
@@ -347,6 +378,7 @@
                 android:layout_below="@+id/titleContact2"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
+                android:autofillHints=""
                 android:background="@drawable/custom_input"
                 android:ems="10"
                 android:hint="@string/full_name"
@@ -362,6 +394,7 @@
                 android:layout_below="@+id/etFullName2"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
+                android:autofillHints=""
                 android:background="@drawable/custom_input"
                 android:ems="10"
                 android:hint="@string/relationship"
@@ -377,13 +410,14 @@
                 android:layout_below="@+id/etRelationShip2"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
+                android:autofillHints=""
                 android:background="@drawable/custom_input"
                 android:ems="10"
                 android:hint="@string/mobil"
                 android:inputType="phone"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black" />
 
             <Button
                 android:id="@+id/btSubmit"
@@ -395,7 +429,9 @@
                 android:layout_marginEnd="25dp"
                 android:layout_marginBottom="15dp"
                 android:text="@string/submit" />
+
         </RelativeLayout>
+
     </ScrollView>
 
     <com.google.android.material.navigation.NavigationView
@@ -406,5 +442,8 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/nav_menu" />
-
 </androidx.drawerlayout.widget.DrawerLayout>
+
+
+
+

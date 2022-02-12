@@ -28,7 +28,7 @@
     <string name="district">District:</string>
     <string name="estate">Estate:</string>
     <string name="landmark">Landmark:</string>
-    <string name="upload_scanned_photo_of_drivers_licence">+ Upload Scanned photo of Drivers Licence</string>
+    <string name="upload_scanned_photo_of_drivers_license">+ Upload Scanned photo of Drivers License</string>
     <string name="upload_scanned_photo_of_identification_card_passport">+ Upload Scanned photo of Identification card/Passport</string>
     <string name="upload_a_clear_image_showing_your_face">+ Upload a clear image showing your face</string>
     <string name="enter_emergency_contacts">Enter Emergency Contacts</string>
@@ -69,4 +69,26 @@
     <string name="email_address">Email Address</string>
     <string name="radio_selfDrive">Self Drive</string>
     <string name="radio_chauffeured">Chauffeured</string>
+    <string name="driving_license_photo">Driving License photo</string>
+    <string name="identification_card_photo">identification card photo</string>
+    <string name="user_photo">user photo</string>
+    <string name="companylogo">companyLogo</string>
+    <string name="login_using_fingerprint">Login using Fingerprint</string>
+    <string name="fingerprint">fingerprint</string>
+    <string name="login">Login</string>
+    <string name="remember_me">Remember me</string>
+    <string name="check_for_updates">Check for Updates</string>
+    <string name="updatebutton">updateButton</string>
+    <string name="_0_0_1">0.0.1</string>
+    <string name="version">Version:</string>
+    <string name="about_gari">About Gari</string>
+    <string name="save_button">save button</string>
+    <string name="_1">1.</string>
+    <string name="_2">2.</string>
+    <string name="_3">3.</string>
+    <string name="_4">4.</string>
+    <string name="_5">5.</string>
+    <string name="_0">0</string>
+    <string name="visibility_toggle">visibility toggle</string>
+    <string name="upload">Upload</string>
 </resources>
