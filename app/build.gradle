@@ -65,4 +65,5 @@ dependencies {
     implementation 'com.github.florent37:inline-activity-result-kotlin:1.0.4'
     implementation 'com.github.dhaval2404:imagepicker-support:1.7.1'
     implementation group: 'com.cloudinary', name: 'cloudinary-android', version: '1.30.0'
+    implementation 'androidx.work:work-runtime:2.8.0-alpha01'
 }
