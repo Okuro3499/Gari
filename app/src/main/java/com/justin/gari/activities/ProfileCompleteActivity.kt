@@ -26,7 +26,6 @@ import com.justin.gari.api.ApiClient
 import com.justin.gari.models.uploadImagesModel.ImageInfoResponse
 import com.justin.gari.models.uploadImagesModel.UploadDlResponse
 import com.justin.gari.models.userModels.UserDetailsResponse
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -34,7 +33,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
-import java.net.URI.create
 
 
 class ProfileCompleteActivity : AppCompatActivity() {
@@ -169,28 +167,28 @@ class ProfileCompleteActivity : AppCompatActivity() {
 
         val dlButton = findViewById<Button>(R.id.btDlUpload)
         dlButton.setOnClickListener {
-
-            val uriPathHelper = URIPathHelper()
-            val filePath = uriPathHelper.getPath(this, picked!!)!! //try and fix this line
-            Log.i("FilePath", filePath)
-            val file = File(filePath)
-            val requestFile: RequestBody = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
-
-            val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
-            apiClient.getApiService(this).uploadDl(image).enqueue(object : Callback<UploadDlResponse> {
-                    override fun onResponse(
-                        call: Call<UploadDlResponse>,
-                        response: Response<UploadDlResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            Log.e("Gideon", "onSuccess: ${response.body()}")
-                        }
-                    }
-
-                    override fun onFailure(call: Call<UploadDlResponse>, t: Throwable) {
-                        Log.e("Gideon", "onFailure: ${t.message}")
-                    }
-                })
+//
+//            val uriPathHelper = URIPathHelper()
+//            val filePath = uriPathHelper.getPath(this, picked!!)!! //try and fix this line
+//            Log.i("FilePath", filePath)
+//            val file = File(filePath)
+//            val requestFile: RequestBody = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
+//
+//            val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
+//            apiClient.getApiService(this).uploadDl(image).enqueue(object : Callback<UploadDlResponse> {
+//                    override fun onResponse(
+//                        call: Call<UploadDlResponse>,
+//                        response: Response<UploadDlResponse>
+//                    ) {
+//                        if (response.isSuccessful) {
+//                            Log.e("Gideon", "onSuccess: ${response.body()}")
+//                        }
+//                    }
+//
+//                    override fun onFailure(call: Call<UploadDlResponse>, t: Throwable) {
+//                        Log.e("Gideon", "onFailure: ${t.message}")
+//                    }
+//                })
         }
 
         val button = findViewById<Button>(R.id.btSubmit)
@@ -201,12 +199,9 @@ class ProfileCompleteActivity : AppCompatActivity() {
 
         imageDriverLicensePicker.setOnClickListener {
             ImagePicker.with(this)
-                .crop() //Crop image(Optional), Check Customization for more option
-                .compress(1024) //Final image size will be less than 1 MB(Optional)
-                .maxResultSize(
-                    1080,
-                    1080
-                )    //Final image resolution will be less than 1080 x 1080(Optional)
+//                .crop() //Crop image(Optional), Check Customization for more option
+//                .compress(1024) //Final image size will be less than 1 MB(Optional)
+//                .maxResultSize(1080, 1080) //Final image resolution will be less than 1080 x 1080(Optional)
                 .start()
         }
     }
@@ -217,10 +212,34 @@ class ProfileCompleteActivity : AppCompatActivity() {
         when (resultCode) {
             Activity.RESULT_OK -> {
                 //Image Uri will not be null for RESULT_OK
-               val uri: Uri = data?.data!!
+                val uri: Uri = data?.data!!
                 // Use Uri object instead of File to avoid storage permissions
-                imageDriverLicensePicker.setImageURI(uri)
+                imageDriverLicensePicker.setImageURI(data.data!!)
                 Toast.makeText(this, "$uri", Toast.LENGTH_LONG).show()
+
+                val uriPathHelper = URIPathHelper()
+                val filePath = uriPathHelper.getPath(this, uri)!! //try and fix this line
+                Log.i("FilePath", filePath)
+                val file = File(filePath)
+                val requestFile: RequestBody =
+                    RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
+
+                val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
+                apiClient.getApiService(this).uploadDl(image)
+                    .enqueue(object : Callback<UploadDlResponse> {
+                        override fun onResponse(
+                            call: Call<UploadDlResponse>,
+                            response: Response<UploadDlResponse>
+                        ) {
+                            if (response.isSuccessful) {
+                                Log.e("Gideon", "onSuccess: ${response.body()}")
+                            }
+                        }
+
+                        override fun onFailure(call: Call<UploadDlResponse>, t: Throwable) {
+                            Log.e("Gideon", "onFailure: ${t.message}")
+                        }
+                    })
             }
             ImagePicker.RESULT_ERROR -> {
                 Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
