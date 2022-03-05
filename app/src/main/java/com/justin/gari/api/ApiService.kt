@@ -9,6 +9,7 @@ import com.justin.gari.models.saveCarModels.SaveCar
 import com.justin.gari.models.saveCarModels.SaveCarResponse
 import com.justin.gari.models.saveCarModels.SavedCarResponse
 import com.justin.gari.models.uploadImagesModel.ImageInfoResponse
+import com.justin.gari.models.uploadImagesModel.ImageInfoResponseObject
 import com.justin.gari.models.uploadImagesModel.UploadDlResponse
 import com.justin.gari.models.userModels.UserDetailsResponse
 import com.justin.gari.models.userModels.loginModel.UserLogin
@@ -52,9 +53,9 @@ interface ApiService {
     fun changeStatus(@Path("car_id") car_id: String?)
 
     @POST("/api/v1/addClientId")
-    fun addClientId(@Body client_id: String?): Call<ImageInfoResponse>
+    fun addClientId(@Body imageInfoResponse: ImageInfoResponse?): Call<ImageInfoResponse>
 
     @Multipart
-    @POST("/api/v1/driverLicense/upload")
+    @POST("/api/v1/driverLicense/uploadCloudinary")
     fun uploadDl(@Part image: MultipartBody.Part): Call<UploadDlResponse>
 }

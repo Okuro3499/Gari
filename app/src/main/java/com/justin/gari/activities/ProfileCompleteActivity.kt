@@ -24,8 +24,11 @@ import com.justin.gari.R
 import com.justin.gari.URIPathHelper
 import com.justin.gari.api.ApiClient
 import com.justin.gari.models.uploadImagesModel.ImageInfoResponse
+import com.justin.gari.models.uploadImagesModel.ImageInfoResponseObject
 import com.justin.gari.models.uploadImagesModel.UploadDlResponse
 import com.justin.gari.models.userModels.UserDetailsResponse
+import com.justin.gari.models.userModels.loginModel.UserLogin
+import com.justin.gari.models.userModels.loginModel.UserLoginResponse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -84,8 +87,7 @@ class ProfileCompleteActivity : AppCompatActivity() {
         navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
             Log.i(ContentValues.TAG, "onNavigationItemSelected: " + item.itemId)
             when (item.itemId) {
-                R.id.home -> {
-                    startActivity(Intent(this@ProfileCompleteActivity, MainActivity::class.java))
+                R.id.home -> { startActivity(Intent(this@ProfileCompleteActivity, MainActivity::class.java))
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.profile -> {
@@ -124,10 +126,8 @@ class ProfileCompleteActivity : AppCompatActivity() {
         })
 
         apiClient = ApiClient
-        apiClient.getApiService(this).getUserDetails(clientId)
-            .enqueue(object : Callback<UserDetailsResponse> {
-                override fun onResponse(
-                    call: Call<UserDetailsResponse>,
+        apiClient.getApiService(this).getUserDetails(clientId).enqueue(object : Callback<UserDetailsResponse> {
+                override fun onResponse(call: Call<UserDetailsResponse>,
                     response: Response<UserDetailsResponse>
                 ) {
                     if (response.isSuccessful) {
@@ -148,26 +148,23 @@ class ProfileCompleteActivity : AppCompatActivity() {
                 }
             })
 
-        apiClient.getApiService(this).addClientId(clientId)
-            .enqueue(object : Callback<ImageInfoResponse> {
-                override fun onResponse(
-                    call: Call<ImageInfoResponse>,
-                    response: Response<ImageInfoResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        Log.e("Gideon", "onSuccess: ${response.body()}")
+
+//        val ClientId = sharedPreferences.getString("client_id", "default")
+        val client = ImageInfoResponse(clientId)
+        apiClient.getApiService(this).addClientId(client).enqueue(object : Callback<ImageInfoResponse> {
+            override fun onResponse(call: Call<ImageInfoResponse>, response: Response<ImageInfoResponse> ) {
+                if (response.isSuccessful) {
+                    Log.e("Gideon", "onSuccess: ${response.body()}")
                     }
                 }
 
-                override fun onFailure(call: Call<ImageInfoResponse>, t: Throwable) {
-                    Log.e("Gideon", "onFailure: ${t.message}")
-                }
-            })
-
+            override fun onFailure(call: Call<ImageInfoResponse>, t: Throwable) {
+                Log.e("Gideon", "onFailure: ${t.message}")
+            }
+        })
 
         val dlButton = findViewById<Button>(R.id.btDlUpload)
         dlButton.setOnClickListener {
-//
 //            val uriPathHelper = URIPathHelper()
 //            val filePath = uriPathHelper.getPath(this, picked!!)!! //try and fix this line
 //            Log.i("FilePath", filePath)
@@ -231,6 +228,7 @@ class ProfileCompleteActivity : AppCompatActivity() {
                             call: Call<UploadDlResponse>,
                             response: Response<UploadDlResponse>
                         ) {
+                            Log.e("Gideon", "onSuccess: $response")
                             if (response.isSuccessful) {
                                 Log.e("Gideon", "onSuccess: ${response.body()}")
                             }
