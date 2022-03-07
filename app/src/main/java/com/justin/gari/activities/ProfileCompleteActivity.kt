@@ -23,12 +23,10 @@ import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
 import com.justin.gari.URIPathHelper
 import com.justin.gari.api.ApiClient
+import com.justin.gari.models.saveCarModels.SaveCarResponse
+import com.justin.gari.models.uploadImagesModel.DlCloudinaryResponse
 import com.justin.gari.models.uploadImagesModel.ImageInfoResponse
-import com.justin.gari.models.uploadImagesModel.ImageInfoResponseObject
-import com.justin.gari.models.uploadImagesModel.UploadDlResponse
 import com.justin.gari.models.userModels.UserDetailsResponse
-import com.justin.gari.models.userModels.loginModel.UserLogin
-import com.justin.gari.models.userModels.loginModel.UserLoginResponse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -148,11 +146,9 @@ class ProfileCompleteActivity : AppCompatActivity() {
                 }
             })
 
-
-//        val ClientId = sharedPreferences.getString("client_id", "default")
-        val client = ImageInfoResponse(clientId)
-        apiClient.getApiService(this).addClientId(client).enqueue(object : Callback<ImageInfoResponse> {
+        apiClient.getApiService(this).addClientId(clientId).enqueue(object : Callback<ImageInfoResponse> {
             override fun onResponse(call: Call<ImageInfoResponse>, response: Response<ImageInfoResponse> ) {
+                Log.e("Gideon", "clientId: $response")
                 if (response.isSuccessful) {
                     Log.e("Gideon", "onSuccess: ${response.body()}")
                     }
@@ -165,27 +161,7 @@ class ProfileCompleteActivity : AppCompatActivity() {
 
         val dlButton = findViewById<Button>(R.id.btDlUpload)
         dlButton.setOnClickListener {
-//            val uriPathHelper = URIPathHelper()
-//            val filePath = uriPathHelper.getPath(this, picked!!)!! //try and fix this line
-//            Log.i("FilePath", filePath)
-//            val file = File(filePath)
-//            val requestFile: RequestBody = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
-//
-//            val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
-//            apiClient.getApiService(this).uploadDl(image).enqueue(object : Callback<UploadDlResponse> {
-//                    override fun onResponse(
-//                        call: Call<UploadDlResponse>,
-//                        response: Response<UploadDlResponse>
-//                    ) {
-//                        if (response.isSuccessful) {
-//                            Log.e("Gideon", "onSuccess: ${response.body()}")
-//                        }
-//                    }
-//
-//                    override fun onFailure(call: Call<UploadDlResponse>, t: Throwable) {
-//                        Log.e("Gideon", "onFailure: ${t.message}")
-//                    }
-//                })
+//            uploadImage()
         }
 
         val button = findViewById<Button>(R.id.btSubmit)
@@ -212,8 +188,7 @@ class ProfileCompleteActivity : AppCompatActivity() {
                 val uri: Uri = data?.data!!
                 // Use Uri object instead of File to avoid storage permissions
                 imageDriverLicensePicker.setImageURI(data.data!!)
-                Toast.makeText(this, "$uri", Toast.LENGTH_LONG).show()
-
+//                uploadImage(uri)
                 val uriPathHelper = URIPathHelper()
                 val filePath = uriPathHelper.getPath(this, uri)!! //try and fix this line
                 Log.i("FilePath", filePath)
@@ -222,19 +197,34 @@ class ProfileCompleteActivity : AppCompatActivity() {
                     RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
 
                 val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
-                apiClient.getApiService(this).uploadDl(image)
-                    .enqueue(object : Callback<UploadDlResponse> {
+                apiClient.getApiService(this).dlCloudinary(image)
+                    .enqueue(object : Callback<DlCloudinaryResponse> {
                         override fun onResponse(
-                            call: Call<UploadDlResponse>,
-                            response: Response<UploadDlResponse>
+                            call: Call<DlCloudinaryResponse>,
+                            response: Response<DlCloudinaryResponse>
                         ) {
-                            Log.e("Gideon", "onSuccess: $response")
+                            Log.e("Gideon", "cloudinary: $response")
                             if (response.isSuccessful) {
-                                Log.e("Gideon", "onSuccess: ${response.body()}")
+                                Log.e("Gideon", "onSuccess: ${response.body()!!.driverLicenceCloudinary}")
+                                val dlUrl = response.body()!!.driverLicenceCloudinary
+                                apiClient.getApiService(this@ProfileCompleteActivity).dlDatabase(dlUrl).enqueue(object : Callback<ImageInfoResponse> {
+                                    override fun onResponse(call: Call<ImageInfoResponse>, response: Response<ImageInfoResponse>) {
+                                        Log.e("Gideon", "db: $response")
+                                        Log.e("Gideon", "db2: ${response.body()}")
+                                        if (response.isSuccessful) {
+                                            Toast.makeText(this@ProfileCompleteActivity,"Upload Successful", Toast.LENGTH_LONG ).show()
+                                            Log.e("Gideon", "onSuccess: ${response.body()}")
+                                        }
+                                    }
+                                    override fun onFailure(call: Call<ImageInfoResponse>, t: Throwable) {
+                                        Toast.makeText(this@ProfileCompleteActivity, "${t.message}", Toast.LENGTH_LONG).show()
+                                        Log.e("Gideon", "onFailure: ${t.message}")
+                                    }
+                                })
                             }
                         }
 
-                        override fun onFailure(call: Call<UploadDlResponse>, t: Throwable) {
+                        override fun onFailure(call: Call<DlCloudinaryResponse>, t: Throwable) {
                             Log.e("Gideon", "onFailure: ${t.message}")
                         }
                     })
