@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.myVehicles -> {
-                    val intentMyVehicles = Intent(this@MainActivity, MyVehiclesActivity::class.java)
+                    val intentMyVehicles = Intent(this@MainActivity, VehiclesActivity::class.java)
                     startActivity(intentMyVehicles)
                     return@OnNavigationItemSelectedListener true
                 }
