@@ -27,7 +27,7 @@ import com.justin.gari.models.carModels.SingleCarModel
 import com.justin.gari.models.saveCarModels.SaveCar
 import com.justin.gari.models.saveCarModels.SaveCarResponse
 import kotlinx.android.synthetic.main.activity_detail.*
-import kotlinx.android.synthetic.main.activity_my_vehicles.*
+import kotlinx.android.synthetic.main.content_vehicles.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -120,8 +120,6 @@ class DetailActivity : AppCompatActivity() {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-
 
         //get car details
         //receiving intents
@@ -254,7 +252,7 @@ class DetailActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.myVehicles -> {
-                    val intentMyVehicles = Intent(this@DetailActivity, MyVehiclesActivity::class.java)
+                    val intentMyVehicles = Intent(this@DetailActivity, VehiclesActivity::class.java)
                     startActivity(intentMyVehicles)
                     return@OnNavigationItemSelectedListener true
                 }
@@ -316,7 +314,7 @@ class DetailActivity : AppCompatActivity() {
                         )
 
                         val adapter = SliderPageAdapter(this@DetailActivity, imageUrls)
-                        viewPager.adapter = adapter
+                        viewPager.adapter =  adapter
 
                         carNameTextView.text = response.body()!!.single_car.car_name.toString()
                         statusTextView.text = response.body()!!.single_car.status.toString()

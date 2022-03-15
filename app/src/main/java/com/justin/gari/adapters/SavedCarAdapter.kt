@@ -1,13 +1,17 @@
 package com.justin.gari.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.justin.gari.R
+import com.justin.gari.activities.DetailActivity
 import com.justin.gari.models.saveCarModels.SaveCarObject
+import com.squareup.picasso.Picasso
 
 class SavedCarAdapter(private val savedCarList: List<SaveCarObject>, val context: Context) : RecyclerView.Adapter<SavedCarAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -25,17 +29,11 @@ class SavedCarAdapter(private val savedCarList: List<SaveCarObject>, val context
         holder.itemView.setOnClickListener {
             //get position of selected item
             val savedCar = savedCarList[position]
-//
-//            get details of selected item with intent
-//            var gTitle : String = model.name
-//             get image with intent, which position is selected
-//            var gImage : Int = model.image
+            val carId: String? = savedCar.car_id
 
-//            val savedId: String? = savedCar.saved_id
-
-//            val intent = Intent(context, DetailActivity::class.java)
-//            intent.putExtra("car_id", carId)
-//            context.startActivity(intent)
+            val intent = Intent(context, DetailActivity::class.java)
+            intent.putExtra("car_id", carId)
+            context.startActivity(intent)
         }
     }
 
@@ -45,11 +43,13 @@ class SavedCarAdapter(private val savedCarList: List<SaveCarObject>, val context
         private val transmissionTextView: TextView = itemView.findViewById(R.id.tvTransmission)
         private val priceTextView: TextView = itemView.findViewById(R.id.tvPrice)
         private val statusTextView: TextView = itemView.findViewById(R.id.tvStatus)
+        private val imageView: ImageView =itemView.findViewById(R.id.tvImage)
 
         fun bindView(savedCars: SaveCarObject) {
             carNameTextView.text = savedCars.car_name
             driveOptionTextView.text = savedCars.drive
             transmissionTextView.text = savedCars.transmission
+            Picasso.get().load(savedCars.front_view).into(imageView)
 //            itemView.tvImage.setImageResource(model.image)
             priceTextView.text = savedCars.price
             statusTextView.text = savedCars.status

@@ -58,7 +58,7 @@ class AboutActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.myVehicles -> {
-                    val intentMyVehicles = Intent(this@AboutActivity, MyVehiclesActivity::class.java)
+                    val intentMyVehicles = Intent(this@AboutActivity, VehiclesActivity::class.java)
                     startActivity(intentMyVehicles)
                     return@OnNavigationItemSelectedListener true
                 }
@@ -85,7 +85,7 @@ class AboutActivity : AppCompatActivity() {
 
         val button = findViewById<TextView>(R.id.tvUpdate)
         button.setOnClickListener {
-            val intent = Intent(this, MyVehiclesActivity::class.java)
+            val intent = Intent(this, VehiclesActivity::class.java)
             startActivity(intent)
         }
     }

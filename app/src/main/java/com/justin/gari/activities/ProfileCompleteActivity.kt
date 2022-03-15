@@ -24,17 +24,18 @@ import com.justin.gari.R
 import com.justin.gari.URIPathHelper
 import com.justin.gari.api.ApiClient
 import com.justin.gari.models.saveCarModels.SaveCarResponse
+import com.justin.gari.models.uploadImagesModel.AddClientId
 import com.justin.gari.models.uploadImagesModel.DlCloudinaryResponse
 import com.justin.gari.models.uploadImagesModel.ImageInfoResponse
 import com.justin.gari.models.userModels.UserDetailsResponse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
-
 
 class ProfileCompleteActivity : AppCompatActivity() {
     lateinit var toggle: ActionBarDrawerToggle
@@ -60,7 +61,6 @@ class ProfileCompleteActivity : AppCompatActivity() {
         val district = findViewById<TextView>(R.id.tvDistrict)
         val estate = findViewById<TextView>(R.id.tvEstate)
         val landMark = findViewById<TextView>(R.id.tvLandMark)
-
         val imageDriverLicensePicker = findViewById<ImageView>(R.id.ivDl)
 
         val clientId = sharedPreferences.getString("client_id", "default")
@@ -96,7 +96,7 @@ class ProfileCompleteActivity : AppCompatActivity() {
                 }
                 R.id.myVehicles -> {
                     val intentMyVehicles =
-                        Intent(this@ProfileCompleteActivity, MyVehiclesActivity::class.java)
+                        Intent(this@ProfileCompleteActivity, VehiclesActivity::class.java)
                     startActivity(intentMyVehicles)
                     return@OnNavigationItemSelectedListener true
                 }
@@ -146,6 +146,7 @@ class ProfileCompleteActivity : AppCompatActivity() {
                 }
             })
 
+//        val clientsId = AddClientId(clientId)
         apiClient.getApiService(this).addClientId(clientId).enqueue(object : Callback<ImageInfoResponse> {
             override fun onResponse(call: Call<ImageInfoResponse>, response: Response<ImageInfoResponse> ) {
                 Log.e("Gideon", "clientId: $response")
@@ -172,9 +173,6 @@ class ProfileCompleteActivity : AppCompatActivity() {
 
         imageDriverLicensePicker.setOnClickListener {
             ImagePicker.with(this)
-//                .crop() //Crop image(Optional), Check Customization for more option
-//                .compress(1024) //Final image size will be less than 1 MB(Optional)
-//                .maxResultSize(1080, 1080) //Final image resolution will be less than 1080 x 1080(Optional)
                 .start()
         }
     }
@@ -194,7 +192,7 @@ class ProfileCompleteActivity : AppCompatActivity() {
                 Log.i("FilePath", filePath)
                 val file = File(filePath)
                 val requestFile: RequestBody =
-                    RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
+                    file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
 
                 val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
                 apiClient.getApiService(this).dlCloudinary(image)
@@ -205,12 +203,11 @@ class ProfileCompleteActivity : AppCompatActivity() {
                         ) {
                             Log.e("Gideon", "cloudinary: $response")
                             if (response.isSuccessful) {
-                                Log.e("Gideon", "onSuccess: ${response.body()!!.driverLicenceCloudinary}")
+//                                Log.e("Gideon", "onSuccess: ${response.body()!!.driverLicenceCloudinary}")
                                 val dlUrl = response.body()!!.driverLicenceCloudinary
+                                Log.e("Gideon", "dlUrl: $dlUrl")
                                 apiClient.getApiService(this@ProfileCompleteActivity).dlDatabase(dlUrl).enqueue(object : Callback<ImageInfoResponse> {
                                     override fun onResponse(call: Call<ImageInfoResponse>, response: Response<ImageInfoResponse>) {
-                                        Log.e("Gideon", "db: $response")
-                                        Log.e("Gideon", "db2: ${response.body()}")
                                         if (response.isSuccessful) {
                                             Toast.makeText(this@ProfileCompleteActivity,"Upload Successful", Toast.LENGTH_LONG ).show()
                                             Log.e("Gideon", "onSuccess: ${response.body()}")

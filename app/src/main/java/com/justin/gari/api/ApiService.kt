@@ -8,6 +8,7 @@ import com.justin.gari.models.carModels.SingleCarModel
 import com.justin.gari.models.saveCarModels.SaveCar
 import com.justin.gari.models.saveCarModels.SaveCarResponse
 import com.justin.gari.models.saveCarModels.SavedCarResponse
+import com.justin.gari.models.uploadImagesModel.AddClientId
 import com.justin.gari.models.uploadImagesModel.DlCloudinaryResponse
 import com.justin.gari.models.uploadImagesModel.ImageInfoResponse
 import com.justin.gari.models.userModels.UserDetailsResponse
