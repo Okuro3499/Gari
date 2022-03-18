@@ -23,10 +23,7 @@ import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
 import com.justin.gari.URIPathHelper
 import com.justin.gari.api.ApiClient
-import com.justin.gari.models.saveCarModels.SaveCarResponse
-import com.justin.gari.models.uploadImagesModel.AddClientId
-import com.justin.gari.models.uploadImagesModel.DlCloudinaryResponse
-import com.justin.gari.models.uploadImagesModel.ImageInfoResponse
+import com.justin.gari.models.uploadImagesModel.*
 import com.justin.gari.models.userModels.UserDetailsResponse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -46,12 +43,9 @@ class ProfileCompleteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_complete)
 
-//        uploadImage()
         val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
         val navView: NavigationView = findViewById(R.id.nav_view)
-
-        val sharedPreferences: SharedPreferences =
-            getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
 
         val firstName = findViewById<TextView>(R.id.tvFirstName)
         val lastName = findViewById<TextView>(R.id.tvLastName)
@@ -62,6 +56,8 @@ class ProfileCompleteActivity : AppCompatActivity() {
         val estate = findViewById<TextView>(R.id.tvEstate)
         val landMark = findViewById<TextView>(R.id.tvLandMark)
         val imageDriverLicensePicker = findViewById<ImageView>(R.id.ivDl)
+        val imageIdCardPicker = findViewById<ImageView>(R.id.ivId)
+        val userPhotoPicker = findViewById<ImageView>(R.id.ivPhoto)
 
         val clientId = sharedPreferences.getString("client_id", "default")
 
@@ -85,7 +81,8 @@ class ProfileCompleteActivity : AppCompatActivity() {
         navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
             Log.i(ContentValues.TAG, "onNavigationItemSelected: " + item.itemId)
             when (item.itemId) {
-                R.id.home -> { startActivity(Intent(this@ProfileCompleteActivity, MainActivity::class.java))
+                R.id.home -> {
+                    startActivity(Intent(this@ProfileCompleteActivity, MainActivity::class.java))
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.profile -> {
@@ -125,45 +122,38 @@ class ProfileCompleteActivity : AppCompatActivity() {
 
         apiClient = ApiClient
         apiClient.getApiService(this).getUserDetails(clientId).enqueue(object : Callback<UserDetailsResponse> {
-                override fun onResponse(call: Call<UserDetailsResponse>,
-                    response: Response<UserDetailsResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        Log.e("Gideon", "onSuccess: ${response.body()}")
-                        firstName.text = response.body()!!.single_client.first_name.toString()
-                        lastName.text = response.body()!!.single_client.last_name.toString()
-                        email.text = response.body()!!.single_client.email.toString()
-                        mobile.text = response.body()!!.single_client.mobile.toString()
-                        county.text = response.body()!!.single_client.county.toString()
-                        district.text = response.body()!!.single_client.district.toString()
-                        estate.text = response.body()!!.single_client.estate.toString()
-                        landMark.text = response.body()!!.single_client.landmark.toString()
-                    }
+            override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
+                if (response.isSuccessful) {
+                    Log.e("Gideon", "onSuccess: ${response.body()}")
+                    firstName.text = response.body()!!.single_client.first_name.toString()
+                    lastName.text = response.body()!!.single_client.last_name.toString()
+                    email.text = response.body()!!.single_client.email.toString()
+                    mobile.text = response.body()!!.single_client.mobile.toString()
+                    county.text = response.body()!!.single_client.county.toString()
+                    district.text = response.body()!!.single_client.district.toString()
+                    estate.text = response.body()!!.single_client.estate.toString()
+                    landMark.text = response.body()!!.single_client.landmark.toString()
                 }
+            }
+            override fun onFailure(call: Call<UserDetailsResponse>, t: Throwable) {
+                Log.e("Gideon", "onFailure: ${t.message}")
+            }
+        })
 
-                override fun onFailure(call: Call<UserDetailsResponse>, t: Throwable) {
-                    Log.e("Gideon", "onFailure: ${t.message}")
-                }
-            })
-
-//        val clientsId = AddClientId(clientId)
-        apiClient.getApiService(this).addClientId(clientId).enqueue(object : Callback<ImageInfoResponse> {
-            override fun onResponse(call: Call<ImageInfoResponse>, response: Response<ImageInfoResponse> ) {
+        val idClient = AddClientId(clientId)
+        apiClient.getApiService(this).addClientId(idClient).enqueue(object : Callback<ImageInfoResponse> {
+            override fun onResponse(call: Call<ImageInfoResponse>, response: Response<ImageInfoResponse>) {
+                Log.e("Gideon", "clientId: $clientId")
                 Log.e("Gideon", "clientId: $response")
                 if (response.isSuccessful) {
                     Log.e("Gideon", "onSuccess: ${response.body()}")
-                    }
                 }
+            }
 
             override fun onFailure(call: Call<ImageInfoResponse>, t: Throwable) {
                 Log.e("Gideon", "onFailure: ${t.message}")
             }
         })
-
-        val dlButton = findViewById<Button>(R.id.btDlUpload)
-        dlButton.setOnClickListener {
-//            uploadImage()
-        }
 
         val button = findViewById<Button>(R.id.btSubmit)
         button.setOnClickListener {
@@ -179,6 +169,7 @@ class ProfileCompleteActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val imageDriverLicensePicker = findViewById<ImageView>(R.id.ivDl)
+
         super.onActivityResult(requestCode, resultCode, data)
         when (resultCode) {
             Activity.RESULT_OK -> {
@@ -186,45 +177,17 @@ class ProfileCompleteActivity : AppCompatActivity() {
                 val uri: Uri = data?.data!!
                 // Use Uri object instead of File to avoid storage permissions
                 imageDriverLicensePicker.setImageURI(data.data!!)
-//                uploadImage(uri)
                 val uriPathHelper = URIPathHelper()
                 val filePath = uriPathHelper.getPath(this, uri)!! //try and fix this line
+
                 Log.i("FilePath", filePath)
                 val file = File(filePath)
-                val requestFile: RequestBody =
-                    file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                val driverLicense: RequestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
 
-                val image = MultipartBody.Part.createFormData("image", file.name, requestFile)
-                apiClient.getApiService(this).dlCloudinary(image)
-                    .enqueue(object : Callback<DlCloudinaryResponse> {
-                        override fun onResponse(
-                            call: Call<DlCloudinaryResponse>,
-                            response: Response<DlCloudinaryResponse>
-                        ) {
-                            Log.e("Gideon", "cloudinary: $response")
-                            if (response.isSuccessful) {
-//                                Log.e("Gideon", "onSuccess: ${response.body()!!.driverLicenceCloudinary}")
-                                val dlUrl = response.body()!!.driverLicenceCloudinary
-                                Log.e("Gideon", "dlUrl: $dlUrl")
-                                apiClient.getApiService(this@ProfileCompleteActivity).dlDatabase(dlUrl).enqueue(object : Callback<ImageInfoResponse> {
-                                    override fun onResponse(call: Call<ImageInfoResponse>, response: Response<ImageInfoResponse>) {
-                                        if (response.isSuccessful) {
-                                            Toast.makeText(this@ProfileCompleteActivity,"Upload Successful", Toast.LENGTH_LONG ).show()
-                                            Log.e("Gideon", "onSuccess: ${response.body()}")
-                                        }
-                                    }
-                                    override fun onFailure(call: Call<ImageInfoResponse>, t: Throwable) {
-                                        Toast.makeText(this@ProfileCompleteActivity, "${t.message}", Toast.LENGTH_LONG).show()
-                                        Log.e("Gideon", "onFailure: ${t.message}")
-                                    }
-                                })
-                            }
-                        }
-
-                        override fun onFailure(call: Call<DlCloudinaryResponse>, t: Throwable) {
-                            Log.e("Gideon", "onFailure: ${t.message}")
-                        }
-                    })
+                val dlButton = findViewById<Button>(R.id.btDlUpload)
+                dlButton.setOnClickListener {
+                    uploadDl(file,driverLicense)
+                }
             }
             ImagePicker.RESULT_ERROR -> {
                 Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
@@ -233,6 +196,36 @@ class ProfileCompleteActivity : AppCompatActivity() {
                 Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun uploadDl(file: File, driverLicense: RequestBody) {
+        val image = MultipartBody.Part.createFormData("image", file.name, driverLicense)
+        apiClient.getApiService(this).dlCloudinary(image).enqueue(object : Callback<DlCloudinaryResponse> {
+            override fun onResponse(call: Call<DlCloudinaryResponse>, response: Response<DlCloudinaryResponse>) {
+                Log.e("Gideon", "cloudinary: $response")
+                if (response.isSuccessful) {
+                    val dlUrl = response.body()!!.driverLicenceCloudinary
+                    Log.e("Gideon", "dlUrl: $dlUrl")
+//                    apiClient.getApiService(this@ProfileCompleteActivity).dlDatabase(dlUrl).enqueue(object : Callback<ImageInfoResponse> {
+//                        override fun onResponse(call: Call<ImageInfoResponse>, response: Response<ImageInfoResponse>) {
+//                            if (response.isSuccessful) {
+//                                Toast.makeText(this@ProfileCompleteActivity, "Upload Successful", Toast.LENGTH_LONG).show()
+//                                Log.e("Gideon", "onSuccess: ${response.body()}")
+//                            }
+//                        }
+//
+//                        override fun onFailure(call: Call<ImageInfoResponse>, t: Throwable) {
+//                            Toast.makeText(this@ProfileCompleteActivity,"${t.message}", Toast.LENGTH_LONG).show()
+//                            Log.e("Gideon", "onFailure: ${t.message}")
+//                        }
+//                    })
+                }
+            }
+
+            override fun onFailure(call: Call<DlCloudinaryResponse>, t: Throwable) {
+                Log.e("Gideon", "onFailure: ${t.message}")
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
