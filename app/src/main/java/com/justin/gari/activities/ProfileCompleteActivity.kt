@@ -10,10 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -23,7 +20,9 @@ import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
 import com.justin.gari.URIPathHelper
 import com.justin.gari.api.ApiClient
-import com.justin.gari.models.uploadImagesModel.*
+import com.justin.gari.models.uploadImagesModel.AddClientId
+import com.justin.gari.models.uploadImagesModel.DlCloudinaryResponse
+import com.justin.gari.models.uploadImagesModel.ImageInfoResponse
 import com.justin.gari.models.userModels.UserDetailsResponse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -45,7 +44,8 @@ class ProfileCompleteActivity : AppCompatActivity() {
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
         val navView: NavigationView = findViewById(R.id.nav_view)
-        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences =
+            getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
 
         val firstName = findViewById<TextView>(R.id.tvFirstName)
         val lastName = findViewById<TextView>(R.id.tvLastName)
@@ -121,44 +121,68 @@ class ProfileCompleteActivity : AppCompatActivity() {
         })
 
         apiClient = ApiClient
-        apiClient.getApiService(this).getUserDetails(clientId).enqueue(object : Callback<UserDetailsResponse> {
-            override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
-                if (response.isSuccessful) {
-                    Log.e("Gideon", "onSuccess: ${response.body()}")
-                    firstName.text = response.body()!!.single_client.first_name.toString()
-                    lastName.text = response.body()!!.single_client.last_name.toString()
-                    email.text = response.body()!!.single_client.email.toString()
-                    mobile.text = response.body()!!.single_client.mobile.toString()
-                    county.text = response.body()!!.single_client.county.toString()
-                    district.text = response.body()!!.single_client.district.toString()
-                    estate.text = response.body()!!.single_client.estate.toString()
-                    landMark.text = response.body()!!.single_client.landmark.toString()
+        apiClient.getApiService(this).getUserDetails(clientId)
+            .enqueue(object : Callback<UserDetailsResponse> {
+                override fun onResponse(
+                    call: Call<UserDetailsResponse>,
+                    response: Response<UserDetailsResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        Log.e("Gideon", "onSuccess: ${response.body()}")
+                        firstName.text = response.body()!!.single_client.first_name.toString()
+                        lastName.text = response.body()!!.single_client.last_name.toString()
+                        email.text = response.body()!!.single_client.email.toString()
+                        mobile.text = response.body()!!.single_client.mobile.toString()
+                        county.text = response.body()!!.single_client.county.toString()
+                        district.text = response.body()!!.single_client.district.toString()
+                        estate.text = response.body()!!.single_client.estate.toString()
+                        landMark.text = response.body()!!.single_client.landmark.toString()
+                    }
                 }
-            }
-            override fun onFailure(call: Call<UserDetailsResponse>, t: Throwable) {
-                Log.e("Gideon", "onFailure: ${t.message}")
-            }
-        })
 
-        val idClient = AddClientId(clientId)
-        apiClient.getApiService(this).addClientId(idClient).enqueue(object : Callback<ImageInfoResponse> {
-            override fun onResponse(call: Call<ImageInfoResponse>, response: Response<ImageInfoResponse>) {
-                Log.e("Gideon", "clientId: $clientId")
-                Log.e("Gideon", "clientId: $response")
-                if (response.isSuccessful) {
-                    Log.e("Gideon", "onSuccess: ${response.body()}")
+                override fun onFailure(call: Call<UserDetailsResponse>, t: Throwable) {
+                    Log.e("Gideon", "onFailure: ${t.message}")
                 }
-            }
+            })
 
-            override fun onFailure(call: Call<ImageInfoResponse>, t: Throwable) {
-                Log.e("Gideon", "onFailure: ${t.message}")
-            }
-        })
 
         val button = findViewById<Button>(R.id.btSubmit)
         button.setOnClickListener {
-            val intent = Intent(this, DetailActivity::class.java)
-            startActivity(intent)
+            val name1 = findViewById<EditText>(R.id.etFullName).text.toString().trim()
+            val relation1 = findViewById<EditText>(R.id.etRelationShip).text.toString().trim()
+            val contact1 = findViewById<EditText>(R.id.etEmergencyMobile).text.toString().trim()
+            val name2 = findViewById<EditText>(R.id.etFullName2).text.toString().trim()
+            val relation2 = findViewById<EditText>(R.id.etRelationShip2).text.toString().trim()
+            val contact2 = findViewById<EditText>(R.id.etEmergencyMobile2).text.toString().trim()
+
+            val idClient =
+                AddClientId(clientId, name1, relation1, contact1, name2, relation2, contact2)
+            apiClient.getApiService(this).addClientId(idClient)
+                .enqueue(object : Callback<ImageInfoResponse> {
+                    override fun onResponse(
+                        call: Call<ImageInfoResponse>,
+                        response: Response<ImageInfoResponse>
+                    ) {
+                        if (response.isSuccessful) {
+                            Log.e(
+                                "Gideon",
+                                "onSuccess: ${response.body()}"
+                            )
+                            Toast.makeText(
+                                this@ProfileCompleteActivity,
+                                "Upload Successful",
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ImageInfoResponse>, t: Throwable) {
+                        Log.e("Gideon", "onFailure: ${t.message}")
+                    }
+                })
+//            val intent = Intent(this, DetailActivity::class.java)
+//            startActivity(intent)
         }
 
         imageDriverLicensePicker.setOnClickListener {
@@ -182,11 +206,12 @@ class ProfileCompleteActivity : AppCompatActivity() {
 
                 Log.i("FilePath", filePath)
                 val file = File(filePath)
-                val driverLicense: RequestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                val driverLicense: RequestBody =
+                    file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
 
                 val dlButton = findViewById<Button>(R.id.btDlUpload)
                 dlButton.setOnClickListener {
-                    uploadDl(file,driverLicense)
+                    uploadDl(file, driverLicense)
                 }
             }
             ImagePicker.RESULT_ERROR -> {
@@ -200,12 +225,16 @@ class ProfileCompleteActivity : AppCompatActivity() {
 
     private fun uploadDl(file: File, driverLicense: RequestBody) {
         val image = MultipartBody.Part.createFormData("image", file.name, driverLicense)
-        apiClient.getApiService(this).dlCloudinary(image).enqueue(object : Callback<DlCloudinaryResponse> {
-            override fun onResponse(call: Call<DlCloudinaryResponse>, response: Response<DlCloudinaryResponse>) {
-                Log.e("Gideon", "cloudinary: $response")
-                if (response.isSuccessful) {
-                    val dlUrl = response.body()!!.driverLicenceCloudinary
-                    Log.e("Gideon", "dlUrl: $dlUrl")
+        apiClient.getApiService(this).dlCloudinary(image)
+            .enqueue(object : Callback<DlCloudinaryResponse> {
+                override fun onResponse(
+                    call: Call<DlCloudinaryResponse>,
+                    response: Response<DlCloudinaryResponse>
+                ) {
+                    Log.e("Gideon", "cloudinary: $response")
+                    if (response.isSuccessful) {
+                        val dlUrl = response.body()!!.driverLicenceCloudinary
+                        Log.e("Gideon", "dlUrl: $dlUrl")
 //                    apiClient.getApiService(this@ProfileCompleteActivity).dlDatabase(dlUrl).enqueue(object : Callback<ImageInfoResponse> {
 //                        override fun onResponse(call: Call<ImageInfoResponse>, response: Response<ImageInfoResponse>) {
 //                            if (response.isSuccessful) {
@@ -219,13 +248,13 @@ class ProfileCompleteActivity : AppCompatActivity() {
 //                            Log.e("Gideon", "onFailure: ${t.message}")
 //                        }
 //                    })
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<DlCloudinaryResponse>, t: Throwable) {
-                Log.e("Gideon", "onFailure: ${t.message}")
-            }
-        })
+                override fun onFailure(call: Call<DlCloudinaryResponse>, t: Throwable) {
+                    Log.e("Gideon", "onFailure: ${t.message}")
+                }
+            })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
