@@ -9,7 +9,6 @@ import com.justin.gari.models.saveCarModels.SaveCar
 import com.justin.gari.models.saveCarModels.SaveCarResponse
 import com.justin.gari.models.saveCarModels.SavedCarResponse
 import com.justin.gari.models.uploadImagesModel.*
-import com.justin.gari.models.userModels.User
 import com.justin.gari.models.userModels.UserDetailsResponse
 import com.justin.gari.models.userModels.loginModel.UserLogin
 import com.justin.gari.models.userModels.loginModel.UserLoginResponse
@@ -52,8 +51,8 @@ interface ApiService {
     @PATCH("/api/v1/cars/status/:car_id")
     fun changeStatus(@Path("car_id") car_id: String?)
 
-    @POST("/api/v1/addClientId")
-    fun addClientId(@Body addClientId: AddClientId?): Call<ImageInfoResponse>
+//    @POST("/api/v1/addClientId")
+//    fun addClientId(@Body addClientId: AddClientId?): Call<ImageInfoResponse>
 //    client_id: String?
 
 //    @FormUrlEncoded
@@ -81,6 +80,6 @@ interface ApiService {
     @POST("/api/v1/driverLicense/uploadDb")
     fun userPhotoDatabase(@Body user_photo_url: String?): Call<ImageInfoResponse>
 
-    @POST("/api/v1/contact")
-    fun contacts(@Body addClientId: AddClientId?): Call<ImageInfoResponse>
+    @POST("c")
+    fun contacts(@Body addClientId: Contacts?): Call<ImageInfoResponse>
 }

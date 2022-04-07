@@ -20,7 +20,7 @@ import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
 import com.justin.gari.URIPathHelper
 import com.justin.gari.api.ApiClient
-import com.justin.gari.models.uploadImagesModel.AddClientId
+import com.justin.gari.models.uploadImagesModel.Contacts
 import com.justin.gari.models.uploadImagesModel.DlCloudinaryResponse
 import com.justin.gari.models.uploadImagesModel.ImageInfoResponse
 import com.justin.gari.models.userModels.UserDetailsResponse
@@ -148,6 +148,7 @@ class ProfileCompleteActivity : AppCompatActivity() {
 
         val button = findViewById<Button>(R.id.btSubmit)
         button.setOnClickListener {
+            val id = clientId.toString().trim()
             val name1 = findViewById<EditText>(R.id.etFullName).text.toString().trim()
             val relation1 = findViewById<EditText>(R.id.etRelationShip).text.toString().trim()
             val contact1 = findViewById<EditText>(R.id.etEmergencyMobile).text.toString().trim()
@@ -155,9 +156,13 @@ class ProfileCompleteActivity : AppCompatActivity() {
             val relation2 = findViewById<EditText>(R.id.etRelationShip2).text.toString().trim()
             val contact2 = findViewById<EditText>(R.id.etEmergencyMobile2).text.toString().trim()
 
-            val idClient =
-                AddClientId(clientId, name1, relation1, contact1, name2, relation2, contact2)
-            apiClient.getApiService(this).addClientId(idClient)
+            val idClient = Contacts(id, name1, relation1, contact1, name2, relation2, contact2)
+            Toast.makeText(
+                this@ProfileCompleteActivity,
+                "clicked",
+                Toast.LENGTH_LONG
+            ).show()
+            apiClient.getApiService(this).contacts(idClient)
                 .enqueue(object : Callback<ImageInfoResponse> {
                     override fun onResponse(
                         call: Call<ImageInfoResponse>,
