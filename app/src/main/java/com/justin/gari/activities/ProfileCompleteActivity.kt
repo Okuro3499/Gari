@@ -20,9 +20,7 @@ import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
 import com.justin.gari.URIPathHelper
 import com.justin.gari.api.ApiClient
-import com.justin.gari.models.uploadImagesModel.Contacts
 import com.justin.gari.models.uploadImagesModel.DlCloudinaryResponse
-import com.justin.gari.models.uploadImagesModel.ImageInfoResponse
 import com.justin.gari.models.userModels.UserDetailsResponse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -44,8 +42,7 @@ class ProfileCompleteActivity : AppCompatActivity() {
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
         val navView: NavigationView = findViewById(R.id.nav_view)
-        val sharedPreferences: SharedPreferences =
-            getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
 
         val firstName = findViewById<TextView>(R.id.tvFirstName)
         val lastName = findViewById<TextView>(R.id.tvLastName)
@@ -146,49 +143,7 @@ class ProfileCompleteActivity : AppCompatActivity() {
             })
 
 
-        val button = findViewById<Button>(R.id.btSubmit)
-        button.setOnClickListener {
-            val id = clientId.toString().trim()
-            val name1 = findViewById<EditText>(R.id.etFullName).text.toString().trim()
-            val relation1 = findViewById<EditText>(R.id.etRelationShip).text.toString().trim()
-            val contact1 = findViewById<EditText>(R.id.etEmergencyMobile).text.toString().trim()
-            val name2 = findViewById<EditText>(R.id.etFullName2).text.toString().trim()
-            val relation2 = findViewById<EditText>(R.id.etRelationShip2).text.toString().trim()
-            val contact2 = findViewById<EditText>(R.id.etEmergencyMobile2).text.toString().trim()
 
-            val idClient = Contacts(id, name1, relation1, contact1, name2, relation2, contact2)
-            Toast.makeText(
-                this@ProfileCompleteActivity,
-                "clicked",
-                Toast.LENGTH_LONG
-            ).show()
-            apiClient.getApiService(this).contacts(idClient)
-                .enqueue(object : Callback<ImageInfoResponse> {
-                    override fun onResponse(
-                        call: Call<ImageInfoResponse>,
-                        response: Response<ImageInfoResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            Log.e(
-                                "Gideon",
-                                "onSuccess: ${response.body()}"
-                            )
-                            Toast.makeText(
-                                this@ProfileCompleteActivity,
-                                "Upload Successful",
-                                Toast.LENGTH_LONG
-                            ).show()
-
-                        }
-                    }
-
-                    override fun onFailure(call: Call<ImageInfoResponse>, t: Throwable) {
-                        Log.e("Gideon", "onFailure: ${t.message}")
-                    }
-                })
-//            val intent = Intent(this, DetailActivity::class.java)
-//            startActivity(intent)
-        }
 
         imageDriverLicensePicker.setOnClickListener {
             ImagePicker.with(this)
@@ -240,19 +195,6 @@ class ProfileCompleteActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         val dlUrl = response.body()!!.driverLicenceCloudinary
                         Log.e("Gideon", "dlUrl: $dlUrl")
-//                    apiClient.getApiService(this@ProfileCompleteActivity).dlDatabase(dlUrl).enqueue(object : Callback<ImageInfoResponse> {
-//                        override fun onResponse(call: Call<ImageInfoResponse>, response: Response<ImageInfoResponse>) {
-//                            if (response.isSuccessful) {
-//                                Toast.makeText(this@ProfileCompleteActivity, "Upload Successful", Toast.LENGTH_LONG).show()
-//                                Log.e("Gideon", "onSuccess: ${response.body()}")
-//                            }
-//                        }
-//
-//                        override fun onFailure(call: Call<ImageInfoResponse>, t: Throwable) {
-//                            Toast.makeText(this@ProfileCompleteActivity,"${t.message}", Toast.LENGTH_LONG).show()
-//                            Log.e("Gideon", "onFailure: ${t.message}")
-//                        }
-//                    })
                     }
                 }
 

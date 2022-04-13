@@ -18,7 +18,6 @@ import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
 
-
 interface ApiService {
 
     @GET("/api/v1/cars")
@@ -51,14 +50,6 @@ interface ApiService {
     @PATCH("/api/v1/cars/status/:car_id")
     fun changeStatus(@Path("car_id") car_id: String?)
 
-//    @POST("/api/v1/addClientId")
-//    fun addClientId(@Body addClientId: AddClientId?): Call<ImageInfoResponse>
-//    client_id: String?
-
-//    @FormUrlEncoded
-//    @POST("/api/v1/addClientId")
-//    fun addClientId(@Field("client_id") client_id: String?): Call<ImageInfoResponse>
-
     @Multipart
     @POST("/api/v1/driverLicense/uploadCloudinary")
     fun dlCloudinary(@Part image: MultipartBody.Part): Call<DlCloudinaryResponse>
@@ -80,6 +71,4 @@ interface ApiService {
     @POST("/api/v1/driverLicense/uploadDb")
     fun userPhotoDatabase(@Body user_photo_url: String?): Call<ImageInfoResponse>
 
-    @POST("c")
-    fun contacts(@Body addClientId: Contacts?): Call<ImageInfoResponse>
 }
