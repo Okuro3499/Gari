@@ -8,9 +8,7 @@ import com.justin.gari.models.carModels.SingleCarModel
 import com.justin.gari.models.saveCarModels.SaveCar
 import com.justin.gari.models.saveCarModels.SaveCarResponse
 import com.justin.gari.models.saveCarModels.SavedCarResponse
-import com.justin.gari.models.uploadImagesModel.AddClientId
-import com.justin.gari.models.uploadImagesModel.DlCloudinaryResponse
-import com.justin.gari.models.uploadImagesModel.ImageInfoResponse
+import com.justin.gari.models.uploadImagesModel.*
 import com.justin.gari.models.userModels.UserDetailsResponse
 import com.justin.gari.models.userModels.loginModel.UserLogin
 import com.justin.gari.models.userModels.loginModel.UserLoginResponse
@@ -52,13 +50,25 @@ interface ApiService {
     @PATCH("/api/v1/cars/status/:car_id")
     fun changeStatus(@Path("car_id") car_id: String?)
 
-    @POST("/api/v1/addClientId")
-    fun addClientId(@Body client_id: String?): Call<ImageInfoResponse>
-
     @Multipart
     @POST("/api/v1/driverLicense/uploadCloudinary")
     fun dlCloudinary(@Part image: MultipartBody.Part): Call<DlCloudinaryResponse>
 
     @POST("/api/v1/driverLicense/uploadDb")
     fun dlDatabase(@Body driver_licence_url: String?): Call<ImageInfoResponse>
+
+    @Multipart
+    @POST("/api/v1/nationalId/uploadCloudinary")
+    fun idCloudinary(@Part image: MultipartBody.Part): Call<IdCloudinaryResponse>
+
+    @POST("/api/v1/driverLicense/uploadDb")
+    fun idDatabase(@Body national_id_url: String?): Call<ImageInfoResponse>
+
+    @Multipart
+    @POST("/api/v1/nationalId/uploadCloudinary")
+    fun userPhotoCloudinary(@Part image: MultipartBody.Part): Call<UserPhotoCloudinaryResponse>
+
+    @POST("/api/v1/driverLicense/uploadDb")
+    fun userPhotoDatabase(@Body user_photo_url: String?): Call<ImageInfoResponse>
+
 }
