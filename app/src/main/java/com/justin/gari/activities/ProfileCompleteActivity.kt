@@ -20,8 +20,13 @@ import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
 import com.justin.gari.URIPathHelper
 import com.justin.gari.api.ApiClient
+import com.justin.gari.models.uploadImagesModel.Contacts
 import com.justin.gari.models.uploadImagesModel.DlCloudinaryResponse
+import com.justin.gari.models.uploadImagesModel.ImageInfoResponse
 import com.justin.gari.models.userModels.UserDetailsResponse
+import com.justin.gari.models.userModels.loginModel.UserLogin
+import com.justin.gari.models.userModels.loginModel.UserLoginResponse
+import kotlinx.android.synthetic.main.activity_profile_complete.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -55,6 +60,7 @@ class ProfileCompleteActivity : AppCompatActivity() {
         val imageDriverLicensePicker = findViewById<ImageView>(R.id.ivDl)
         val imageIdCardPicker = findViewById<ImageView>(R.id.ivId)
         val userPhotoPicker = findViewById<ImageView>(R.id.ivPhoto)
+        val btSubmit = findViewById<Button>(R.id.btSubmit)
 
         val clientId = sharedPreferences.getString("client_id", "default")
 
@@ -118,12 +124,8 @@ class ProfileCompleteActivity : AppCompatActivity() {
         })
 
         apiClient = ApiClient
-        apiClient.getApiService(this).getUserDetails(clientId)
-            .enqueue(object : Callback<UserDetailsResponse> {
-                override fun onResponse(
-                    call: Call<UserDetailsResponse>,
-                    response: Response<UserDetailsResponse>
-                ) {
+        apiClient.getApiService(this).getUserDetails(clientId).enqueue(object : Callback<UserDetailsResponse> {
+                override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
                     if (response.isSuccessful) {
                         Log.e("Gideon", "onSuccess: ${response.body()}")
                         firstName.text = response.body()!!.single_client.first_name.toString()
@@ -142,8 +144,30 @@ class ProfileCompleteActivity : AppCompatActivity() {
                 }
             })
 
+        btSubmit.setOnClickListener {
+            val client_id = clientId.toString().trim()
+            val contact1_name = findViewById<EditText>(R.id.etFullName ).text.toString().trim()
+            val contact1_relationship = findViewById<EditText>(R.id.etRelationShip).text.toString().trim()
+            val contact1_mobile = findViewById<EditText>(R.id.etEmergencyMobile).text.toString().trim()
+            val contact2_name= findViewById<EditText>(R.id.etFullName2).text.toString().trim()
+            val contact2_relationship = findViewById<EditText>(R.id.etRelationShip2).text.toString().trim()
+            val contact2_mobile = findViewById<EditText>(R.id.etEmergencyMobile2).text.toString().trim()
 
+            val contactInfo = Contacts(client_id, contact1_name, contact1_relationship, contact1_mobile, contact2_name, contact2_relationship, contact2_mobile)
+            apiClient.getApiService(this).contactUpdate(contactInfo).enqueue(object : Callback<ImageInfoResponse> {
+                override fun onResponse(call: Call<ImageInfoResponse>, response: Response<ImageInfoResponse> ) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(this@ProfileCompleteActivity, "Uploaded Successfully", Toast.LENGTH_LONG).show()
+                        Log.e("Gideon", "onSuccess: ${response.body()}")
+                    }
+                }
 
+                override fun onFailure(call: Call<ImageInfoResponse>, t: Throwable) {
+                    Toast.makeText(this@ProfileCompleteActivity, "${t.message}", Toast.LENGTH_LONG).show()
+                    Log.e("Gideon", "onFailure: ${t.message}")
+                }
+            })
+        }
 
         imageDriverLicensePicker.setOnClickListener {
             ImagePicker.with(this)

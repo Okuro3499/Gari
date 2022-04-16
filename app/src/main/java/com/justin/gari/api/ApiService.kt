@@ -71,4 +71,9 @@ interface ApiService {
     @POST("/api/v1/driverLicense/uploadDb")
     fun userPhotoDatabase(@Body user_photo_url: String?): Call<ImageInfoResponse>
 
+
+    //trial
+    @POST("api/v1/contact")
+    fun contactUpdate(@Body contacts: Contacts?): Call<ImageInfoResponse>
+
 }
