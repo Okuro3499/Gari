@@ -41,15 +41,11 @@ class SavedFragment : Fragment() {
 
         apiClient = ApiClient
         context?.let {
-            apiClient.getApiService(it).getSavedCars(clientId)
-                .enqueue(object : Callback<SavedCarResponse> {
-                    override fun onResponse(
-                        call: Call<SavedCarResponse>,
-                        response: Response<SavedCarResponse>
+            apiClient.getApiService(it).getSavedCars(clientId).enqueue(object : Callback<SavedCarResponse> {
+                    override fun onResponse(call: Call<SavedCarResponse>, response: Response<SavedCarResponse>
                     ) {
                         Log.e("Gideon", "onSuccess: ${response.body()}")
-                        if (response.isSuccessful) {
-                            recyclerview.apply {
+                        if (response.isSuccessful) { recyclerview.apply {
                                 layoutManager = LinearLayoutManager(context)
                                 adapter = SavedCarAdapter(response.body()!!.saved_cars, context)
                             }

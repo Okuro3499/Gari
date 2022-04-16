@@ -50,7 +50,6 @@ class SavedCarAdapter(private val savedCarList: List<SaveCarObject>, val context
             driveOptionTextView.text = savedCars.drive
             transmissionTextView.text = savedCars.transmission
             Picasso.get().load(savedCars.front_view).into(imageView)
-//            itemView.tvImage.setImageResource(model.image)
             priceTextView.text = savedCars.price
             statusTextView.text = savedCars.status
         }

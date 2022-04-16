@@ -50,7 +50,6 @@ class BookingCarAdapter(private val bookedCarList: List<BookingsResponseObject>,
             driveOptionTextView.text = bookedCars.drive
             transmissionTextView.text = bookedCars.transmission
             Picasso.get().load(bookedCars.front_view).into(imageView)
-//            itemView.tvImage.setImageResource(model.image)
             priceTextView.text = bookedCars.price
             statusTextView.text = bookedCars.status
         }

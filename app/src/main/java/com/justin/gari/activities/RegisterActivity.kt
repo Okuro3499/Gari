@@ -40,9 +40,7 @@ class RegisterActivity : AppCompatActivity() {
             apiClient = ApiClient
             apiClient.getApiService(this).createUser(signUpInfo).enqueue(object : Callback<NewUserResponse> {
 
-                override fun onResponse(
-                    call: Call<NewUserResponse>, response: Response<NewUserResponse>
-                ) {
+                override fun onResponse(call: Call<NewUserResponse>, response: Response<NewUserResponse>) {
                     if (response.isSuccessful) {
                         Toast.makeText(this@RegisterActivity, "Registration Successful", Toast.LENGTH_LONG).show()
                         Log.e("Gideon", "onSuccess: ${response.body()}")

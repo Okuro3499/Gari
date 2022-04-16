@@ -30,11 +30,6 @@ class CarAdapter(private val carList: List<Cars>, val context: Context) :
         holder.itemView.setOnClickListener {
             //get position of selected item
             val car = carList[position]
-//
-//            get details of selected item with intent
-//            var gTitle : String = model.name
-//             get image with intent, which position is selected
-//            var gImage : Int = model.image
 
             val carId: String? = car.car_id
 
@@ -57,7 +52,6 @@ class CarAdapter(private val carList: List<Cars>, val context: Context) :
             driveOptionTextView.text = cars.drive
             transmissionTextView.text = cars.transmission
             Picasso.get().load(cars.front_view).into(imageView);
-//            itemView.tvImage.setImageResource(model.image)
             priceTextView.text = cars.price
             statusTextView.text = cars.status
         }

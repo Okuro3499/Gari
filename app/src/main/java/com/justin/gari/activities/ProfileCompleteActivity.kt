@@ -34,6 +34,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.http.Body
 import java.io.File
 
 class ProfileCompleteActivity : AppCompatActivity() {
@@ -211,18 +212,33 @@ class ProfileCompleteActivity : AppCompatActivity() {
         val image = MultipartBody.Part.createFormData("image", file.name, driverLicense)
         apiClient.getApiService(this).dlCloudinary(image)
             .enqueue(object : Callback<DlCloudinaryResponse> {
-                override fun onResponse(
-                    call: Call<DlCloudinaryResponse>,
-                    response: Response<DlCloudinaryResponse>
-                ) {
+                override fun onResponse(call: Call<DlCloudinaryResponse>, response: Response<DlCloudinaryResponse>) {
                     Log.e("Gideon", "cloudinary: $response")
                     if (response.isSuccessful) {
                         val dlUrl = response.body()!!.driverLicenceCloudinary
+//                        Toast.makeText(this@ProfileCompleteActivity, "Driver license uploaded successful", Toast.LENGTH_SHORT).show()
                         Log.e("Gideon", "dlUrl: $dlUrl")
+                        uploadDlDatabase(dlUrl)
                     }
                 }
 
                 override fun onFailure(call: Call<DlCloudinaryResponse>, t: Throwable) {
+                    Log.e("Gideon", "onFailure: ${t.message}")
+                }
+            })
+    }
+
+    private fun uploadDlDatabase(dlUrl: String?) {
+        val url = dlUrl
+        apiClient.getApiService(this).dlDatabase(dlUrl).enqueue(object : Callback<ImageInfoResponse> {
+                override fun onResponse(call: Call<ImageInfoResponse>, response: Response<ImageInfoResponse>) {
+                    Log.e("Gideon", "db: $response")
+                    if (response.isSuccessful) {
+                        Toast.makeText(this@ProfileCompleteActivity, "Driver license uploaded successful", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ImageInfoResponse>, t: Throwable) {
                     Log.e("Gideon", "onFailure: ${t.message}")
                 }
             })
