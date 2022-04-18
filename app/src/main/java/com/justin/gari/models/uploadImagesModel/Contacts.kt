@@ -25,5 +25,13 @@ data class Contacts(
     @SerializedName("contact2_mobile")
     @Expose
     val contact2_mobile: String?,
-
-    )
+    @SerializedName("driver_licence_url")
+    @Expose
+    val driver_licence_url: String?,
+    @SerializedName("national_id_url")
+    @Expose
+    val national_id_url: String?,
+    @SerializedName("user_photo_url")
+    @Expose
+    val user_photo_url: String?,
+)

@@ -50,30 +50,19 @@ interface ApiService {
     @PATCH("/api/v1/cars/status/:car_id")
     fun changeStatus(@Path("car_id") car_id: String?)
 
+    @POST("api/v1/contact")
+    fun contactUpdate(@Body contacts: Contacts?): Call<ImageInfoResponse>
+
     @Multipart
     @POST("/api/v1/driverLicense/uploadCloudinary")
     fun dlCloudinary(@Part image: MultipartBody.Part): Call<DlCloudinaryResponse>
-
-    @POST("/api/v1/driverLicense/uploadDb")
-    fun dlDatabase(@Body driver_licence_url: String?): Call<ImageInfoResponse>
 
     @Multipart
     @POST("/api/v1/nationalId/uploadCloudinary")
     fun idCloudinary(@Part image: MultipartBody.Part): Call<IdCloudinaryResponse>
 
-    @POST("/api/v1/driverLicense/uploadDb")
-    fun idDatabase(@Body national_id_url: String?): Call<ImageInfoResponse>
-
     @Multipart
-    @POST("/api/v1/nationalId/uploadCloudinary")
+    @POST("/api/v1/userPhoto/uploadCloudinary")
     fun userPhotoCloudinary(@Part image: MultipartBody.Part): Call<UserPhotoCloudinaryResponse>
-
-    @POST("/api/v1/driverLicense/uploadDb")
-    fun userPhotoDatabase(@Body user_photo_url: String?): Call<ImageInfoResponse>
-
-
-    //trial
-    @POST("api/v1/contact")
-    fun contactUpdate(@Body contacts: Contacts?): Call<ImageInfoResponse>
 
 }
