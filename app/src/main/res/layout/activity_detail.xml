@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content">
 
                 <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/view_pager"
+                    android:id="@+id/viewPager"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     app:fillColor="#FFFFFFFF"
@@ -40,7 +40,7 @@
                     android:id="@+id/titleCarName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/view_pager"
+                    android:layout_below="@id/viewPager"
                     android:layout_marginStart="6dp"
                     android:layout_marginTop="2dp"
                     android:text="@string/model"
@@ -52,7 +52,7 @@
                     android:id="@+id/tvCarName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/view_pager"
+                    android:layout_below="@id/viewPager"
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="2dp"
                     android:layout_toEndOf="@+id/titleCarName"
@@ -167,7 +167,7 @@
                     android:id="@+id/titleStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/view_pager"
+                    android:layout_below="@id/viewPager"
                     android:layout_marginStart="215dp"
                     android:layout_marginTop="2dp"
                     android:text="@string/status"
@@ -179,7 +179,7 @@
                     android:id="@+id/tvStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/view_pager"
+                    android:layout_below="@id/viewPager"
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="2dp"
                     android:layout_toEndOf="@id/titleStatus"
@@ -668,7 +668,7 @@
         <!--            android:layout_marginTop="2dp"-->
         <!--            android:orientation="horizontal"-->
         <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toBottomOf="@+id/view_pager">-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/viewPager">-->
 
         <!--            <TextView-->
         <!--                android:id="@+id/titleCarName"-->
@@ -727,7 +727,7 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
+        android:id="@+id/navView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"

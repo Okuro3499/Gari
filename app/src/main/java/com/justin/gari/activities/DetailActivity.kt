@@ -9,19 +9,16 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.view.View
-import android.widget.*
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.viewpager.widget.ViewPager
 import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
 import com.justin.gari.SettingsManager
 import com.justin.gari.adapters.SliderPageAdapter
 import com.justin.gari.api.ApiClient
+import com.justin.gari.databinding.ActivityDetailBinding
 import com.justin.gari.models.bookingCarModels.BookCar
 import com.justin.gari.models.bookingCarModels.BookCarResponse
 import com.justin.gari.models.carModels.SingleCarModel
@@ -29,9 +26,8 @@ import com.justin.gari.models.saveCarModels.SaveCar
 import com.justin.gari.models.saveCarModels.SaveCarResponse
 import com.justin.gari.models.uploadImagesModel.SingleClientImageInfoResponse
 import com.squareup.picasso.Picasso
-import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_detail.*
-import kotlinx.android.synthetic.main.content_vehicles.*
+import kotlinx.android.synthetic.main.nav_header.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,54 +39,31 @@ class DetailActivity : AppCompatActivity() {
     private val sharedPrefFile = "sharedPrefData"
     private lateinit var apiClient: ApiClient
     lateinit var toggle: ActionBarDrawerToggle
-    private lateinit var swipeRefresh: SwipeRefreshLayout
+    private lateinit var binding: ActivityDetailBinding
     private val myCalendarFrom: Calendar = Calendar.getInstance()
     private val myCalendarTo: Calendar = Calendar.getInstance()
-    var dateFrom: EditText? = null
-    var dateTo: EditText? = null
-    var selfDrive: RadioButton? = null
-    var chauffeured: RadioButton? = null
     var selectedDrive: String? = null
-    private var theme: Switch? = null
     private lateinit var settingsManager: SettingsManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         settingsManager = SettingsManager(this)
-        if (settingsManager.loadNightModeState()==true){
+        if (settingsManager.loadNightModeState() == true) {
             setTheme(R.style.DarkGari)
         } else
             setTheme(R.style.Gari)
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail)
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
-        swipeRefresh = findViewById(R.id.swipeRefresh)
+        binding = ActivityDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
+        binding.drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
 
-        val carNameTextView = findViewById<TextView>(R.id.tvCarName)
-        val driveOptionTextView = findViewById<TextView>(R.id.tvDriveOption)
-        val transmissionTextView = findViewById<TextView>(R.id.tvTransmission)
-        val priceTextView = findViewById<TextView>(R.id.tvPrice)
-        val engineTextView = findViewById<TextView>(R.id.tvEngine)
-        val colorTextView = findViewById<TextView>(R.id.tvColor)
-        val registrationTextView = findViewById<TextView>(R.id.tvRegistration)
-        val passengersTextView = findViewById<TextView>(R.id.tvPassengers)
-        val companyTextView = findViewById<TextView>(R.id.tvCompany)
-        val doorsTextView = findViewById<TextView>(R.id.tvDoors)
-        val statusTextView = findViewById<TextView>(R.id.tvStatus)
-        val feature1TextView = findViewById<TextView>(R.id.tvFeature1)
-        val feature2TextView = findViewById<TextView>(R.id.tvFeature2)
-        val feature3TextView = findViewById<TextView>(R.id.tvFeature3)
-        val feature4TextView = findViewById<TextView>(R.id.tvFeature4)
-        val feature5TextView = findViewById<TextView>(R.id.tvFeature5)
-        dateFrom = findViewById<View>(R.id.ETDFrom) as EditText
-        dateTo = findViewById<View>(R.id.ETDTo) as EditText
-        selfDrive = findViewById<View>(R.id.radioSelfDrive) as RadioButton
-        chauffeured = findViewById<View>(R.id.radioChauffeured) as RadioButton
-        val viewPager = findViewById<ViewPager>(R.id.view_pager)
-
-        swipeRefresh.setOnRefreshListener {
+        binding.swipeRefresh.setOnRefreshListener {
             getAllData()
         }
 
@@ -101,7 +74,7 @@ class DetailActivity : AppCompatActivity() {
             myCalendarFrom[Calendar.DAY_OF_MONTH] = dayFrom
             updateLabelFrom()
         }
-        dateFrom!!.setOnClickListener {
+        binding.ETDFrom!!.setOnClickListener {
             DatePickerDialog(
                 this@DetailActivity,
                 date1,
@@ -118,7 +91,7 @@ class DetailActivity : AppCompatActivity() {
             myCalendarTo[Calendar.DAY_OF_MONTH] = dayTo
             updateLabelTo()
         }
-        dateTo!!.setOnClickListener {
+        binding.ETDTo!!.setOnClickListener {
             DatePickerDialog(
                 this@DetailActivity,
                 date2,
@@ -127,11 +100,6 @@ class DetailActivity : AppCompatActivity() {
                 myCalendarTo[Calendar.DAY_OF_MONTH]
             ).show()
         }
-
-        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         //get car details
         //receiving intents
@@ -151,24 +119,24 @@ class DetailActivity : AppCompatActivity() {
                         )
 
                         val adapter = SliderPageAdapter(this@DetailActivity, imageUrls)
-                        viewPager.adapter = adapter
+                        binding.viewPager.adapter = adapter
                         //populate details textViews
-                        carNameTextView.text = response.body()!!.single_car.car_name.toString()
-                        statusTextView.text = response.body()!!.single_car.status.toString()
-                        transmissionTextView.text = response.body()!!.single_car.transmission.toString()
-                        engineTextView.text = response.body()!!.single_car.engine.toString()
-                        colorTextView.text = response.body()!!.single_car.color.toString()
-                        registrationTextView.text = response.body()!!.single_car.registration.toString()
-                        passengersTextView.text = response.body()!!.single_car.passengers.toString()
-                        companyTextView.text = response.body()!!.single_car.company.toString()
-                        priceTextView.text = response.body()!!.single_car.price.toString()
-                        doorsTextView.text = response.body()!!.single_car.doors.toString()
-                        driveOptionTextView.text = response.body()!!.single_car.drive.toString()
-                        feature1TextView.text = response.body()!!.single_car.feature_1.toString()
-                        feature2TextView.text = response.body()!!.single_car.feature_2.toString()
-                        feature3TextView.text = response.body()!!.single_car.feature_3.toString()
-                        feature4TextView.text = response.body()!!.single_car.feature_4.toString()
-                        feature5TextView.text = response.body()!!.single_car.feature_5.toString()
+                        binding.tvCarName.text = response.body()!!.single_car.car_name.toString()
+                        binding.tvStatus.text = response.body()!!.single_car.status.toString()
+                        binding.tvTransmission.text = response.body()!!.single_car.transmission.toString()
+                        binding.tvEngine.text = response.body()!!.single_car.engine.toString()
+                        binding.tvColor.text = response.body()!!.single_car.color.toString()
+                        binding.tvRegistration.text = response.body()!!.single_car.registration.toString()
+                        binding.tvPassengers.text = response.body()!!.single_car.passengers.toString()
+                        binding.tvCompany.text = response.body()!!.single_car.company.toString()
+                        binding.tvPrice.text = response.body()!!.single_car.price.toString()
+                        binding.tvDoors.text = response.body()!!.single_car.doors.toString()
+                        binding.tvDriveOption.text = response.body()!!.single_car.drive.toString()
+                        binding.tvFeature1.text = response.body()!!.single_car.feature_1.toString()
+                        binding.tvFeature2.text = response.body()!!.single_car.feature_2.toString()
+                        binding.tvFeature3.text = response.body()!!.single_car.feature_3.toString()
+                        binding.tvFeature4.text = response.body()!!.single_car.feature_4.toString()
+                        binding.tvFeature5.text = response.body()!!.single_car.feature_5.toString()
                     }
                 }
 
@@ -178,55 +146,44 @@ class DetailActivity : AppCompatActivity() {
             })
 
         //save car for future bookings
-        val saveBt = findViewById<ImageButton>(R.id.ibSave)
-        saveBt.setOnClickListener {
+        binding.ibSave.setOnClickListener {
             val car_id = carId
             val client_id = sharedPreferences.getString("client_id", "default")
             val saveInfo = SaveCar(car_id, client_id)
 
-            apiClient.getApiService(this).saveCar(saveInfo)
-                .enqueue(object : Callback<SaveCarResponse> {
-                    override fun onResponse(
-                        call: Call<SaveCarResponse>,
-                        response: Response<SaveCarResponse>
-                    ) {
+            apiClient.getApiService(this).saveCar(saveInfo).enqueue(object : Callback<SaveCarResponse> {
+                    override fun onResponse(call: Call<SaveCarResponse>, response: Response<SaveCarResponse>) {
                         if (response.isSuccessful) {
-                            Toast.makeText(
-                                this@DetailActivity,
-                                "Saved Successfully",
-                                Toast.LENGTH_LONG
-                            ).show()
+                            Toast.makeText(this@DetailActivity, "Saved Successfully", Toast.LENGTH_LONG).show()
                             Log.e("Gideon", "onSuccess: ${response.body()}")
                         }
                     }
 
                     override fun onFailure(call: Call<SaveCarResponse>, t: Throwable) {
-                        Toast.makeText(this@DetailActivity, "${t.message}", Toast.LENGTH_LONG)
-                            .show()
+                        Toast.makeText(this@DetailActivity, "${t.message}", Toast.LENGTH_LONG).show()
                         Log.e("Gideon", "onFailure: ${t.message}")
                     }
                 })
         }
 
         //make car booking
-        val bookBt = findViewById<Button>(R.id.btBook)
-        bookBt.setOnClickListener {
+        binding.btBook.setOnClickListener {
             //selected radio button
-            if (selfDrive!!.isChecked) {
-                selectedDrive = selfDrive!!.text.toString()
-            } else if (chauffeured!!.isChecked) {
-                selectedDrive = chauffeured!!.text.toString()
+            if (binding.radioSelfDrive.isChecked) {
+                selectedDrive = binding.radioSelfDrive.text.toString()
+            } else if (binding.radioChauffeured.isChecked) {
+                selectedDrive = binding.radioChauffeured.text.toString()
             }
 
             val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
-            dateFrom?.setText(dateFormat.format(myCalendarFrom.time))
-            dateTo?.setText(dateFormat.format(myCalendarTo.time))
+            binding.ETDFrom.setText(dateFormat.format(myCalendarFrom.time))
+            binding.ETDTo.setText(dateFormat.format(myCalendarTo.time))
 
             val car_id = carId
             val client_id = sharedPreferences.getString("client_id", "default")
-            val book_date_from = dateFrom!!.text.toString().trim()
-            val book_date_to = dateTo!!.text.toString().trim()
-            val destination = findViewById<EditText>(R.id.etDestination).text.toString().trim()
+            val book_date_from = binding.ETDFrom!!.text.toString().trim()
+            val book_date_to = binding.ETDTo!!.text.toString().trim()
+            val destination = binding.etDestination.text.toString().trim()
             val drive = selectedDrive
             val total_days = tvTotalDays.text.toString().trim()
             val total_amount = tvTotalAmount.text.toString().trim()
@@ -275,33 +232,25 @@ class DetailActivity : AppCompatActivity() {
                     Log.e("Gideon", "onFailure: ${t.message}")
                 }
             })
-
-
-//        val profileHeader = sharedPreferences.getString("userPhoto", "default")
-
+        val profileHeader = sharedPreferences.getString("userPhoto", "default")
         val firstNameHeader = sharedPreferences.getString("first_name", "default")
         val lastNameHeader = sharedPreferences.getString("last_name", "default")
         val emailHeader = sharedPreferences.getString("email", "default")
-        val header: View = navView.getHeaderView(0)
-        val profileImage = header.findViewById(R.id.profile_image) as CircleImageView
-        val firstNameTv = header.findViewById<View>(R.id.firstName) as TextView
-        val lastNameTv = header.findViewById<View>(R.id.lastName) as TextView
-        val emailTv = header.findViewById<View>(R.id.email) as TextView
-        lastNameTv.text = lastNameHeader.toString()
-        firstNameTv.text = firstNameHeader.toString()
-        emailTv.text = emailHeader.toString()
+        val header = binding.navView.getHeaderView(0)
+        header.firstName.text = firstNameHeader.toString()
+        header.lastName.text = lastNameHeader.toString()
+        header.email.text = emailHeader.toString()
         Picasso.get()
-            .load(sharedPreferences.getString("userPhoto", "default"))
+            .load(profileHeader)
             .fit().centerCrop()
             .placeholder(R.drawable.user)
             .error(R.drawable.user)
-            .into(profileImage)
+            .into(header.profile_image)
 
-        val switchTheme = header.findViewById(R.id.themeSwitch) as Switch
-        if (settingsManager.loadNightModeState()==true){
-            switchTheme!!.isChecked=true
+        if (settingsManager.loadNightModeState() == true) {
+            header.themeSwitch!!.isChecked = true
         }
-        switchTheme!!.setOnCheckedChangeListener { _, isChecked ->
+        header.themeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 settingsManager.setNightModeState(true)
                 restartApp()
@@ -311,8 +260,7 @@ class DetailActivity : AppCompatActivity() {
             }
         }
 
-        //open side navigation view
-        navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
+        binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
             Log.i(ContentValues.TAG, "onNavigationItemSelected: " + item.itemId)
             when (item.itemId) {
                 R.id.home -> {
@@ -320,8 +268,7 @@ class DetailActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.profile -> {
-                    val intentProfile =
-                        Intent(this@DetailActivity, ProfileCompleteActivity::class.java)
+                    val intentProfile = Intent(this@DetailActivity, ProfileCompleteActivity::class.java)
                     startActivity(intentProfile)
                     return@OnNavigationItemSelectedListener true
                 }
@@ -346,7 +293,7 @@ class DetailActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
             }
-            drawerLayout.closeDrawer(GravityCompat.START)
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
             Log.i(ContentValues.TAG, "onNavigationItemSelected: nothing clicked")
             false
         })
@@ -359,33 +306,12 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun getAllData() {
-        val carNameTextView = findViewById<TextView>(R.id.tvCarName)
-        val driveOptionTextView = findViewById<TextView>(R.id.tvDriveOption)
-        val transmissionTextView = findViewById<TextView>(R.id.tvTransmission)
-        val priceTextView = findViewById<TextView>(R.id.tvPrice)
-        val engineTextView = findViewById<TextView>(R.id.tvEngine)
-        val colorTextView = findViewById<TextView>(R.id.tvColor)
-        val registrationTextView = findViewById<TextView>(R.id.tvRegistration)
-        val passengersTextView = findViewById<TextView>(R.id.tvPassengers)
-        val companyTextView = findViewById<TextView>(R.id.tvCompany)
-        val doorsTextView = findViewById<TextView>(R.id.tvDoors)
-        val statusTextView = findViewById<TextView>(R.id.tvStatus)
-        val feature1TextView = findViewById<TextView>(R.id.tvFeature1)
-        val feature2TextView = findViewById<TextView>(R.id.tvFeature2)
-        val feature3TextView = findViewById<TextView>(R.id.tvFeature3)
-        val feature4TextView = findViewById<TextView>(R.id.tvFeature4)
-        val feature5TextView = findViewById<TextView>(R.id.tvFeature5)
-
-        if (swipeRefresh.isRefreshing) {
-            swipeRefresh.isRefreshing = false
+        if (binding.swipeRefresh.isRefreshing) {
+            binding.swipeRefresh.isRefreshing = false
 
             val carId = intent.getStringExtra("car_id")
-            apiClient.getApiService(this).getCarDetails(carId)
-                .enqueue(object : Callback<SingleCarModel> {
-                    override fun onResponse(
-                        call: Call<SingleCarModel>,
-                        response: Response<SingleCarModel>
-                    ) {
+            apiClient.getApiService(this).getCarDetails(carId).enqueue(object : Callback<SingleCarModel> {
+                    override fun onResponse(call: Call<SingleCarModel>, response: Response<SingleCarModel>) {
                         if (response.isSuccessful) {
                             //fetching images to slider
                             val imageUrls = arrayOf(
@@ -398,32 +324,24 @@ class DetailActivity : AppCompatActivity() {
                             )
 
                             val adapter = SliderPageAdapter(this@DetailActivity, imageUrls)
-                            viewPager.adapter = adapter
+                            binding.viewPager.adapter = adapter
 
-                            carNameTextView.text = response.body()!!.single_car.car_name.toString()
-                            statusTextView.text = response.body()!!.single_car.status.toString()
-                            transmissionTextView.text =
-                                response.body()!!.single_car.transmission.toString()
-                            engineTextView.text = response.body()!!.single_car.engine.toString()
-                            colorTextView.text = response.body()!!.single_car.color.toString()
-                            registrationTextView.text =
-                                response.body()!!.single_car.registration.toString()
-                            passengersTextView.text =
-                                response.body()!!.single_car.passengers.toString()
-                            companyTextView.text = response.body()!!.single_car.company.toString()
-                            priceTextView.text = response.body()!!.single_car.price.toString()
-                            doorsTextView.text = response.body()!!.single_car.doors.toString()
-                            driveOptionTextView.text = response.body()!!.single_car.drive.toString()
-                            feature1TextView.text =
-                                response.body()!!.single_car.feature_1.toString()
-                            feature2TextView.text =
-                                response.body()!!.single_car.feature_2.toString()
-                            feature3TextView.text =
-                                response.body()!!.single_car.feature_3.toString()
-                            feature4TextView.text =
-                                response.body()!!.single_car.feature_4.toString()
-                            feature5TextView.text =
-                                response.body()!!.single_car.feature_5.toString()
+                            binding.tvCarName.text = response.body()!!.single_car.car_name.toString()
+                            binding.tvStatus.text = response.body()!!.single_car.status.toString()
+                            binding.tvTransmission.text = response.body()!!.single_car.transmission.toString()
+                            binding.tvEngine.text = response.body()!!.single_car.engine.toString()
+                            binding.tvColor.text = response.body()!!.single_car.color.toString()
+                            binding.tvRegistration.text = response.body()!!.single_car.registration.toString()
+                            binding.tvPassengers.text = response.body()!!.single_car.passengers.toString()
+                            binding.tvCompany.text = response.body()!!.single_car.company.toString()
+                            binding.tvPrice.text = response.body()!!.single_car.price.toString()
+                            binding.tvDoors.text = response.body()!!.single_car.doors.toString()
+                            binding.tvDriveOption.text = response.body()!!.single_car.drive.toString()
+                            binding.tvFeature1.text = response.body()!!.single_car.feature_1.toString()
+                            binding.tvFeature2.text = response.body()!!.single_car.feature_2.toString()
+                            binding.tvFeature3.text = response.body()!!.single_car.feature_3.toString()
+                            binding.tvFeature4.text = response.body()!!.single_car.feature_4.toString()
+                            binding.tvFeature5.text = response.body()!!.single_car.feature_5.toString()
                         }
                     }
 
@@ -438,38 +356,34 @@ class DetailActivity : AppCompatActivity() {
     fun updateLabelFrom() {
         val myFormatFrom = "dd/MM/yyyy"
         val dateFormatFrom = SimpleDateFormat(myFormatFrom, Locale.US)
-        dateFrom?.setText(dateFormatFrom.format(myCalendarFrom.time))
+        binding.ETDFrom.setText(dateFormatFrom.format(myCalendarFrom.time))
     }
 
     //get date to
     fun updateLabelTo() {
         val myFormatTo = "dd/MM/yyyy"
         val dateFormatTo = SimpleDateFormat(myFormatTo, Locale.US)
-        dateTo?.setText(dateFormatTo.format(myCalendarTo.time))
+        binding.ETDTo.setText(dateFormatTo.format(myCalendarTo.time))
         differenceBetweenDays()
-
     }
 
     //get the difference between to and from
     fun differenceBetweenDays() {
-        val totalDays = findViewById<TextView>(R.id.tvTotalDays)
-
         val myFormat = SimpleDateFormat("dd/MM/yyyy", Locale.US)
-        val toDate = dateTo!!.text.toString()
-        val fromDate = dateFrom!!.text.toString()
+        val toDate = binding.ETDTo.text.toString()
+        val fromDate = binding.ETDFrom.text.toString()
 
         val fromDate1 = myFormat.parse(fromDate)
         val toDate2 = myFormat.parse(toDate)
         val diff = toDate2!!.time - fromDate1!!.time
         val days = (TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)).toString()
-        totalDays.text = days
+        binding.tvTotalDays.text = days
 
         multiplyPriceAndDays()
     }
 
     //multiply Price And Days
     fun multiplyPriceAndDays() {
-        val totalDays = findViewById<TextView>(R.id.tvTotalAmount)
         val price = tvPrice.text.toString()
         val noOfDays = tvTotalDays.text.toString()
         val finalPrice = price.toInt()
@@ -478,7 +392,7 @@ class DetailActivity : AppCompatActivity() {
         var total = StringBuilder().apply {
             append(finalPrice * finalNoOfDays)
         }
-        totalDays.text = total
+        binding.tvTotalAmount.text = total
     }
 
     //items selected from navigation view

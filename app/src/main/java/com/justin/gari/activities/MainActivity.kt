@@ -7,58 +7,47 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.Switch
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
 import com.justin.gari.SettingsManager
 import com.justin.gari.adapters.CarAdapter
 import com.justin.gari.api.ApiClient
+import com.justin.gari.databinding.ActivityMainBinding
 import com.justin.gari.models.carModels.CarModel
 import com.justin.gari.models.uploadImagesModel.SingleClientImageInfoResponse
 import com.squareup.picasso.Picasso
-import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.nav_header.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
     lateinit var toggle: ActionBarDrawerToggle
-    private lateinit var swipeRefresh: SwipeRefreshLayout
     private lateinit var apiClient: ApiClient
-    private val sharedPrefFile = "sharedPrefData"
-    private var theme: Switch? = null
     private lateinit var settingsManager: SettingsManager
+    private lateinit var binding: ActivityMainBinding
+    private val sharedPrefFile = "sharedPrefData"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         settingsManager = SettingsManager(this)
-        if (settingsManager.loadNightModeState()==true){
+        if (settingsManager.loadNightModeState() == true) {
             setTheme(R.style.DarkGari)
         } else
             setTheme(R.style.Gari)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
-        swipeRefresh = findViewById(R.id.swipeRefresh)
-        val sharedPreferences: SharedPreferences =
-            getSharedPreferences(sharedPrefFile, MODE_PRIVATE)
-        val shimmerFrameLayout = findViewById<ShimmerFrameLayout>(R.id.shimmerLayout);
-        shimmerFrameLayout.startShimmer();
+        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE)
+        binding.shimmerLayout.startShimmer();
 
-        swipeRefresh.setOnRefreshListener {
+        binding.swipeRefresh.setOnRefreshListener {
             getAllData()
         }
 
@@ -67,8 +56,8 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<CarModel>, response: Response<CarModel>) {
                 if (response.isSuccessful) {
                     recyclerview.apply {
-                        shimmerFrameLayout.stopShimmer();
-                        shimmerFrameLayout.visibility = View.GONE;
+                        binding.shimmerLayout.stopShimmer();
+                        binding.shimmerLayout.visibility = View.GONE;
                         layoutManager = LinearLayoutManager(this@MainActivity)
                         adapter = CarAdapter(response.body()!!.cars, context)
                     }
@@ -76,37 +65,28 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<CarModel>, t: Throwable) {
-                shimmerFrameLayout.stopShimmer();
-                shimmerFrameLayout.visibility = View.GONE;
-                Toast.makeText(this@MainActivity, "Check internet connectivity", Toast.LENGTH_LONG)
-                    .show()
+                binding.shimmerLayout.stopShimmer();
+                binding.shimmerLayout.visibility = View.GONE;
+                Toast.makeText(this@MainActivity, "Check internet connectivity", Toast.LENGTH_LONG).show()
                 Log.e("Gideon", "onFailure: ${t.message}")
             }
         })
 
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
-        drawerLayout.addDrawerListener(toggle)
+        binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val client_id = sharedPreferences.getString("client_id", "default")
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        apiClient.getApiService(this).getUserImageInfo(client_id)
-            .enqueue(object : Callback<SingleClientImageInfoResponse> {
-                override fun onResponse(
-                    call: Call<SingleClientImageInfoResponse>,
-                    response: Response<SingleClientImageInfoResponse>
-                ) {
+        apiClient.getApiService(this).getUserImageInfo(client_id).enqueue(object : Callback<SingleClientImageInfoResponse> {
+                override fun onResponse(call: Call<SingleClientImageInfoResponse>, response: Response<SingleClientImageInfoResponse>) {
                     if (response.isSuccessful) {
                         //fetching images to
-                        val userProfile =
-                            response.body()!!.single_clientInfo.user_photo_url.toString().trim()
+                        val userProfile = response.body()!!.single_clientInfo.user_photo_url.toString().trim()
                         editor.putString("userPhoto", userProfile)
-                        Log.e(
-                            "Gideon",
-                            "onSuccess: ${response.body()!!.single_clientInfo.user_photo_url}"
-                        )
+                        Log.e("Gideon", "onSuccess: ${response.body()!!.single_clientInfo.user_photo_url}")
                         editor.apply()
                     }
                 }
@@ -116,30 +96,25 @@ class MainActivity : AppCompatActivity() {
                 }
             })
 
-//        val profileHeader = sharedPreferences.getString("userPhoto", "default")
+        val profileHeader = sharedPreferences.getString("userPhoto", "default")
         val firstNameHeader = sharedPreferences.getString("first_name", "default")
         val lastNameHeader = sharedPreferences.getString("last_name", "default")
         val emailHeader = sharedPreferences.getString("email", "default")
-        val header: View = navView.getHeaderView(0)
-        val profileImage = header.findViewById(R.id.profile_image) as CircleImageView
-        val firstNameTv = header.findViewById<View>(R.id.firstName) as TextView
-        val lastNameTv = header.findViewById<View>(R.id.lastName) as TextView
-        val emailTv = header.findViewById<View>(R.id.email) as TextView
-        firstNameTv.text = firstNameHeader.toString()
-        lastNameTv.text = lastNameHeader.toString()
-        emailTv.text = emailHeader.toString()
+        val header = binding.navView.getHeaderView(0)
+        header.firstName.text = firstNameHeader.toString()
+        header.lastName.text = lastNameHeader.toString()
+        header.email.text = emailHeader.toString()
         Picasso.get()
-            .load(sharedPreferences.getString("userPhoto", "default"))
+            .load(profileHeader)
             .fit().centerCrop()
             .placeholder(R.drawable.user)
             .error(R.drawable.user)
-            .into(profileImage)
+            .into(header.profile_image)
 
-        val switchTheme = header.findViewById(R.id.themeSwitch) as Switch
-        if (settingsManager.loadNightModeState()==true){
-            switchTheme!!.isChecked=true
+        if (settingsManager.loadNightModeState() == true) {
+            header.themeSwitch!!.isChecked = true
         }
-        switchTheme!!.setOnCheckedChangeListener { _, isChecked ->
+        header.themeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 settingsManager.setNightModeState(true)
                 restartApp()
@@ -149,7 +124,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
+        binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
             Log.i(TAG, "onNavigationItemSelected: " + item.itemId)
             when (item.itemId) {
                 R.id.home -> {
@@ -183,7 +158,7 @@ class MainActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
             }
-            drawerLayout.closeDrawer(GravityCompat.START)
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
             Log.i(TAG, "onNavigationItemSelected: nothing clicked")
             false
         })
@@ -196,8 +171,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getAllData() {
-        if (swipeRefresh.isRefreshing) {
-            swipeRefresh.isRefreshing = false
+        if (binding.swipeRefresh.isRefreshing) {
+            binding.swipeRefresh.isRefreshing = false
 
             apiClient = ApiClient
             apiClient.getApiService(this).getAllCars().enqueue(object : Callback<CarModel> {
