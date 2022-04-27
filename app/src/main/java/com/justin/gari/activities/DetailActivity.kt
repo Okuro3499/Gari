@@ -19,6 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
+import com.justin.gari.SettingsManager
 import com.justin.gari.adapters.SliderPageAdapter
 import com.justin.gari.api.ApiClient
 import com.justin.gari.models.bookingCarModels.BookCar
@@ -26,6 +27,9 @@ import com.justin.gari.models.bookingCarModels.BookCarResponse
 import com.justin.gari.models.carModels.SingleCarModel
 import com.justin.gari.models.saveCarModels.SaveCar
 import com.justin.gari.models.saveCarModels.SaveCarResponse
+import com.justin.gari.models.uploadImagesModel.SingleClientImageInfoResponse
+import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.content_vehicles.*
 import retrofit2.Call
@@ -47,8 +51,16 @@ class DetailActivity : AppCompatActivity() {
     var selfDrive: RadioButton? = null
     var chauffeured: RadioButton? = null
     var selectedDrive: String? = null
+    private var theme: Switch? = null
+    private lateinit var settingsManager: SettingsManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        settingsManager = SettingsManager(this)
+        if (settingsManager.loadNightModeState()==true){
+            setTheme(R.style.DarkGari)
+        } else
+            setTheme(R.style.Gari)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
@@ -126,44 +138,44 @@ class DetailActivity : AppCompatActivity() {
         val carId = intent.getStringExtra("car_id")
         apiClient = ApiClient
         apiClient.getApiService(this).getCarDetails(carId).enqueue(object : Callback<SingleCarModel> {
-            override fun onResponse(call: Call<SingleCarModel>, response: Response<SingleCarModel>) {
-                if (response.isSuccessful) {
-                    //fetching images to slider
-                    val imageUrls = arrayOf(
-                        response.body()!!.single_car.front_view.toString(),
-                        response.body()!!.single_car.back_view.toString(),
-                        response.body()!!.single_car.right_view.toString(),
-                        response.body()!!.single_car.left_view.toString(),
-                        response.body()!!.single_car.interior_1.toString(),
-                        response.body()!!.single_car.interior_2.toString()
-                    )
+                override fun onResponse(call: Call<SingleCarModel>, response: Response<SingleCarModel>) {
+                    if (response.isSuccessful) {
+                        //fetching images to slider
+                        val imageUrls = arrayOf(
+                            response.body()!!.single_car.front_view.toString(),
+                            response.body()!!.single_car.back_view.toString(),
+                            response.body()!!.single_car.right_view.toString(),
+                            response.body()!!.single_car.left_view.toString(),
+                            response.body()!!.single_car.interior_1.toString(),
+                            response.body()!!.single_car.interior_2.toString()
+                        )
 
-                    val adapter = SliderPageAdapter(this@DetailActivity, imageUrls)
-                    viewPager.adapter = adapter
-                    //populate details textViews
-                    carNameTextView.text = response.body()!!.single_car.car_name.toString()
-                    statusTextView.text = response.body()!!.single_car.status.toString()
-                    transmissionTextView.text = response.body()!!.single_car.transmission.toString()
-                    engineTextView.text = response.body()!!.single_car.engine.toString()
-                    colorTextView.text = response.body()!!.single_car.color.toString()
-                    registrationTextView.text = response.body()!!.single_car.registration.toString()
-                    passengersTextView.text = response.body()!!.single_car.passengers.toString()
-                    companyTextView.text = response.body()!!.single_car.company.toString()
-                    priceTextView.text = response.body()!!.single_car.price.toString()
-                    doorsTextView.text = response.body()!!.single_car.doors.toString()
-                    driveOptionTextView.text = response.body()!!.single_car.drive.toString()
-                    feature1TextView.text = response.body()!!.single_car.feature_1.toString()
-                    feature2TextView.text = response.body()!!.single_car.feature_2.toString()
-                    feature3TextView.text = response.body()!!.single_car.feature_3.toString()
-                    feature4TextView.text = response.body()!!.single_car.feature_4.toString()
-                    feature5TextView.text = response.body()!!.single_car.feature_5.toString()
+                        val adapter = SliderPageAdapter(this@DetailActivity, imageUrls)
+                        viewPager.adapter = adapter
+                        //populate details textViews
+                        carNameTextView.text = response.body()!!.single_car.car_name.toString()
+                        statusTextView.text = response.body()!!.single_car.status.toString()
+                        transmissionTextView.text = response.body()!!.single_car.transmission.toString()
+                        engineTextView.text = response.body()!!.single_car.engine.toString()
+                        colorTextView.text = response.body()!!.single_car.color.toString()
+                        registrationTextView.text = response.body()!!.single_car.registration.toString()
+                        passengersTextView.text = response.body()!!.single_car.passengers.toString()
+                        companyTextView.text = response.body()!!.single_car.company.toString()
+                        priceTextView.text = response.body()!!.single_car.price.toString()
+                        doorsTextView.text = response.body()!!.single_car.doors.toString()
+                        driveOptionTextView.text = response.body()!!.single_car.drive.toString()
+                        feature1TextView.text = response.body()!!.single_car.feature_1.toString()
+                        feature2TextView.text = response.body()!!.single_car.feature_2.toString()
+                        feature3TextView.text = response.body()!!.single_car.feature_3.toString()
+                        feature4TextView.text = response.body()!!.single_car.feature_4.toString()
+                        feature5TextView.text = response.body()!!.single_car.feature_5.toString()
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<SingleCarModel>, t: Throwable) {
-                Log.e("Gideon", "onFailure: ${t.message}")
-            }
-        })
+                override fun onFailure(call: Call<SingleCarModel>, t: Throwable) {
+                    Log.e("Gideon", "onFailure: ${t.message}")
+                }
+            })
 
         //save car for future bookings
         val saveBt = findViewById<ImageButton>(R.id.ibSave)
@@ -172,18 +184,28 @@ class DetailActivity : AppCompatActivity() {
             val client_id = sharedPreferences.getString("client_id", "default")
             val saveInfo = SaveCar(car_id, client_id)
 
-            apiClient.getApiService(this).saveCar(saveInfo).enqueue(object : Callback<SaveCarResponse> {
-                override fun onResponse(call: Call<SaveCarResponse>, response: Response<SaveCarResponse>) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(this@DetailActivity,"Saved Successfully", Toast.LENGTH_LONG ).show()
-                        Log.e("Gideon", "onSuccess: ${response.body()}")
+            apiClient.getApiService(this).saveCar(saveInfo)
+                .enqueue(object : Callback<SaveCarResponse> {
+                    override fun onResponse(
+                        call: Call<SaveCarResponse>,
+                        response: Response<SaveCarResponse>
+                    ) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(
+                                this@DetailActivity,
+                                "Saved Successfully",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            Log.e("Gideon", "onSuccess: ${response.body()}")
+                        }
                     }
-                }
-                override fun onFailure(call: Call<SaveCarResponse>, t: Throwable) {
-                    Toast.makeText(this@DetailActivity, "${t.message}", Toast.LENGTH_LONG).show()
-                    Log.e("Gideon", "onFailure: ${t.message}")
-                }
-            })
+
+                    override fun onFailure(call: Call<SaveCarResponse>, t: Throwable) {
+                        Toast.makeText(this@DetailActivity, "${t.message}", Toast.LENGTH_LONG)
+                            .show()
+                        Log.e("Gideon", "onFailure: ${t.message}")
+                    }
+                })
         }
 
         //make car booking
@@ -208,46 +230,98 @@ class DetailActivity : AppCompatActivity() {
             val drive = selectedDrive
             val total_days = tvTotalDays.text.toString().trim()
             val total_amount = tvTotalAmount.text.toString().trim()
-            val bookingInfo = BookCar(car_id, client_id, book_date_from, book_date_to, destination, drive, total_days, total_amount)
+            val bookingInfo = BookCar(
+                car_id,
+                client_id,
+                book_date_from,
+                book_date_to,
+                destination,
+                drive,
+                total_days,
+                total_amount
+            )
 
             apiClient.getApiService(this).bookingCar(bookingInfo).enqueue(object : Callback<BookCarResponse> {
-                override fun onResponse(call: Call<BookCarResponse>, response: Response<BookCarResponse>) {
+                    override fun onResponse(call: Call<BookCarResponse>, response: Response<BookCarResponse>) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(this@DetailActivity, "Booked Successfully", Toast.LENGTH_LONG).show()
+                            Log.e("Gideon", "onSuccess: ${response.body()!!.book_car}")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<BookCarResponse>, t: Throwable) {
+                        Toast.makeText(this@DetailActivity, "${t.message}", Toast.LENGTH_LONG).show()
+                        Log.e("Gideon", "onFailure: ${t.message}")
+                    }
+                })
+
+            //val intent = Intent(this, LoginActivity::class.java)
+            //startActivity(intent)
+        }
+
+        val client_id = sharedPreferences.getString("client_id", "default")
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        apiClient.getApiService(this).getUserImageInfo(client_id).enqueue(object : Callback<SingleClientImageInfoResponse> {
+                override fun onResponse(call: Call<SingleClientImageInfoResponse>, response: Response<SingleClientImageInfoResponse>) {
                     if (response.isSuccessful) {
-                        Toast.makeText(this@DetailActivity,"Booked Successfully", Toast.LENGTH_LONG).show()
-                        Log.e("Gideon", "onSuccess: ${response.body()!!.book_car}")
+                        //fetching images to
+                        val userProfile = response.body()!!.single_clientInfo.user_photo_url.toString().trim()
+                        editor.putString("userPhoto", userProfile)
+                        editor.apply()
                     }
                 }
 
-                override fun onFailure(call: Call<BookCarResponse>, t: Throwable) {
-                    Toast.makeText(this@DetailActivity, "${t.message}", Toast.LENGTH_LONG).show()
+                override fun onFailure(call: Call<SingleClientImageInfoResponse>, t: Throwable) {
                     Log.e("Gideon", "onFailure: ${t.message}")
                 }
             })
 
-            //val intent = Intent(this, LoginActivity::class.java)
-            //startActivity(intent)
-            }
+
+//        val profileHeader = sharedPreferences.getString("userPhoto", "default")
 
         val firstNameHeader = sharedPreferences.getString("first_name", "default")
         val lastNameHeader = sharedPreferences.getString("last_name", "default")
         val emailHeader = sharedPreferences.getString("email", "default")
         val header: View = navView.getHeaderView(0)
+        val profileImage = header.findViewById(R.id.profile_image) as CircleImageView
         val firstNameTv = header.findViewById<View>(R.id.firstName) as TextView
         val lastNameTv = header.findViewById<View>(R.id.lastName) as TextView
         val emailTv = header.findViewById<View>(R.id.email) as TextView
         lastNameTv.text = lastNameHeader.toString()
         firstNameTv.text = firstNameHeader.toString()
         emailTv.text = emailHeader.toString()
+        Picasso.get()
+            .load(sharedPreferences.getString("userPhoto", "default"))
+            .fit().centerCrop()
+            .placeholder(R.drawable.user)
+            .error(R.drawable.user)
+            .into(profileImage)
+
+        val switchTheme = header.findViewById(R.id.themeSwitch) as Switch
+        if (settingsManager.loadNightModeState()==true){
+            switchTheme!!.isChecked=true
+        }
+        switchTheme!!.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                settingsManager.setNightModeState(true)
+                restartApp()
+            } else {
+                settingsManager.setNightModeState(false)
+                restartApp()
+            }
+        }
 
         //open side navigation view
         navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
             Log.i(ContentValues.TAG, "onNavigationItemSelected: " + item.itemId)
             when (item.itemId) {
-                R.id.home -> { startActivity(Intent(this@DetailActivity, MainActivity::class.java))
+                R.id.home -> {
+                    startActivity(Intent(this@DetailActivity, MainActivity::class.java))
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.profile -> {
-                    val intentProfile = Intent(this@DetailActivity, ProfileCompleteActivity::class.java)
+                    val intentProfile =
+                        Intent(this@DetailActivity, ProfileCompleteActivity::class.java)
                     startActivity(intentProfile)
                     return@OnNavigationItemSelectedListener true
                 }
@@ -278,6 +352,12 @@ class DetailActivity : AppCompatActivity() {
         })
     }
 
+    private fun restartApp() {
+        val i = Intent(applicationContext, DetailActivity::class.java)
+        startActivity(i)
+        finish()
+    }
+
     private fun getAllData() {
         val carNameTextView = findViewById<TextView>(R.id.tvCarName)
         val driveOptionTextView = findViewById<TextView>(R.id.tvDriveOption)
@@ -300,44 +380,57 @@ class DetailActivity : AppCompatActivity() {
             swipeRefresh.isRefreshing = false
 
             val carId = intent.getStringExtra("car_id")
-            apiClient.getApiService(this).getCarDetails(carId).enqueue(object : Callback<SingleCarModel> {
-                override fun onResponse(call: Call<SingleCarModel>, response: Response<SingleCarModel>) {
-                    if (response.isSuccessful) {
-                        //fetching images to slider
-                        val imageUrls = arrayOf(
-                            response.body()!!.single_car.front_view.toString(),
-                            response.body()!!.single_car.back_view.toString(),
-                            response.body()!!.single_car.right_view.toString(),
-                            response.body()!!.single_car.left_view.toString(),
-                            response.body()!!.single_car.interior_1.toString(),
-                            response.body()!!.single_car.interior_2.toString()
-                        )
+            apiClient.getApiService(this).getCarDetails(carId)
+                .enqueue(object : Callback<SingleCarModel> {
+                    override fun onResponse(
+                        call: Call<SingleCarModel>,
+                        response: Response<SingleCarModel>
+                    ) {
+                        if (response.isSuccessful) {
+                            //fetching images to slider
+                            val imageUrls = arrayOf(
+                                response.body()!!.single_car.front_view.toString(),
+                                response.body()!!.single_car.back_view.toString(),
+                                response.body()!!.single_car.right_view.toString(),
+                                response.body()!!.single_car.left_view.toString(),
+                                response.body()!!.single_car.interior_1.toString(),
+                                response.body()!!.single_car.interior_2.toString()
+                            )
 
-                        val adapter = SliderPageAdapter(this@DetailActivity, imageUrls)
-                        viewPager.adapter =  adapter
+                            val adapter = SliderPageAdapter(this@DetailActivity, imageUrls)
+                            viewPager.adapter = adapter
 
-                        carNameTextView.text = response.body()!!.single_car.car_name.toString()
-                        statusTextView.text = response.body()!!.single_car.status.toString()
-                        transmissionTextView.text = response.body()!!.single_car.transmission.toString()
-                        engineTextView.text = response.body()!!.single_car.engine.toString()
-                        colorTextView.text = response.body()!!.single_car.color.toString()
-                        registrationTextView.text = response.body()!!.single_car.registration.toString()
-                        passengersTextView.text = response.body()!!.single_car.passengers.toString()
-                        companyTextView.text = response.body()!!.single_car.company.toString()
-                        priceTextView.text = response.body()!!.single_car.price.toString()
-                        doorsTextView.text = response.body()!!.single_car.doors.toString()
-                        driveOptionTextView.text = response.body()!!.single_car.drive.toString()
-                        feature1TextView.text = response.body()!!.single_car.feature_1.toString()
-                        feature2TextView.text = response.body()!!.single_car.feature_2.toString()
-                        feature3TextView.text = response.body()!!.single_car.feature_3.toString()
-                        feature4TextView.text = response.body()!!.single_car.feature_4.toString()
-                        feature5TextView.text = response.body()!!.single_car.feature_5.toString()
+                            carNameTextView.text = response.body()!!.single_car.car_name.toString()
+                            statusTextView.text = response.body()!!.single_car.status.toString()
+                            transmissionTextView.text =
+                                response.body()!!.single_car.transmission.toString()
+                            engineTextView.text = response.body()!!.single_car.engine.toString()
+                            colorTextView.text = response.body()!!.single_car.color.toString()
+                            registrationTextView.text =
+                                response.body()!!.single_car.registration.toString()
+                            passengersTextView.text =
+                                response.body()!!.single_car.passengers.toString()
+                            companyTextView.text = response.body()!!.single_car.company.toString()
+                            priceTextView.text = response.body()!!.single_car.price.toString()
+                            doorsTextView.text = response.body()!!.single_car.doors.toString()
+                            driveOptionTextView.text = response.body()!!.single_car.drive.toString()
+                            feature1TextView.text =
+                                response.body()!!.single_car.feature_1.toString()
+                            feature2TextView.text =
+                                response.body()!!.single_car.feature_2.toString()
+                            feature3TextView.text =
+                                response.body()!!.single_car.feature_3.toString()
+                            feature4TextView.text =
+                                response.body()!!.single_car.feature_4.toString()
+                            feature5TextView.text =
+                                response.body()!!.single_car.feature_5.toString()
+                        }
                     }
-                }
-                override fun onFailure(call: Call<SingleCarModel>, t: Throwable) {
-                    Log.e("Gideon", "onFailure: ${t.message}")
-                }
-            })
+
+                    override fun onFailure(call: Call<SingleCarModel>, t: Throwable) {
+                        Log.e("Gideon", "onFailure: ${t.message}")
+                    }
+                })
         }
     }
 
@@ -374,6 +467,7 @@ class DetailActivity : AppCompatActivity() {
         multiplyPriceAndDays()
     }
 
+    //multiply Price And Days
     fun multiplyPriceAndDays() {
         val totalDays = findViewById<TextView>(R.id.tvTotalAmount)
         val price = tvPrice.text.toString()

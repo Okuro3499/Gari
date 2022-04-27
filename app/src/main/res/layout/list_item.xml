@@ -3,8 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="3dp"
-    app:cardElevation="3dp"
+    app:cardCornerRadius="10dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    app:cardElevation="6dp"
+    app:cardBackgroundColor="?attr/backgroundColor"
     app:cardUseCompatPadding="true">
 
     <RelativeLayout
@@ -25,7 +30,7 @@
             android:layout_marginTop="2dp"
             android:layout_toEndOf="@+id/tvImage"
             android:text="@string/model"
-            android:textColor="@color/black"
+            android:textColor="?attr/textColor"
             android:textSize="16.5sp"
             android:textStyle="bold" />
 
@@ -37,7 +42,7 @@
             android:layout_marginTop="2dp"
             android:layout_toEndOf="@+id/titleCarName"
             android:text="Toyota Premio"
-            android:textColor="@color/black"
+            android:textColor="?attr/textColor"
             android:textSize="16.5sp" />
 
         <TextView
@@ -49,7 +54,7 @@
             android:layout_marginTop="2dp"
             android:layout_toEndOf="@+id/tvImage"
             android:text="@string/drive"
-            android:textColor="@color/black"
+            android:textColor="?attr/textColor"
             android:textSize="16.5sp"
             android:textStyle="bold" />
 
@@ -62,7 +67,7 @@
             android:layout_marginTop="2dp"
             android:layout_toEndOf="@+id/titleDriveOption"
             android:text="Self Drive/Chauffered"
-            android:textColor="@color/black"
+            android:textColor="?attr/textColor"
             android:textSize="16.5sp" />
 
         <TextView
@@ -74,7 +79,7 @@
             android:layout_marginTop="2dp"
             android:layout_toEndOf="@+id/tvImage"
             android:text="@string/transmission"
-            android:textColor="@color/black"
+            android:textColor="?attr/textColor"
             android:textSize="16.5sp"
             android:textStyle="bold" />
 
@@ -87,7 +92,7 @@
             android:layout_marginTop="2dp"
             android:layout_toEndOf="@+id/titleTransmission"
             android:text="Automatic"
-            android:textColor="@color/black"
+            android:textColor="?attr/textColor"
             android:textSize="16.5sp"
              />
 
@@ -100,7 +105,7 @@
             android:layout_marginTop="2dp"
             android:layout_toEndOf="@+id/tvImage"
             android:text="@string/price"
-            android:textColor="@color/black"
+            android:textColor="?attr/textColor"
             android:textSize="16.5sp"
             android:textStyle="bold" />
 
@@ -113,7 +118,7 @@
             android:layout_marginTop="2dp"
             android:layout_toEndOf="@+id/titlePrice"
             android:text="3500"
-            android:textColor="@color/black"
+            android:textColor="?attr/textColor"
             android:textSize="16.5sp"/>
 
         <TextView
@@ -125,7 +130,7 @@
             android:layout_marginTop="2dp"
             android:layout_toEndOf="@+id/tvPrice"
             android:text="@string/per_day"
-            android:textColor="@color/black"
+            android:textColor="?attr/textColor"
             android:textSize="16.5sp"/>
 
         <TextView
@@ -137,7 +142,7 @@
             android:layout_marginTop="2dp"
             android:layout_toEndOf="@+id/tvImage"
             android:text="@string/status"
-            android:textColor="@color/black"
+            android:textColor="?attr/textColor"
             android:textSize="16.5sp"
             android:textStyle="bold" />
 
@@ -150,7 +155,7 @@
             android:layout_marginTop="2dp"
             android:layout_toEndOf="@+id/titleStatus"
             android:text="Available"
-            android:textColor="@color/green"
+            android:textColor="@color/md_green_800"
             android:textSize="16.5sp" />
 
     </RelativeLayout>

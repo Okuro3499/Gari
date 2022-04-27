@@ -23,7 +23,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="20dp"
                 android:text="@string/complete_profile"
-                android:textColor="@color/black"
+                android:textColor="?attr/textColor"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -35,7 +35,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="2dp"
                 android:text="@string/name"
-                android:textColor="@color/black"
+                android:textColor="?attr/textColor"
                 android:textSize="16.5sp"
                 android:textStyle="bold" />
 
@@ -46,7 +46,7 @@
                 android:layout_below="@+id/tvComplete"
                 android:layout_marginStart="60dp"
                 android:layout_marginTop="2dp"
-                android:textColor="@color/black"
+                android:textColor="?attr/textColor"
                 android:textSize="16.5sp" />
 
             <TextView
@@ -57,7 +57,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="2dp"
                 android:layout_toEndOf="@+id/tvFirstName"
-                android:textColor="@color/black"
+                android:textColor="?attr/textColor"
                 android:textSize="16.5sp" />
 
             <TextView
@@ -68,7 +68,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="2dp"
                 android:text="@string/email"
-                android:textColor="@color/black"
+                android:textColor="?attr/textColor"
                 android:textSize="16.5sp"
                 android:textStyle="bold" />
 
@@ -79,7 +79,7 @@
                 android:layout_below="@+id/tvFirstName"
                 android:layout_marginStart="60dp"
                 android:layout_marginTop="2dp"
-                android:textColor="@color/black"
+                android:textColor="?attr/textColor"
                 android:textSize="16.5sp" />
 
             <TextView
@@ -90,7 +90,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="2dp"
                 android:text="@string/mobile"
-                android:textColor="@color/black"
+                android:textColor="?attr/textColor"
                 android:textSize="16.5sp"
                 android:textStyle="bold" />
 
@@ -101,7 +101,7 @@
                 android:layout_below="@+id/tvEmail"
                 android:layout_marginStart="67dp"
                 android:layout_marginTop="2dp"
-                android:textColor="@color/black"
+                android:textColor="?attr/textColor"
                 android:textSize="16.5sp" />
 
             <TextView
@@ -112,7 +112,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="2dp"
                 android:text="@string/county"
-                android:textColor="@color/black"
+                android:textColor="?attr/textColor"
                 android:textSize="16.5sp"
                 android:textStyle="bold" />
 
@@ -123,7 +123,7 @@
                 android:layout_below="@+id/tvMobile"
                 android:layout_marginStart="69dp"
                 android:layout_marginTop="2dp"
-                android:textColor="@color/black"
+                android:textColor="?attr/textColor"
                 android:textSize="16.5sp" />
 
             <TextView
@@ -134,7 +134,7 @@
                 android:layout_marginStart="160dp"
                 android:layout_marginTop="2dp"
                 android:text="@string/district"
-                android:textColor="@color/black"
+                android:textColor="?attr/textColor"
                 android:textSize="16.5sp"
                 android:textStyle="bold" />
 
@@ -146,7 +146,7 @@
                 android:layout_marginStart="6dp"
                 android:layout_marginTop="2dp"
                 android:layout_toEndOf="@+id/titleDistrict"
-                android:textColor="@color/black"
+                android:textColor="?attr/textColor"
                 android:textSize="16.5sp" />
 
             <TextView
@@ -157,7 +157,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="2dp"
                 android:text="@string/estate"
-                android:textColor="@color/black"
+                android:textColor="?attr/textColor"
                 android:textSize="16.5sp"
                 android:textStyle="bold" />
 
@@ -168,7 +168,7 @@
                 android:layout_below="@+id/tvCounty"
                 android:layout_marginStart="65dp"
                 android:layout_marginTop="2dp"
-                android:textColor="@color/black"
+                android:textColor="?attr/textColor"
                 android:textSize="16.5sp" />
 
             <TextView
@@ -179,7 +179,7 @@
                 android:layout_marginStart="160dp"
                 android:layout_marginTop="2dp"
                 android:text="@string/landmark"
-                android:textColor="@color/black"
+                android:textColor="?attr/textColor"
                 android:textSize="16.5sp"
                 android:textStyle="bold" />
 
@@ -191,7 +191,7 @@
                 android:layout_marginStart="6dp"
                 android:layout_marginTop="2dp"
                 android:layout_toEndOf="@+id/titleLandmark"
-                android:textColor="@color/black"
+                android:textColor="?attr/textColor"
                 android:textSize="16.5sp" />
 
             <TextView
@@ -203,7 +203,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginTop="15dp"
                 android:text="@string/upload_scanned_photo_of_drivers_license"
-                android:textColor="@color/black"
+                android:textColor="?attr/textColor"
                 android:textSize="16.5sp" />
 
             <ImageView
@@ -236,7 +236,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginTop="10dp"
                 android:text="@string/upload_scanned_photo_of_identification_card_passport"
-                android:textColor="@color/black" />
+                android:textColor="?attr/textColor" />
 
             <ImageView
                 android:id="@+id/ivId"
@@ -266,7 +266,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginTop="10dp"
                 android:text="@string/upload_a_clear_image_showing_your_face"
-                android:textColor="@color/black" />
+                android:textColor="?attr/textColor" />
 
             <ImageView
                 android:id="@+id/ivPhoto"
@@ -295,7 +295,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/enter_emergency_contacts"
-                android:textColor="@color/black"
+                android:textColor="?attr/textColor"
                 android:textStyle="bold" />
 
             <TextView
@@ -306,7 +306,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/first_contact"
-                android:textColor="@color/black"
+                android:textColor="?attr/textColor"
                 android:textStyle="bold" />
 
             <EditText
@@ -323,7 +323,7 @@
                 android:inputType="text"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
-                android:textColor="@color/black" />
+                android:textColor="?attr/textColor" />
 
             <EditText
                 android:id="@+id/etRelationShip"
@@ -339,7 +339,7 @@
                 android:inputType="text"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
-                android:textColor="@color/black" />
+                android:textColor="?attr/textColor" />
 
             <EditText
                 android:id="@+id/etEmergencyMobile"
@@ -355,7 +355,7 @@
                 android:inputType="phone"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
-                android:textColor="@color/black" />
+                android:textColor="?attr/textColor" />
 
             <TextView
                 android:id="@+id/titleContact2"
@@ -365,7 +365,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/second_contact"
-                android:textColor="@color/black"
+                android:textColor="?attr/textColor"
                 android:textStyle="bold" />
 
             <EditText
@@ -382,7 +382,7 @@
                 android:inputType="text"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
-                android:textColor="@color/black" />
+                android:textColor="?attr/textColor" />
 
             <EditText
                 android:id="@+id/etRelationShip2"
@@ -398,7 +398,7 @@
                 android:inputType="text"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
-                android:textColor="@color/black" />
+                android:textColor="?attr/textColor" />
 
             <EditText
                 android:id="@+id/etEmergencyMobile2"
@@ -414,7 +414,7 @@
                 android:inputType="phone"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
-                android:textColor="@color/black" />
+                android:textColor="?attr/textColor" />
 
             <Button
                 android:id="@+id/btSubmit"

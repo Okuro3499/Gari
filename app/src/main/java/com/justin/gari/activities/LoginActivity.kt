@@ -1,5 +1,6 @@
 package com.justin.gari.activities
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -9,13 +10,13 @@ import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import com.justin.gari.R
+import com.justin.gari.SettingsManager
 import com.justin.gari.api.ApiClient
 import com.justin.gari.api.SessionManager
 import com.justin.gari.models.userModels.loginModel.UserLogin
 import com.justin.gari.models.userModels.loginModel.UserLoginResponse
-import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,19 +26,31 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var sessionManager: SessionManager
     private lateinit var apiClient: ApiClient
     private var showPass = false
+    private var theme: Switch? = null
+    private lateinit var settingsManager: SettingsManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        settingsManager = SettingsManager(this)
+        if (settingsManager.loadNightModeState()==true){
+            setTheme(R.style.DarkGari)
+        } else
+            setTheme(R.style.Gari)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         apiClient = ApiClient
         sessionManager = SessionManager(this)
-
         val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
 
         //Login into user account
         val loginButton = findViewById<Button>(R.id.btLogin)
         loginButton.setOnClickListener {
+            // display a progress dialog
+            val progressDialog = ProgressDialog(this@LoginActivity)
+            progressDialog.setCancelable(false) // set cancelable to false
+            progressDialog.setMessage("Logging in...") // set message
+            progressDialog.show()
+
             val email = findViewById<EditText>(R.id.etEmailAddress).text.toString().trim()
             val password = findViewById<EditText>(R.id.etPassword).text.toString().trim()
             val editor: SharedPreferences.Editor = sharedPreferences.edit()
@@ -46,7 +59,9 @@ class LoginActivity : AppCompatActivity() {
             apiClient.getApiService(this).loginUser(loginInfo).enqueue(object : Callback<UserLoginResponse> {
                 override fun onResponse(call: Call<UserLoginResponse>, response: Response<UserLoginResponse> ) {
                     if (response.isSuccessful) {
-                        Toast.makeText(this@LoginActivity, "Login Successful", Toast.LENGTH_LONG).show()
+                        progressDialog.dismiss()
+                        Snackbar.make(it, "Login Successful", Snackbar.LENGTH_SHORT).show()
+//                        Toast.makeText(this@LoginActivity, "Login Successful", Toast.LENGTH_LONG).show()
                         Log.e("Gideon", "onSuccess: ${response.body()}")
                         editor.putString("client_id", response.body()!!.user.client_id)
                         editor.putString("first_name", response.body()!!.user.first_name)
@@ -64,7 +79,9 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<UserLoginResponse>, t: Throwable) {
-                    Toast.makeText(this@LoginActivity, "${t.message}", Toast.LENGTH_LONG).show()
+                    progressDialog.dismiss()
+                    Snackbar.make(it, "${t.message}", Snackbar.LENGTH_SHORT).show()
+//                    Toast.makeText(this@LoginActivity, "${t.message}", Toast.LENGTH_LONG).show()
                     Log.e("Gideon", "onFailure: ${t.message}")
                 }
             })
