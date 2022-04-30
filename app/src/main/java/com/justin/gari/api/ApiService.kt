@@ -65,4 +65,7 @@ interface ApiService {
     @POST("/api/v1/userPhoto/uploadCloudinary")
     fun userPhotoCloudinary(@Part image: MultipartBody.Part): Call<UserPhotoCloudinaryResponse>
 
+    @GET("/api/v1/imageinfo/{client_id}")
+    fun getUserImageInfo(@Path("client_id") client_id: String?): Call<SingleClientImageInfoResponse>
+
 }

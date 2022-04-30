@@ -1,14 +1,13 @@
 package com.justin.gari.activities
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.justin.gari.R
+import com.justin.gari.SettingsManager
 import com.justin.gari.api.ApiClient
 import com.justin.gari.api.ApiService
 import com.justin.gari.models.userModels.signUpModel.NewUserData
@@ -19,13 +18,27 @@ import retrofit2.Response
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var apiClient: ApiClient
+    private var theme: Switch? = null
+    private lateinit var settingsManager: SettingsManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        settingsManager = SettingsManager(this)
+        if (settingsManager.loadNightModeState()==true){
+            setTheme(R.style.DarkGari)
+        } else
+            setTheme(R.style.Gari)
+        super.onCreate(savedInstanceState)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
         val registerButton = findViewById<Button>(R.id.btRegister)
         registerButton.setOnClickListener {
+            // display a progress dialog
+            val progressDialog = ProgressDialog(this@RegisterActivity)
+            progressDialog.setCancelable(false) // set cancelable to false
+            progressDialog.setMessage("Creating account...") // set message
+            progressDialog.show()
+
             val first_name = findViewById<EditText>(R.id.etFirstName).text.toString().trim()
             val last_name = findViewById<EditText>(R.id.etLastName).text.toString().trim()
             val email = findViewById<EditText>(R.id.etEmailAddress).text.toString().trim()
@@ -42,6 +55,7 @@ class RegisterActivity : AppCompatActivity() {
 
                 override fun onResponse(call: Call<NewUserResponse>, response: Response<NewUserResponse>) {
                     if (response.isSuccessful) {
+                        progressDialog.dismiss()
                         Toast.makeText(this@RegisterActivity, "Registration Successful", Toast.LENGTH_LONG).show()
                         Log.e("Gideon", "onSuccess: ${response.body()}")
 
@@ -51,6 +65,7 @@ class RegisterActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<NewUserResponse>, t: Throwable) {
+                    progressDialog.dismiss()
                     Toast.makeText(this@RegisterActivity, "Registration Failed", Toast.LENGTH_LONG).show()
                     Log.e("Gideon", "onFailure: ${t.message}")
                 }

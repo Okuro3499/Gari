@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/backgroundColor"
     tools:context=".activities.LoginActivity">
 
     <RelativeLayout
@@ -36,13 +37,13 @@
             android:inputType="textEmailAddress"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
-            android:textColor="@color/black" />
+            android:textColor="?attr/textColor" />
 
         <TextView
             android:id="@+id/errorEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/red"
+            android:textColor="@color/md_red_900"
             android:layout_marginStart="55dp"
             android:layout_centerVertical="true"
             android:layout_below="@+id/etEmailAddress"
@@ -65,10 +66,10 @@
             android:inputType="textPassword"
             android:paddingStart="12dp"
             android:paddingEnd="8dp"
-            android:textColor="@color/black" />
+            android:textColor="?attr/textColor" />
 
         <ImageView
-            android:id="@+id/password_toggle"
+            android:id="@+id/passwordToggle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/errorEmail"
@@ -84,7 +85,7 @@
             android:id="@+id/errorPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/red"
+            android:textColor="@color/md_red_900"
             android:layout_marginStart="55dp"
             app:counterEnabled="true"
             app:counterMaxLength="16"

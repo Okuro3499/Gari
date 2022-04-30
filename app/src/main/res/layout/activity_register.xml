@@ -31,7 +31,7 @@
         android:inputType="text"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
-        android:textColor="@color/black" />
+        android:textColor="?attr/textColor" />
 
     <EditText
         android:id="@+id/etLastName"
@@ -46,7 +46,7 @@
         android:inputType="text"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
-        android:textColor="@color/black" />
+        android:textColor="?attr/textColor" />
 
     <EditText
         android:id="@+id/etEmailAddress"
@@ -61,7 +61,7 @@
         android:inputType="textEmailAddress"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
-        android:textColor="@color/black" />
+        android:textColor="?attr/textColor" />
 
     <EditText
         android:id="@+id/etMobile"
@@ -76,7 +76,7 @@
         android:inputType="phone"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
-        android:textColor="@color/black" />
+        android:textColor="?attr/textColor" />
 
 
     <EditText
@@ -92,7 +92,7 @@
         android:inputType="text"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
-        android:textColor="@color/black" />
+        android:textColor="?attr/textColor" />
 
     <EditText
         android:id="@+id/etDistrict"
@@ -108,7 +108,7 @@
         android:inputType="text"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
-        android:textColor="@color/black" />
+        android:textColor="?attr/textColor" />
 
 
     <EditText
@@ -124,7 +124,7 @@
         android:inputType="text"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
-        android:textColor="@color/black" />
+        android:textColor="?attr/textColor" />
 
     <EditText
         android:id="@+id/etLandMark"
@@ -140,7 +140,7 @@
         android:inputType="text"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
-        android:textColor="@color/black" />
+        android:textColor="?attr/textColor" />
 
     <EditText
         android:id="@+id/etPassword"
@@ -155,7 +155,7 @@
         android:inputType="textPassword"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
-        android:textColor="@color/black" />
+        android:textColor="?attr/textColor" />
 
     <ImageButton
         android:id="@+id/ibShow"
@@ -166,7 +166,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="18dp"
         android:layout_toEndOf="@+id/etPassword"
-        android:background="@color/white"
+        android:background="@color/md_white_1000"
         app:srcCompat="@drawable/outline_visibility_black_24dp"
         android:contentDescription="@string/visibility_toggle" />
 
@@ -183,7 +183,7 @@
         android:inputType="textPassword"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
-        android:textColor="@color/black" />
+        android:textColor="?attr/textColor" />
 
     <Button
         android:id="@+id/btRegister"

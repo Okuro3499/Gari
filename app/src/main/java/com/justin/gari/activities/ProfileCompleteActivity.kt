@@ -18,10 +18,13 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
+import com.justin.gari.SettingsManager
 import com.justin.gari.URIPathHelper
 import com.justin.gari.api.ApiClient
 import com.justin.gari.models.uploadImagesModel.*
 import com.justin.gari.models.userModels.UserDetailsResponse
+import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -35,8 +38,15 @@ class ProfileCompleteActivity : AppCompatActivity() {
     lateinit var toggle: ActionBarDrawerToggle
     private val sharedPrefFile = "sharedPrefData"
     private lateinit var apiClient: ApiClient
+    private var theme: Switch? = null
+    private lateinit var settingsManager: SettingsManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        settingsManager = SettingsManager(this)
+        if (settingsManager.loadNightModeState()==true){
+            setTheme(R.style.DarkGari)
+        } else
+            setTheme(R.style.Gari)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_complete)
 
@@ -65,17 +75,57 @@ class ProfileCompleteActivity : AppCompatActivity() {
         toggle.syncState()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        val client_id = sharedPreferences.getString("client_id", "default")
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        apiClient.getApiService(this).getUserImageInfo(client_id).enqueue(object : Callback<SingleClientImageInfoResponse> {
+                override fun onResponse(call: Call<SingleClientImageInfoResponse>, response: Response<SingleClientImageInfoResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        //fetching images to
+                        val userProfile = response.body()!!.single_clientInfo.user_photo_url.toString().trim()
+                        editor.putString("userPhoto", userProfile)
+                        editor.apply()
+                    }
+                }
 
+                override fun onFailure(call: Call<SingleClientImageInfoResponse>, t: Throwable) {
+                    Log.e("Gideon", "onFailure: ${t.message}")
+                }
+            })
+
+        val profileHeader = sharedPreferences.getString("userPhoto", "default")
         val firstNameHeader = sharedPreferences.getString("first_name", "default")
         val lastNameHeader = sharedPreferences.getString("last_name", "default")
         val emailHeader = sharedPreferences.getString("email", "default")
         val header: View = navView.getHeaderView(0)
+        val profileImage = header.findViewById(R.id.profile_image) as CircleImageView
         val firstNameTv = header.findViewById<View>(R.id.firstName) as TextView
         firstNameTv.text = firstNameHeader.toString()
         val lastNameTv = header.findViewById<View>(R.id.lastName) as TextView
         lastNameTv.text = lastNameHeader.toString()
         val emailTv = header.findViewById<View>(R.id.email) as TextView
         emailTv.text = emailHeader.toString()
+
+        Picasso.get()
+            .load(sharedPreferences.getString("userPhoto", "default"))
+            .fit().centerCrop()
+            .placeholder(R.drawable.user)
+            .error(R.drawable.user)
+            .into(profileImage)
+
+        val switchTheme = header.findViewById(R.id.themeSwitch) as Switch
+        if (settingsManager.loadNightModeState()==true){
+            switchTheme!!.isChecked=true
+        }
+        switchTheme!!.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                settingsManager.setNightModeState(true)
+                restartApp()
+            } else {
+                settingsManager.setNightModeState(false)
+                restartApp()
+            }
+        }
 
         navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
             Log.i(ContentValues.TAG, "onNavigationItemSelected: " + item.itemId)
@@ -120,12 +170,8 @@ class ProfileCompleteActivity : AppCompatActivity() {
         })
 
         apiClient = ApiClient
-        apiClient.getApiService(this).getUserDetails(clientId)
-            .enqueue(object : Callback<UserDetailsResponse> {
-                override fun onResponse(
-                    call: Call<UserDetailsResponse>,
-                    response: Response<UserDetailsResponse>
-                ) {
+        apiClient.getApiService(this).getUserDetails(clientId).enqueue(object : Callback<UserDetailsResponse> {
+                override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
                     if (response.isSuccessful) {
                         Log.e("Gideon", "onSuccess: ${response.body()}")
                         firstName.text = response.body()!!.single_client.first_name.toString()
@@ -147,21 +193,14 @@ class ProfileCompleteActivity : AppCompatActivity() {
         btSubmit.setOnClickListener {
             val client_id = clientId.toString().trim()
             val contact1_name = findViewById<EditText>(R.id.etFullName).text.toString().trim()
-            val contact1_relationship =
-                findViewById<EditText>(R.id.etRelationShip).text.toString().trim()
-            val contact1_mobile =
-                findViewById<EditText>(R.id.etEmergencyMobile).text.toString().trim()
+            val contact1_relationship = findViewById<EditText>(R.id.etRelationShip).text.toString().trim()
+            val contact1_mobile = findViewById<EditText>(R.id.etEmergencyMobile).text.toString().trim()
             val contact2_name = findViewById<EditText>(R.id.etFullName2).text.toString().trim()
-            val contact2_relationship =
-                findViewById<EditText>(R.id.etRelationShip2).text.toString().trim()
-            val contact2_mobile =
-                findViewById<EditText>(R.id.etEmergencyMobile2).text.toString().trim()
-            val driver_licence_url =
-                sharedPreferences.getString("DlCloudinary", "default").toString().trim()
-            val national_id_url =
-                sharedPreferences.getString("nationalId", "default").toString().trim()
-            val user_photo_url =
-                sharedPreferences.getString("userPhoto", "default").toString().trim()
+            val contact2_relationship = findViewById<EditText>(R.id.etRelationShip2).text.toString().trim()
+            val contact2_mobile = findViewById<EditText>(R.id.etEmergencyMobile2).text.toString().trim()
+            val driver_licence_url = sharedPreferences.getString("DlCloudinary", "default").toString().trim()
+            val national_id_url = sharedPreferences.getString("nationalId", "default").toString().trim()
+            val user_photo_url = sharedPreferences.getString("userPhoto", "default").toString().trim()
 
             val contactInfo = Contacts(
                 client_id,
@@ -175,12 +214,8 @@ class ProfileCompleteActivity : AppCompatActivity() {
                 national_id_url,
                 user_photo_url
             )
-            apiClient.getApiService(this).contactUpdate(contactInfo)
-                .enqueue(object : Callback<ImageInfoResponse> {
-                    override fun onResponse(
-                        call: Call<ImageInfoResponse>,
-                        response: Response<ImageInfoResponse>
-                    ) {
+            apiClient.getApiService(this).contactUpdate(contactInfo).enqueue(object : Callback<ImageInfoResponse> {
+                    override fun onResponse(call: Call<ImageInfoResponse>, response: Response<ImageInfoResponse>) {
                         if (response.isSuccessful) {
                             Toast.makeText(
                                 this@ProfileCompleteActivity,
@@ -192,11 +227,7 @@ class ProfileCompleteActivity : AppCompatActivity() {
                     }
 
                     override fun onFailure(call: Call<ImageInfoResponse>, t: Throwable) {
-                        Toast.makeText(
-                            this@ProfileCompleteActivity,
-                            "${t.message}",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(this@ProfileCompleteActivity, "${t.message}", Toast.LENGTH_LONG).show()
                         Log.e("Gideon", "onFailure: ${t.message}")
                     }
                 })
@@ -216,6 +247,12 @@ class ProfileCompleteActivity : AppCompatActivity() {
             ImagePicker.with(this)
                 .start(2)
         }
+    }
+
+    private fun restartApp() {
+        val i = Intent(applicationContext, ProfileCompleteActivity::class.java)
+        startActivity(i)
+        finish()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -298,19 +335,11 @@ class ProfileCompleteActivity : AppCompatActivity() {
 
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
         val image = MultipartBody.Part.createFormData("image", file.name, driverLicense)
-        apiClient.getApiService(this).dlCloudinary(image)
-            .enqueue(object : Callback<DlCloudinaryResponse> {
-                override fun onResponse(
-                    call: Call<DlCloudinaryResponse>,
-                    response: Response<DlCloudinaryResponse>
-                ) {
+        apiClient.getApiService(this).dlCloudinary(image).enqueue(object : Callback<DlCloudinaryResponse> {
+                override fun onResponse(call: Call<DlCloudinaryResponse>, response: Response<DlCloudinaryResponse>) {
                     Log.e("Gideon", "cloudinary: $response")
                     if (response.isSuccessful) {
-                        Toast.makeText(
-                            this@ProfileCompleteActivity,
-                            "Driver license uploaded successful",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(this@ProfileCompleteActivity, "Driver license uploaded successful", Toast.LENGTH_SHORT).show()
                         editor.putString("DlCloudinary", response.body()!!.driverLicenceCloudinary)
                         editor.apply()
                     }
@@ -328,19 +357,11 @@ class ProfileCompleteActivity : AppCompatActivity() {
 
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
         val image = MultipartBody.Part.createFormData("image", file.name, identityCard)
-        apiClient.getApiService(this).idCloudinary(image)
-            .enqueue(object : Callback<IdCloudinaryResponse> {
-                override fun onResponse(
-                    call: Call<IdCloudinaryResponse>,
-                    response: Response<IdCloudinaryResponse>
-                ) {
+        apiClient.getApiService(this).idCloudinary(image).enqueue(object : Callback<IdCloudinaryResponse> {
+                override fun onResponse(call: Call<IdCloudinaryResponse>, response: Response<IdCloudinaryResponse>) {
                     Log.e("Gideon", "cloudinary: $response")
                     if (response.isSuccessful) {
-                        Toast.makeText(
-                            this@ProfileCompleteActivity,
-                            "national id uploaded successfully",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(this@ProfileCompleteActivity, "national id uploaded successfully", Toast.LENGTH_SHORT).show()
                         editor.putString("nationalId", response.body()!!.nationalIdCloudinary)
                         editor.apply()
                     }
@@ -358,19 +379,11 @@ class ProfileCompleteActivity : AppCompatActivity() {
 
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
         val image = MultipartBody.Part.createFormData("image", file.name, userPhoto)
-        apiClient.getApiService(this).userPhotoCloudinary(image)
-            .enqueue(object : Callback<UserPhotoCloudinaryResponse> {
-                override fun onResponse(
-                    call: Call<UserPhotoCloudinaryResponse>,
-                    response: Response<UserPhotoCloudinaryResponse>
-                ) {
+        apiClient.getApiService(this).userPhotoCloudinary(image).enqueue(object : Callback<UserPhotoCloudinaryResponse> {
+                override fun onResponse(call: Call<UserPhotoCloudinaryResponse>, response: Response<UserPhotoCloudinaryResponse>) {
                     Log.e("Gideon", "cloudinary: $response")
                     if (response.isSuccessful) {
-                        Toast.makeText(
-                            this@ProfileCompleteActivity,
-                            "User Photo uploaded successfully",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(this@ProfileCompleteActivity, "User Photo uploaded successfully", Toast.LENGTH_SHORT).show()
                         editor.putString("userPhoto", response.body()!!.userPhotoCloudinary)
                         editor.apply()
                     }

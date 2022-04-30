@@ -19,7 +19,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"
         android:text="@string/about_gari"
-        android:textColor="@color/black"
+        android:textColor="?attr/textColor"
         android:textStyle="bold" />
 
     <TextView
@@ -29,7 +29,7 @@
         android:layout_below="@id/tvAbout"
         android:layout_marginStart="20dp"
         android:text="@string/version"
-        android:textColor="@color/black"
+        android:textColor="?attr/textColor"
         android:textStyle="bold" />
 
     <TextView
@@ -40,7 +40,7 @@
         android:layout_marginStart="20dp"
         android:layout_toEndOf="@id/tvVersion"
         android:text="@string/_0_0_1"
-        android:textColor="@color/black"
+        android:textColor="?attr/textColor"
         android:textStyle="bold" />
 
     <ImageView
@@ -64,7 +64,7 @@
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@id/ivUpdate"
         android:text="@string/check_for_updates"
-        android:textColor="@color/black"
+        android:textColor="?attr/textColor"
         android:textStyle="bold" />
   </RelativeLayout>
 

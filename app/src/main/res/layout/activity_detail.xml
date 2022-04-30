@@ -5,6 +5,7 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/backgroundColor"
     tools:context=".activities.DetailActivity">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -14,33 +15,36 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="?attr/backgroundColor">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
                 <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/view_pager"
+                    android:id="@+id/viewPager"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     app:fillColor="#FFFFFFFF"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:pageColor="#00000000"
                     app:radius="6dp"
                     app:slideInterval="3000"
                     app:strokeColor="#FF777777"
-                    app:strokeWidth="1dp"
-                    />
+                    app:strokeWidth="1dp" />
 
                 <TextView
                     android:id="@+id/titleCarName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/view_pager"
+                    android:layout_below="@id/viewPager"
                     android:layout_marginStart="6dp"
                     android:layout_marginTop="2dp"
                     android:text="@string/model"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp"
                     android:textStyle="bold" />
 
@@ -48,11 +52,11 @@
                     android:id="@+id/tvCarName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/view_pager"
+                    android:layout_below="@id/viewPager"
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="2dp"
                     android:layout_toEndOf="@+id/titleCarName"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp" />
 
                 <TextView
@@ -63,7 +67,7 @@
                     android:layout_marginStart="6dp"
                     android:layout_marginTop="2dp"
                     android:text="@string/transmission"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp"
                     android:textStyle="bold" />
 
@@ -75,7 +79,7 @@
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="2dp"
                     android:layout_toEndOf="@+id/titleTransmission"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp" />
 
                 <TextView
@@ -86,7 +90,7 @@
                     android:layout_marginStart="6dp"
                     android:layout_marginTop="2dp"
                     android:text="@string/engine"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp"
                     android:textStyle="bold" />
 
@@ -98,7 +102,7 @@
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="2dp"
                     android:layout_toEndOf="@+id/titleEngine"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp" />
 
                 <TextView
@@ -109,7 +113,7 @@
                     android:layout_marginStart="6dp"
                     android:layout_marginTop="2dp"
                     android:text="@string/registration"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp"
                     android:textStyle="bold" />
 
@@ -121,7 +125,7 @@
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="2dp"
                     android:layout_toEndOf="@+id/titleRegistration"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp" />
 
                 <TextView
@@ -132,7 +136,7 @@
                     android:layout_marginStart="6dp"
                     android:layout_marginTop="2dp"
                     android:text="@string/drive"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp"
                     android:textStyle="bold" />
 
@@ -144,7 +148,7 @@
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="2dp"
                     android:layout_toEndOf="@id/titleDriveOption"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp" />
 
                 <ImageButton
@@ -155,19 +159,19 @@
                     android:layout_marginStart="40dp"
                     android:layout_marginTop="4dp"
                     android:layout_toEndOf="@id/tvDriveOption"
-                    android:background="@color/white"
-                    app:srcCompat="@drawable/ic_baseline_favorite_border_30"
-                    android:contentDescription="@string/save_button" />
+                    android:background="@color/md_white_1000"
+                    android:contentDescription="@string/save_button"
+                    app:srcCompat="@drawable/ic_baseline_favorite_border_30" />
 
                 <TextView
                     android:id="@+id/titleStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/view_pager"
+                    android:layout_below="@id/viewPager"
                     android:layout_marginStart="215dp"
                     android:layout_marginTop="2dp"
                     android:text="@string/status"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp"
                     android:textStyle="bold" />
 
@@ -175,11 +179,11 @@
                     android:id="@+id/tvStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/view_pager"
+                    android:layout_below="@id/viewPager"
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="2dp"
                     android:layout_toEndOf="@id/titleStatus"
-                    android:textColor="@color/green"
+                    android:textColor="@color/md_green_900"
                     android:textSize="16.5sp" />
 
                 <TextView
@@ -190,7 +194,7 @@
                     android:layout_marginStart="215dp"
                     android:layout_marginTop="2dp"
                     android:text="@string/color"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp"
                     android:textStyle="bold" />
 
@@ -202,7 +206,7 @@
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="2dp"
                     android:layout_toEndOf="@+id/titleColor"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp" />
 
                 <TextView
@@ -213,7 +217,7 @@
                     android:layout_marginStart="215dp"
                     android:layout_marginTop="2dp"
                     android:text="@string/passengers"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp"
                     android:textStyle="bold" />
 
@@ -225,7 +229,7 @@
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="2dp"
                     android:layout_toEndOf="@+id/titlePassengers"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp" />
 
                 <TextView
@@ -236,7 +240,7 @@
                     android:layout_marginStart="215dp"
                     android:layout_marginTop="2dp"
                     android:text="@string/doors"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp"
                     android:textStyle="bold" />
 
@@ -248,7 +252,7 @@
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="2dp"
                     android:layout_toEndOf="@id/titleDoors"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp" />
 
                 <TextView
@@ -259,7 +263,7 @@
                     android:layout_marginStart="6dp"
                     android:layout_marginTop="2dp"
                     android:text="@string/company"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp"
                     android:textStyle="bold" />
 
@@ -271,7 +275,7 @@
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="2dp"
                     android:layout_toEndOf="@id/titleCompany"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp" />
 
                 <TextView
@@ -282,7 +286,7 @@
                     android:layout_marginStart="6dp"
                     android:layout_marginTop="9dp"
                     android:text="@string/features"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp"
                     android:textStyle="bold" />
 
@@ -294,7 +298,7 @@
                     android:layout_marginStart="6dp"
                     android:layout_marginTop="2dp"
                     android:text="@string/_1"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp"
                     android:textStyle="bold" />
 
@@ -306,7 +310,7 @@
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="2dp"
                     android:layout_toEndOf="@id/titleFeature1"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp" />
 
                 <TextView
@@ -317,7 +321,7 @@
                     android:layout_marginStart="6dp"
                     android:layout_marginTop="2dp"
                     android:text="@string/_2"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp"
                     android:textStyle="bold" />
 
@@ -329,7 +333,7 @@
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="2dp"
                     android:layout_toEndOf="@id/titleFeature2"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp" />
 
                 <TextView
@@ -340,7 +344,7 @@
                     android:layout_marginStart="6dp"
                     android:layout_marginTop="2dp"
                     android:text="@string/_3"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp"
                     android:textStyle="bold" />
 
@@ -352,7 +356,7 @@
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="2dp"
                     android:layout_toEndOf="@id/titleFeature3"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp" />
 
                 <TextView
@@ -363,7 +367,7 @@
                     android:layout_marginStart="180dp"
                     android:layout_marginTop="2dp"
                     android:text="@string/_4"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp"
                     android:textStyle="bold" />
 
@@ -375,7 +379,7 @@
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="2dp"
                     android:layout_toEndOf="@id/titleFeature4"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp" />
 
                 <TextView
@@ -386,7 +390,7 @@
                     android:layout_marginStart="180dp"
                     android:layout_marginTop="2dp"
                     android:text="@string/_5"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp"
                     android:textStyle="bold" />
 
@@ -398,7 +402,7 @@
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="2dp"
                     android:layout_toEndOf="@id/titleFeature5"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp" />
 
                 <TextView
@@ -409,7 +413,7 @@
                     android:layout_marginStart="6dp"
                     android:layout_marginTop="9dp"
                     android:text="@string/book"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp"
                     android:textStyle="bold" />
 
@@ -421,7 +425,7 @@
                     android:layout_marginStart="6dp"
                     android:layout_marginTop="2dp"
                     android:text="@string/ksh"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp"
                     android:textStyle="bold" />
 
@@ -433,7 +437,7 @@
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="2dp"
                     android:layout_toEndOf="@id/titlePrice"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp" />
 
                 <TextView
@@ -445,7 +449,7 @@
                     android:layout_marginTop="2dp"
                     android:layout_toEndOf="@id/tvPrice"
                     android:text="@string/per_day"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp" />
 
                 <TextView
@@ -456,7 +460,7 @@
                     android:layout_marginStart="6dp"
                     android:layout_marginTop="2dp"
                     android:text="@string/from"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp"
                     android:textStyle="bold" />
 
@@ -467,6 +471,7 @@
                     android:layout_below="@id/titleFrom"
                     android:layout_marginStart="6dp"
                     android:layout_marginTop="2dp"
+                    android:autofillHints=""
                     android:background="@drawable/custom_input"
                     android:clickable="false"
                     android:cursorVisible="false"
@@ -478,10 +483,9 @@
                     android:hint="@string/dd_mm_yyyy"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/underline"
-                    android:textSize="16.5sp"
-                    android:autofillHints="" />
+                    android:textColor="?attr/textColor"
+                    android:textColorHint="@color/md_grey_600"
+                    android:textSize="16.5sp" />
 
                 <TextView
                     android:id="@+id/titleTo"
@@ -491,7 +495,7 @@
                     android:layout_marginStart="180dp"
                     android:layout_marginTop="2dp"
                     android:text="@string/to"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp"
                     android:textStyle="bold" />
 
@@ -502,6 +506,7 @@
                     android:layout_below="@id/titleTo"
                     android:layout_marginStart="180dp"
                     android:layout_marginTop="2dp"
+                    android:autofillHints=""
                     android:background="@drawable/custom_input"
                     android:clickable="false"
                     android:cursorVisible="false"
@@ -514,10 +519,9 @@
                     android:hint="@string/dd_mm_yyyy"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/underline"
-                    android:textSize="16.5sp"
-                    android:autofillHints="" />
+                    android:textColor="?attr/textColor"
+                    android:textColorHint="@color/md_grey_600"
+                    android:textSize="16.5sp" />
 
                 <TextView
                     android:id="@+id/titleTotal"
@@ -527,7 +531,7 @@
                     android:layout_marginStart="6dp"
                     android:layout_marginTop="2dp"
                     android:text="@string/total"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp"
                     android:textStyle="bold" />
 
@@ -540,7 +544,7 @@
                     android:layout_marginTop="2dp"
                     android:layout_toEndOf="@id/titleTotal"
                     android:text="@string/_0"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp" />
 
                 <TextView
@@ -552,7 +556,7 @@
                     android:layout_marginTop="2dp"
                     android:layout_toEndOf="@id/tvTotalDays"
                     android:text="@string/days"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp" />
 
                 <TextView
@@ -564,7 +568,7 @@
                     android:layout_marginTop="2dp"
                     android:layout_toEndOf="@id/titleDays"
                     android:text="@string/ksh"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp" />
 
                 <TextView
@@ -576,7 +580,7 @@
                     android:layout_marginTop="2dp"
                     android:layout_toEndOf="@id/titleAmount"
                     android:text="@string/_0"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp" />
 
                 <TextView
@@ -587,7 +591,7 @@
                     android:layout_marginStart="6dp"
                     android:layout_marginTop="12dp"
                     android:text="@string/drive"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp"
                     android:textStyle="bold" />
 
@@ -624,7 +628,7 @@
                     android:layout_marginStart="6dp"
                     android:layout_marginTop="10dp"
                     android:text="@string/destination"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/textColor"
                     android:textSize="16.5sp"
                     android:textStyle="bold" />
 
@@ -636,11 +640,11 @@
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="10dp"
                     android:layout_toEndOf="@+id/titleDestination"
-                    android:background="@drawable/custom_input"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
                     android:autofillHints=""
-                    android:inputType="text" />
+                    android:background="@drawable/custom_input"
+                    android:inputType="text"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp" />
 
                 <Button
                     android:id="@+id/btBook"
@@ -656,10 +660,74 @@
             </RelativeLayout>
         </ScrollView>
 
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/ltModel"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="10dp"-->
+        <!--            android:layout_marginTop="2dp"-->
+        <!--            android:orientation="horizontal"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/viewPager">-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/titleCarName"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginTop="2dp"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:text="@string/model"-->
+        <!--                android:textColor="?attr/textColor"-->
+        <!--                android:textSize="16.5sp"-->
+        <!--                android:textStyle="bold" />-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/tvCarName"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginStart="2dp"-->
+        <!--                android:layout_marginTop="2dp"-->
+        <!--                android:text="Toyota Noah"-->
+        <!--                android:textColor="?attr/textColor"-->
+        <!--                android:textSize="16.5sp" />-->
+
+
+        <!--        </LinearLayout>-->
+
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/ltStatus"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toEndOf="@+id/ltModel"-->
+        <!--            app:layout_constraintTop_toTopOf="@+id/ltModel">-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/titleStatus"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginTop="2dp"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:text="@string/status"-->
+        <!--                android:textColor="?attr/textColor"-->
+        <!--                android:textSize="16.5sp"-->
+        <!--                android:textStyle="bold" />-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/tvStatus"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginStart="2dp"-->
+        <!--                android:layout_marginTop="2dp"-->
+        <!--                android:text="Available"-->
+        <!--                android:textColor="@color/md_green_900"-->
+        <!--                android:textSize="16.5sp" />-->
+        <!--        </LinearLayout>-->
+
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
+        android:id="@+id/navView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"

@@ -1,32 +1,47 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.Gari" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
-        <!-- Customize your theme here. -->
-    </style>
+<!--    &lt;!&ndash; Base application theme. &ndash;&gt;-->
+<!--    <style name="Theme.Gari" parent="Theme.AppCompat.Light">-->
+<!--        &lt;!&ndash; Primary brand color. &ndash;&gt;-->
+<!--        <item name="colorPrimary">@color/md_pink_400</item>-->
+<!--        <item name="colorPrimaryVariant">@color/md_pink_500</item>-->
+<!--        <item name="colorOnPrimary">@color/md_white_1000</item>-->
+<!--        &lt;!&ndash; Secondary brand color. &ndash;&gt;-->
+<!--        <item name="colorSecondary">@color/md_pink_900</item>-->
+<!--        <item name="colorSecondaryVariant">@color/md_pink_A100</item>-->
+<!--        <item name="colorOnSecondary">@color/md_black_1000</item>-->
+<!--        &lt;!&ndash; Status bar color. &ndash;&gt;-->
+<!--        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>-->
+<!--        <item name="textColor">@color/md_black_1000</item>-->
+<!--    </style>-->
 
-    <style name="Theme.Gari_NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
-        <!-- Customize your theme here. -->
-    </style>
+<!--    <style name="Theme.DarkGari" parent="ThemeOverlay.MaterialComponents.Dark">-->
+<!--        &lt;!&ndash; Primary brand color. &ndash;&gt;-->
+<!--        <item name="colorPrimary">@color/md_pink_400</item>-->
+<!--        <item name="colorPrimaryVariant">@color/md_pink_500</item>-->
+<!--        <item name="colorOnPrimary">@color/md_white_1000</item>-->
+<!--        &lt;!&ndash; Secondary brand color. &ndash;&gt;-->
+<!--        <item name="colorSecondary">@color/md_pink_900</item>-->
+<!--        <item name="colorSecondaryVariant">@color/md_pink_A100</item>-->
+<!--        <item name="colorOnSecondary">@color/md_black_1000</item>-->
+<!--        &lt;!&ndash; Status bar color. &ndash;&gt;-->
+<!--        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>-->
+<!--        <item name="textColor">@color/md_white_1000</item>-->
+
+<!--    </style>-->
+
+<!--    <style name="Theme.Gari_NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">-->
+<!--        <item name="windowActionBar">false</item>-->
+<!--        <item name="windowNoTitle">true</item>-->
+<!--        &lt;!&ndash; Primary brand color. &ndash;&gt;-->
+<!--        <item name="colorPrimary">@color/md_pink_400</item>-->
+<!--        <item name="colorPrimaryVariant">@color/md_pink_500</item>-->
+<!--        <item name="colorOnPrimary">@color/md_white_1000</item>-->
+<!--        &lt;!&ndash; Secondary brand color. &ndash;&gt;-->
+<!--        <item name="colorSecondary">@color/md_pink_900</item>-->
+<!--        <item name="colorSecondaryVariant">@color/md_pink_A100</item>-->
+<!--        <item name="colorOnSecondary">@color/md_black_1000</item>-->
+<!--        &lt;!&ndash; Status bar color. &ndash;&gt;-->
+<!--        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>-->
+<!--        &lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+<!--    </style>-->
 </resources>
