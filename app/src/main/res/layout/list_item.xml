@@ -31,7 +31,7 @@
             android:layout_toEndOf="@+id/tvImage"
             android:text="@string/model"
             android:textColor="?attr/textColor"
-            android:textSize="16.5sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <TextView
@@ -43,7 +43,7 @@
             android:layout_toEndOf="@+id/titleCarName"
             android:text="Toyota Premio"
             android:textColor="?attr/textColor"
-            android:textSize="16.5sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/titleDriveOption"
@@ -55,7 +55,7 @@
             android:layout_toEndOf="@+id/tvImage"
             android:text="@string/drive"
             android:textColor="?attr/textColor"
-            android:textSize="16.5sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <TextView
@@ -68,7 +68,7 @@
             android:layout_toEndOf="@+id/titleDriveOption"
             android:text="Self Drive/Chauffered"
             android:textColor="?attr/textColor"
-            android:textSize="16.5sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/titleTransmission"
@@ -80,7 +80,7 @@
             android:layout_toEndOf="@+id/tvImage"
             android:text="@string/transmission"
             android:textColor="?attr/textColor"
-            android:textSize="16.5sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <TextView
@@ -93,7 +93,7 @@
             android:layout_toEndOf="@+id/titleTransmission"
             android:text="Automatic"
             android:textColor="?attr/textColor"
-            android:textSize="16.5sp"
+            android:textSize="14sp"
              />
 
         <TextView
@@ -106,7 +106,7 @@
             android:layout_toEndOf="@+id/tvImage"
             android:text="@string/price"
             android:textColor="?attr/textColor"
-            android:textSize="16.5sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <TextView
@@ -119,7 +119,7 @@
             android:layout_toEndOf="@+id/titlePrice"
             android:text="3500"
             android:textColor="?attr/textColor"
-            android:textSize="16.5sp"/>
+            android:textSize="14sp"/>
 
         <TextView
             android:id="@+id/titleRate"
@@ -131,7 +131,7 @@
             android:layout_toEndOf="@+id/tvPrice"
             android:text="@string/per_day"
             android:textColor="?attr/textColor"
-            android:textSize="16.5sp"/>
+            android:textSize="14sp"/>
 
         <TextView
             android:id="@+id/titleStatus"
@@ -143,7 +143,7 @@
             android:layout_toEndOf="@+id/tvImage"
             android:text="@string/status"
             android:textColor="?attr/textColor"
-            android:textSize="16.5sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <TextView
@@ -156,7 +156,7 @@
             android:layout_toEndOf="@+id/titleStatus"
             android:text="Available"
             android:textColor="@color/md_green_800"
-            android:textSize="16.5sp" />
+            android:textSize="14sp" />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

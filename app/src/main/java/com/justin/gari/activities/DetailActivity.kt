@@ -49,8 +49,8 @@ class DetailActivity : AppCompatActivity() {
         settingsManager = SettingsManager(this)
         if (settingsManager.loadNightModeState() == true) {
             setTheme(R.style.DarkGari)
-        } else
-            setTheme(R.style.Gari)
+        }
+        else setTheme(R.style.Gari)
 
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
@@ -104,46 +104,7 @@ class DetailActivity : AppCompatActivity() {
         //get car details
         //receiving intents
         val carId = intent.getStringExtra("car_id")
-        apiClient = ApiClient
-        apiClient.getApiService(this).getCarDetails(carId).enqueue(object : Callback<SingleCarModel> {
-                override fun onResponse(call: Call<SingleCarModel>, response: Response<SingleCarModel>) {
-                    if (response.isSuccessful) {
-                        //fetching images to slider
-                        val imageUrls = arrayOf(
-                            response.body()!!.single_car.front_view.toString(),
-                            response.body()!!.single_car.back_view.toString(),
-                            response.body()!!.single_car.right_view.toString(),
-                            response.body()!!.single_car.left_view.toString(),
-                            response.body()!!.single_car.interior_1.toString(),
-                            response.body()!!.single_car.interior_2.toString()
-                        )
-
-                        val adapter = SliderPageAdapter(this@DetailActivity, imageUrls)
-                        binding.viewPager.adapter = adapter
-                        //populate details textViews
-                        binding.tvCarName.text = response.body()!!.single_car.car_name.toString()
-                        binding.tvStatus.text = response.body()!!.single_car.status.toString()
-                        binding.tvTransmission.text = response.body()!!.single_car.transmission.toString()
-                        binding.tvEngine.text = response.body()!!.single_car.engine.toString()
-                        binding.tvColor.text = response.body()!!.single_car.color.toString()
-                        binding.tvRegistration.text = response.body()!!.single_car.registration.toString()
-                        binding.tvPassengers.text = response.body()!!.single_car.passengers.toString()
-                        binding.tvCompany.text = response.body()!!.single_car.company.toString()
-                        binding.tvPrice.text = response.body()!!.single_car.price.toString()
-                        binding.tvDoors.text = response.body()!!.single_car.doors.toString()
-                        binding.tvDriveOption.text = response.body()!!.single_car.drive.toString()
-                        binding.tvFeature1.text = response.body()!!.single_car.feature_1.toString()
-                        binding.tvFeature2.text = response.body()!!.single_car.feature_2.toString()
-                        binding.tvFeature3.text = response.body()!!.single_car.feature_3.toString()
-                        binding.tvFeature4.text = response.body()!!.single_car.feature_4.toString()
-                        binding.tvFeature5.text = response.body()!!.single_car.feature_5.toString()
-                    }
-                }
-
-                override fun onFailure(call: Call<SingleCarModel>, t: Throwable) {
-                    Log.e("Gideon", "onFailure: ${t.message}")
-                }
-            })
+        getCarDetails()
 
         //save car for future bookings
         binding.ibSave.setOnClickListener {
@@ -171,7 +132,8 @@ class DetailActivity : AppCompatActivity() {
             //selected radio button
             if (binding.radioSelfDrive.isChecked) {
                 selectedDrive = binding.radioSelfDrive.text.toString()
-            } else if (binding.radioChauffeured.isChecked) {
+            }
+            else if (binding.radioChauffeured.isChecked) {
                 selectedDrive = binding.radioChauffeured.text.toString()
             }
 
@@ -187,16 +149,7 @@ class DetailActivity : AppCompatActivity() {
             val drive = selectedDrive
             val total_days = tvTotalDays.text.toString().trim()
             val total_amount = tvTotalAmount.text.toString().trim()
-            val bookingInfo = BookCar(
-                car_id,
-                client_id,
-                book_date_from,
-                book_date_to,
-                destination,
-                drive,
-                total_days,
-                total_amount
-            )
+            val bookingInfo = BookCar(car_id, client_id, book_date_from, book_date_to, destination, drive, total_days, total_amount)
 
             apiClient.getApiService(this).bookingCar(bookingInfo).enqueue(object : Callback<BookCarResponse> {
                     override fun onResponse(call: Call<BookCarResponse>, response: Response<BookCarResponse>) {
@@ -218,20 +171,20 @@ class DetailActivity : AppCompatActivity() {
 
         val client_id = sharedPreferences.getString("client_id", "default")
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        apiClient.getApiService(this).getUserImageInfo(client_id).enqueue(object : Callback<SingleClientImageInfoResponse> {
-                override fun onResponse(call: Call<SingleClientImageInfoResponse>, response: Response<SingleClientImageInfoResponse>) {
-                    if (response.isSuccessful) {
-                        //fetching images to
-                        val userProfile = response.body()!!.single_clientInfo.user_photo_url.toString().trim()
-                        editor.putString("userPhoto", userProfile)
-                        editor.apply()
-                    }
-                }
-
-                override fun onFailure(call: Call<SingleClientImageInfoResponse>, t: Throwable) {
-                    Log.e("Gideon", "onFailure: ${t.message}")
-                }
-            })
+//        apiClient.getApiService(this).getUserImageInfo(client_id).enqueue(object : Callback<SingleClientImageInfoResponse> {
+//                override fun onResponse(call: Call<SingleClientImageInfoResponse>, response: Response<SingleClientImageInfoResponse>) {
+//                    if (response.isSuccessful) {
+//                        //fetching images to
+//                        val userProfile = response.body()!!.single_clientInfo.user_photo_url.toString().trim()
+//                        editor.putString("userPhoto", userProfile)
+//                        editor.apply()
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<SingleClientImageInfoResponse>, t: Throwable) {
+//                    Log.e("Gideon", "onFailure: ${t.message}")
+//                }
+//            })
         val profileHeader = sharedPreferences.getString("userPhoto", "default")
         val firstNameHeader = sharedPreferences.getString("first_name", "default")
         val lastNameHeader = sharedPreferences.getString("last_name", "default")
@@ -254,7 +207,8 @@ class DetailActivity : AppCompatActivity() {
             if (isChecked) {
                 settingsManager.setNightModeState(true)
                 restartApp()
-            } else {
+            }
+            else {
                 settingsManager.setNightModeState(false)
                 restartApp()
             }
@@ -299,6 +253,51 @@ class DetailActivity : AppCompatActivity() {
         })
     }
 
+    private fun getCarDetails() {
+        apiClient = ApiClient
+        val carId = intent.getStringExtra("car_id")
+        apiClient.getApiService(this).getCarDetails(carId).enqueue(object : Callback<SingleCarModel> {
+            override fun onResponse(call: Call<SingleCarModel>, response: Response<SingleCarModel>) {
+                if (response.isSuccessful) {
+                    //fetching images to slider
+                    val imageUrls = arrayOf(
+                        response.body()!!.single_car.front_view.toString(),
+                        response.body()!!.single_car.back_view.toString(),
+                        response.body()!!.single_car.right_view.toString(),
+                        response.body()!!.single_car.left_view.toString(),
+                        response.body()!!.single_car.interior_1.toString(),
+                        response.body()!!.single_car.interior_2.toString()
+                    )
+
+                    val adapter = SliderPageAdapter(this@DetailActivity, imageUrls)
+                    binding.viewPager.adapter = adapter
+
+                    binding.tvCarName.text =response.body()!!.single_car.car_name.toString()
+                    binding.tvStatus.text = response.body()!!.single_car.status.toString()
+                    binding.tvTransmission.text = response.body()!!.single_car.transmission.toString()
+                    binding.tvEngine.text = response.body()!!.single_car.engine.toString()
+                    binding.tvColor.text = response.body()!!.single_car.color.toString()
+                    binding.tvRegistration.text = response.body()!!.single_car.registration.toString()
+                    binding.tvPassengers.text = response.body()!!.single_car.passengers.toString()
+                    binding.tvCompany.text = response.body()!!.single_car.company.toString()
+                    binding.tvPrice.text = response.body()!!.single_car.price.toString()
+                    binding.tvDoors.text = response.body()!!.single_car.doors.toString()
+                    binding.tvDriveOption.text = response.body()!!.single_car.drive.toString()
+                    binding.tvFeature1.text = response.body()!!.single_car.feature_1.toString()
+                    binding.tvFeature2.text = response.body()!!.single_car.feature_2.toString()
+                    binding.tvFeature3.text = response.body()!!.single_car.feature_3.toString()
+                    binding.tvFeature4.text = response.body()!!.single_car.feature_4.toString()
+                    binding.tvFeature5.text = response.body()!!.single_car.feature_5.toString()
+                }
+            }
+
+            override fun onFailure(call: Call<SingleCarModel>, t: Throwable) {
+                Log.e("Gideon", "onFailure: ${t.message}")
+            }
+        })
+
+    }
+
     private fun restartApp() {
         val i = Intent(applicationContext, DetailActivity::class.java)
         startActivity(i)
@@ -309,46 +308,7 @@ class DetailActivity : AppCompatActivity() {
         if (binding.swipeRefresh.isRefreshing) {
             binding.swipeRefresh.isRefreshing = false
 
-            val carId = intent.getStringExtra("car_id")
-            apiClient.getApiService(this).getCarDetails(carId).enqueue(object : Callback<SingleCarModel> {
-                    override fun onResponse(call: Call<SingleCarModel>, response: Response<SingleCarModel>) {
-                        if (response.isSuccessful) {
-                            //fetching images to slider
-                            val imageUrls = arrayOf(
-                                response.body()!!.single_car.front_view.toString(),
-                                response.body()!!.single_car.back_view.toString(),
-                                response.body()!!.single_car.right_view.toString(),
-                                response.body()!!.single_car.left_view.toString(),
-                                response.body()!!.single_car.interior_1.toString(),
-                                response.body()!!.single_car.interior_2.toString()
-                            )
-
-                            val adapter = SliderPageAdapter(this@DetailActivity, imageUrls)
-                            binding.viewPager.adapter = adapter
-
-                            binding.tvCarName.text = response.body()!!.single_car.car_name.toString()
-                            binding.tvStatus.text = response.body()!!.single_car.status.toString()
-                            binding.tvTransmission.text = response.body()!!.single_car.transmission.toString()
-                            binding.tvEngine.text = response.body()!!.single_car.engine.toString()
-                            binding.tvColor.text = response.body()!!.single_car.color.toString()
-                            binding.tvRegistration.text = response.body()!!.single_car.registration.toString()
-                            binding.tvPassengers.text = response.body()!!.single_car.passengers.toString()
-                            binding.tvCompany.text = response.body()!!.single_car.company.toString()
-                            binding.tvPrice.text = response.body()!!.single_car.price.toString()
-                            binding.tvDoors.text = response.body()!!.single_car.doors.toString()
-                            binding.tvDriveOption.text = response.body()!!.single_car.drive.toString()
-                            binding.tvFeature1.text = response.body()!!.single_car.feature_1.toString()
-                            binding.tvFeature2.text = response.body()!!.single_car.feature_2.toString()
-                            binding.tvFeature3.text = response.body()!!.single_car.feature_3.toString()
-                            binding.tvFeature4.text = response.body()!!.single_car.feature_4.toString()
-                            binding.tvFeature5.text = response.body()!!.single_car.feature_5.toString()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<SingleCarModel>, t: Throwable) {
-                        Log.e("Gideon", "onFailure: ${t.message}")
-                    }
-                })
+            getCarDetails()
         }
     }
 

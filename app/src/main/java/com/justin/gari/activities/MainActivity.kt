@@ -38,8 +38,8 @@ class MainActivity : AppCompatActivity() {
         settingsManager = SettingsManager(this)
         if (settingsManager.loadNightModeState() == true) {
             setTheme(R.style.DarkGari)
-        } else
-            setTheme(R.style.Gari)
+        }
+        else setTheme(R.style.Gari)
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -51,26 +51,9 @@ class MainActivity : AppCompatActivity() {
             getAllData()
         }
 
-        apiClient = ApiClient
-        apiClient.getApiService(this).getAllCars().enqueue(object : Callback<CarModel> {
-            override fun onResponse(call: Call<CarModel>, response: Response<CarModel>) {
-                if (response.isSuccessful) {
-                    recyclerview.apply {
-                        binding.shimmerLayout.stopShimmer();
-                        binding.shimmerLayout.visibility = View.GONE;
-                        layoutManager = LinearLayoutManager(this@MainActivity)
-                        adapter = CarAdapter(response.body()!!.cars, context)
-                    }
-                }
-            }
+        getAllCars()
 
-            override fun onFailure(call: Call<CarModel>, t: Throwable) {
-                binding.shimmerLayout.stopShimmer();
-                binding.shimmerLayout.visibility = View.GONE;
-                Toast.makeText(this@MainActivity, "Check internet connectivity", Toast.LENGTH_LONG).show()
-                Log.e("Gideon", "onFailure: ${t.message}")
-            }
-        })
+
 
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
         binding.drawerLayout.addDrawerListener(toggle)
@@ -80,21 +63,21 @@ class MainActivity : AppCompatActivity() {
 
         val client_id = sharedPreferences.getString("client_id", "default")
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        apiClient.getApiService(this).getUserImageInfo(client_id).enqueue(object : Callback<SingleClientImageInfoResponse> {
-                override fun onResponse(call: Call<SingleClientImageInfoResponse>, response: Response<SingleClientImageInfoResponse>) {
-                    if (response.isSuccessful) {
-                        //fetching images to
-                        val userProfile = response.body()!!.single_clientInfo.user_photo_url.toString().trim()
-                        editor.putString("userPhoto", userProfile)
-                        Log.e("Gideon", "onSuccess: ${response.body()!!.single_clientInfo.user_photo_url}")
-                        editor.apply()
-                    }
-                }
-
-                override fun onFailure(call: Call<SingleClientImageInfoResponse>, t: Throwable) {
-                    Log.e("Gideon", "onFailure: ${t.message}")
-                }
-            })
+//        apiClient.getApiService(this).getUserImageInfo(client_id).enqueue(object : Callback<SingleClientImageInfoResponse> {
+//                override fun onResponse(call: Call<SingleClientImageInfoResponse>, response: Response<SingleClientImageInfoResponse>) {
+//                    if (response.isSuccessful) {
+//                        //fetching images to
+//                        val userProfile = response.body()!!.single_clientInfo.user_photo_url.toString().trim()
+//                        editor.putString("userPhoto", userProfile)
+//                        Log.e("Gideon", "onSuccess: ${response.body()!!.single_clientInfo.user_photo_url}")
+//                        editor.apply()
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<SingleClientImageInfoResponse>, t: Throwable) {
+//                    Log.e("Gideon", "onFailure: ${t.message}")
+//                }
+//            })
 
         val profileHeader = sharedPreferences.getString("userPhoto", "default")
         val firstNameHeader = sharedPreferences.getString("first_name", "default")
@@ -164,6 +147,29 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    private fun getAllCars() {
+        apiClient = ApiClient
+        apiClient.getApiService(this).getAllCars().enqueue(object : Callback<CarModel> {
+            override fun onResponse(call: Call<CarModel>, response: Response<CarModel>) {
+                if (response.isSuccessful) {
+                    recyclerview.apply {
+                        binding.shimmerLayout.stopShimmer();
+                        binding.shimmerLayout.visibility = View.GONE;
+                        layoutManager = LinearLayoutManager(this@MainActivity)
+                        adapter = CarAdapter(response.body()!!.cars, context)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<CarModel>, t: Throwable) {
+                binding.shimmerLayout.stopShimmer();
+                binding.shimmerLayout.visibility = View.GONE;
+                Toast.makeText(this@MainActivity, "Check internet connectivity", Toast.LENGTH_LONG).show()
+                Log.e("Gideon", "onFailure: ${t.message}")
+            }
+        })
+    }
+
     private fun restartApp() {
         val i = Intent(applicationContext, MainActivity::class.java)
         startActivity(i)
@@ -174,26 +180,7 @@ class MainActivity : AppCompatActivity() {
         if (binding.swipeRefresh.isRefreshing) {
             binding.swipeRefresh.isRefreshing = false
 
-            apiClient = ApiClient
-            apiClient.getApiService(this).getAllCars().enqueue(object : Callback<CarModel> {
-                override fun onResponse(call: Call<CarModel>, response: Response<CarModel>) {
-                    if (response.isSuccessful) {
-                        recyclerview.apply {
-                            layoutManager = LinearLayoutManager(this@MainActivity)
-                            adapter = CarAdapter(response.body()!!.cars, context)
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<CarModel>, t: Throwable) {
-                    Toast.makeText(
-                        this@MainActivity,
-                        "Check internet connectivity",
-                        Toast.LENGTH_LONG
-                    )
-                        .show()
-                }
-            })
+            getAllCars()
         }
     }
 
