@@ -29,10 +29,10 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
     lateinit var toggle: ActionBarDrawerToggle
-    private lateinit var apiClient: ApiClient
-    private lateinit var settingsManager: SettingsManager
-    private lateinit var binding: ActivityMainBinding
-    private val sharedPrefFile = "sharedPrefData"
+    lateinit var apiClient: ApiClient
+    lateinit var settingsManager: SettingsManager
+    lateinit var binding: ActivityMainBinding
+    val sharedPrefFile = "sharedPrefData"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         settingsManager = SettingsManager(this)
@@ -52,8 +52,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         getAllCars()
-
-
 
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
         binding.drawerLayout.addDrawerListener(toggle)
@@ -109,6 +107,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
             Log.i(TAG, "onNavigationItemSelected: " + item.itemId)
+            //TODO: set visibility
             when (item.itemId) {
                 R.id.home -> {
                     startActivity(Intent(this@MainActivity, MainActivity::class.java))

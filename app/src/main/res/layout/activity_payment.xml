@@ -18,6 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"
+            android:textStyle="bold"
             android:text="Select Payment Method"
             android:textColor="?attr/textColor"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,6 +32,7 @@
             app:layout_constraintTop_toBottomOf="@+id/titlePaymentOption">
 
             <ImageView
+                android:id="@+id/mpesaButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="10dp"
@@ -40,6 +42,7 @@
                 android:src="@drawable/mpesa" />
 
             <ImageView
+                android:id="@+id/paypalButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="10dp"
@@ -49,6 +52,7 @@
                 android:src="@drawable/paypal" />
 
             <ImageView
+                android:id="@+id/visaButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="10dp"
@@ -58,6 +62,7 @@
                 android:src="@drawable/visa" />
 
             <ImageView
+                android:id="@+id/masterCardButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="10dp"
@@ -88,7 +93,8 @@
                 android:layout_height="wrap_content"
                 android:text="Name:"
                 android:textColor="?attr/textColor"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/firstName"
@@ -124,7 +130,8 @@
                 android:layout_height="wrap_content"
                 android:text="Car Model:"
                 android:textColor="?attr/textColor"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/carName"
@@ -151,7 +158,8 @@
                 android:layout_height="wrap_content"
                 android:text="Drive:"
                 android:textColor="?attr/textColor"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -177,7 +185,8 @@
                 android:layout_height="wrap_content"
                 android:text="Start Date:"
                 android:textColor="?attr/textColor"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/dateFrom"
@@ -203,7 +212,8 @@
                 android:layout_weight="1"
                 android:text="End Date:"
                 android:textColor="?attr/textColor"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/dateTo"
@@ -229,7 +239,8 @@
                 android:layout_height="wrap_content"
                 android:text="Total Amount to Pay:"
                 android:textColor="?attr/textColor"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -293,6 +304,7 @@
                     android:fontFamily="sans-serif-light"
                     android:hint="Phone"
                     android:inputType="phone"
+                    android:padding="15dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="8dp"
                     android:textColor="?attr/textColor"
@@ -326,7 +338,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
-                android:text="Enter your account number"
+                android:text="Enter your account details"
                 android:textColor="?attr/textColor"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -358,8 +370,9 @@
                     android:background="@drawable/custom_input"
                     android:drawablePadding="12dp"
                     android:fontFamily="sans-serif-light"
-                    android:hint="Card number"
+                    android:hint="Visa Card number"
                     android:inputType="number"
+                    android:padding="15dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="8dp"
                     android:textColor="?attr/textColor"
@@ -401,6 +414,7 @@
                         android:fontFamily="sans-serif-light"
                         android:hint="Valid until *"
                         android:inputType=""
+                        android:padding="15dp"
                         android:paddingStart="12dp"
                         android:paddingEnd="8dp"
                         android:textColor="?attr/textColor"
@@ -433,6 +447,7 @@
                         android:fontFamily="sans-serif-light"
                         android:hint="CVV *"
                         android:inputType=""
+                        android:padding="15dp"
                         android:paddingStart="12dp"
                         android:paddingEnd="8dp"
                         android:textColor="?attr/textColor"
@@ -470,6 +485,7 @@
                     android:fontFamily="sans-serif-light"
                     android:hint="Card Holder Name"
                     android:inputType="text"
+                    android:padding="15dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="8dp"
                     android:textColor="?attr/textColor"
@@ -537,8 +553,9 @@
                     android:background="@drawable/custom_input"
                     android:drawablePadding="12dp"
                     android:fontFamily="sans-serif-light"
-                    android:hint="Card number"
+                    android:hint="Master Card number"
                     android:inputType="number"
+                    android:padding="15dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="8dp"
                     android:textColor="?attr/textColor"
@@ -580,6 +597,7 @@
                         android:fontFamily="sans-serif-light"
                         android:hint="Valid until *"
                         android:inputType=""
+                        android:padding="15dp"
                         android:paddingStart="12dp"
                         android:paddingEnd="8dp"
                         android:textColor="?attr/textColor"
@@ -612,6 +630,7 @@
                         android:fontFamily="sans-serif-light"
                         android:hint="CVV *"
                         android:inputType=""
+                        android:padding="15dp"
                         android:paddingStart="12dp"
                         android:paddingEnd="8dp"
                         android:textColor="?attr/textColor"
@@ -649,6 +668,7 @@
                     android:fontFamily="sans-serif-light"
                     android:hint="Card Holder Name"
                     android:inputType="text"
+                    android:padding="15dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="8dp"
                     android:textColor="?attr/textColor"
@@ -667,6 +687,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etMasterCardHolderName" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView

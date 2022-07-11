@@ -129,44 +129,46 @@ class DetailActivity : AppCompatActivity() {
 
         //make car booking
         binding.btBook.setOnClickListener {
+
+//            TODO: migrate booking actions
             //selected radio button
-            if (binding.radioSelfDrive.isChecked) {
-                selectedDrive = binding.radioSelfDrive.text.toString()
-            }
-            else if (binding.radioChauffeured.isChecked) {
-                selectedDrive = binding.radioChauffeured.text.toString()
-            }
+//            if (binding.radioSelfDrive.isChecked) {
+//                selectedDrive = binding.radioSelfDrive.text.toString()
+//            }
+//            else if (binding.radioChauffeured.isChecked) {
+//                selectedDrive = binding.radioChauffeured.text.toString()
+//            }
+//
+//            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
+//            binding.ETDFrom.setText(dateFormat.format(myCalendarFrom.time))
+//            binding.ETDTo.setText(dateFormat.format(myCalendarTo.time))
+//
+//            val car_id = carId
+//            val client_id = sharedPreferences.getString("client_id", "default")
+//            val book_date_from = binding.ETDFrom!!.text.toString().trim()
+//            val book_date_to = binding.ETDTo!!.text.toString().trim()
+//            val destination = binding.etDestination.text.toString().trim()
+//            val drive = selectedDrive
+//            val total_days = tvTotalDays.text.toString().trim()
+//            val total_amount = tvTotalAmount.text.toString().trim()
+//            val bookingInfo = BookCar(car_id, client_id, book_date_from, book_date_to, destination, drive, total_days, total_amount)
+//
+//            apiClient.getApiService(this).bookingCar(bookingInfo).enqueue(object : Callback<BookCarResponse> {
+//                    override fun onResponse(call: Call<BookCarResponse>, response: Response<BookCarResponse>) {
+//                        if (response.isSuccessful) {
+//                            Toast.makeText(this@DetailActivity, "Booked Successfully", Toast.LENGTH_LONG).show()
+//                            Log.e("Gideon", "onSuccess: ${response.body()!!.book_car}")
+//                        }
+//                    }
+//
+//                    override fun onFailure(call: Call<BookCarResponse>, t: Throwable) {
+//                        Toast.makeText(this@DetailActivity, "${t.message}", Toast.LENGTH_LONG).show()
+//                        Log.e("Gideon", "onFailure: ${t.message}")
+//                    }
+//                })
 
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
-            binding.ETDFrom.setText(dateFormat.format(myCalendarFrom.time))
-            binding.ETDTo.setText(dateFormat.format(myCalendarTo.time))
-
-            val car_id = carId
-            val client_id = sharedPreferences.getString("client_id", "default")
-            val book_date_from = binding.ETDFrom!!.text.toString().trim()
-            val book_date_to = binding.ETDTo!!.text.toString().trim()
-            val destination = binding.etDestination.text.toString().trim()
-            val drive = selectedDrive
-            val total_days = tvTotalDays.text.toString().trim()
-            val total_amount = tvTotalAmount.text.toString().trim()
-            val bookingInfo = BookCar(car_id, client_id, book_date_from, book_date_to, destination, drive, total_days, total_amount)
-
-            apiClient.getApiService(this).bookingCar(bookingInfo).enqueue(object : Callback<BookCarResponse> {
-                    override fun onResponse(call: Call<BookCarResponse>, response: Response<BookCarResponse>) {
-                        if (response.isSuccessful) {
-                            Toast.makeText(this@DetailActivity, "Booked Successfully", Toast.LENGTH_LONG).show()
-                            Log.e("Gideon", "onSuccess: ${response.body()!!.book_car}")
-                        }
-                    }
-
-                    override fun onFailure(call: Call<BookCarResponse>, t: Throwable) {
-                        Toast.makeText(this@DetailActivity, "${t.message}", Toast.LENGTH_LONG).show()
-                        Log.e("Gideon", "onFailure: ${t.message}")
-                    }
-                })
-
-            //val intent = Intent(this, LoginActivity::class.java)
-            //startActivity(intent)
+            val intent = Intent(this, PaymentActivity::class.java)
+            startActivity(intent)
         }
 
         val client_id = sharedPreferences.getString("client_id", "default")

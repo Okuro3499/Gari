@@ -10,6 +10,8 @@ import com.justin.gari.R
 import com.justin.gari.SettingsManager
 import com.justin.gari.api.ApiClient
 import com.justin.gari.api.ApiService
+import com.justin.gari.databinding.ActivityRegisterBinding
+import com.justin.gari.databinding.ActivityVehiclesBinding
 import com.justin.gari.models.userModels.signUpModel.NewUserData
 import com.justin.gari.models.userModels.signUpModel.NewUserResponse
 import retrofit2.Call
@@ -20,39 +22,41 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var apiClient: ApiClient
     private var theme: Switch? = null
     private lateinit var settingsManager: SettingsManager
+    lateinit var binding: ActivityRegisterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         settingsManager = SettingsManager(this)
         if (settingsManager.loadNightModeState()==true){
             setTheme(R.style.DarkGari)
-        } else
+        }
+        else
             setTheme(R.style.Gari)
         super.onCreate(savedInstanceState)
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val registerButton = findViewById<Button>(R.id.btRegister)
-        registerButton.setOnClickListener {
+        apiClient = ApiClient
+
+        binding.btRegister.setOnClickListener {
             // display a progress dialog
             val progressDialog = ProgressDialog(this@RegisterActivity)
             progressDialog.setCancelable(false) // set cancelable to false
             progressDialog.setMessage("Creating account...") // set message
             progressDialog.show()
 
-            val first_name = findViewById<EditText>(R.id.etFirstName).text.toString().trim()
-            val last_name = findViewById<EditText>(R.id.etLastName).text.toString().trim()
-            val email = findViewById<EditText>(R.id.etEmailAddress).text.toString().trim()
-            val mobile = findViewById<EditText>(R.id.etMobile).text.toString().trim()
-            val county = findViewById<EditText>(R.id.etCounty).text.toString().trim()
-            val district = findViewById<EditText>(R.id.etDistrict).text.toString().trim()
-            val estate = findViewById<EditText>(R.id.etEstate).text.toString().trim()
-            val landmark = findViewById<EditText>(R.id.etLandMark).text.toString().trim()
-            val password = findViewById<EditText>(R.id.etPassword).text.toString().trim()
+            val signUpInfo = NewUserData(
+                binding.etFirstName.text.toString().trim(),
+                binding.etLastName.text.toString().trim(),
+                binding.etEmailAddress.text.toString().trim(),
+                binding.etMobile.text.toString().trim(),
+                binding.etCounty.text.toString().trim(),
+                binding.etDistrict.text.toString().trim(),
+                binding.etEstate.text.toString().trim(),
+                binding.etLandMark.text.toString().trim(),
+                binding.etPassword.text.toString().trim()
+            )
 
-            val signUpInfo = NewUserData(first_name, last_name, email, mobile, county, district, estate, landmark, password)
-            apiClient = ApiClient
             apiClient.getApiService(this).createUser(signUpInfo).enqueue(object : Callback<NewUserResponse> {
-
                 override fun onResponse(call: Call<NewUserResponse>, response: Response<NewUserResponse>) {
                     if (response.isSuccessful) {
                         progressDialog.dismiss()
@@ -72,8 +76,7 @@ class RegisterActivity : AppCompatActivity() {
             })
         }
 
-        val button = findViewById<TextView>(R.id.tvNoAccount)
-        button.setOnClickListener{
+        binding.tvNoAccount.setOnClickListener{
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }

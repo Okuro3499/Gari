@@ -5,34 +5,30 @@
     <item
         android:id="@+id/home"
         android:icon="@drawable/ic_baseline_home_24"
-        android:title="Home"/>
+        android:title="Home" />
     <item
         android:id="@+id/profile"
         android:icon="@drawable/ic_baseline_edit_24"
-        android:title="Profile"/>
+        android:title="Profile" />
     <item
         android:id="@+id/myVehicles"
         android:icon="@drawable/ic_baseline_folder_24"
-        android:title="My Vehicles"/>
+        android:title="My Vehicles" />
     <item
         android:id="@+id/logout"
         android:icon="@drawable/ic_baseline_exit_to_app_24"
-        android:title="Logout"/>
+        android:title="Logout" />
 
     <item android:title="FAQ">
         <menu>
             <item
                 android:id="@+id/about"
                 android:icon="@drawable/ic_baseline_info_24"
-                android:title="About Gari"/>
+                android:title="About Gari" />
             <item
                 android:id="@+id/help"
                 android:icon="@drawable/ic_baseline_help_outline_24"
-                android:title="Need Assistance?"/>
+                android:title="Need Assistance?" />
         </menu>
     </item>
-
-
-
-
 </menu>

@@ -9,8 +9,8 @@ import com.justin.gari.R
 import com.squareup.picasso.Picasso
 
 class SliderPageAdapter internal constructor(
-    private val context: Context,
-    private val imageUrls: Array<String>
+    val context: Context,
+    val imageUrls: Array<String>
 ) :
     PagerAdapter() {
     override fun getCount(): Int {

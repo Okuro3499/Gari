@@ -34,12 +34,14 @@ class AboutActivity : AppCompatActivity() {
         settingsManager = SettingsManager(this)
         if (settingsManager.loadNightModeState() == true) {
             setTheme(R.style.DarkGari)
-        } else
+        }
+        else
             setTheme(R.style.Gari)
         super.onCreate(savedInstanceState)
         binding = ActivityAboutBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         apiClient = ApiClient
 
         val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
@@ -56,9 +58,10 @@ class AboutActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
                         //fetching images to
-                        val userProfile = response.body()!!.single_clientInfo.user_photo_url.toString().trim()
-                        editor.putString("userPhoto", userProfile)
-                        editor.apply()
+                        //TODO: fix crash when value is null
+//                            val userProfile = response.body()!!.single_clientInfo.user_photo_url.toString().trim()
+//                            editor.putString("userPhoto", userProfile)
+//                            editor.apply()
                     }
                 }
 

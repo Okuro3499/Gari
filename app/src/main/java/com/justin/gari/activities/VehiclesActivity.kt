@@ -19,6 +19,8 @@ import com.justin.gari.R
 import com.justin.gari.SettingsManager
 import com.justin.gari.adapters.ViewPagerAdapter
 import com.justin.gari.api.ApiClient
+import com.justin.gari.databinding.ActivityProfileCompleteBinding
+import com.justin.gari.databinding.ActivityVehiclesBinding
 import com.justin.gari.fragments.BookingsFragment
 import com.justin.gari.fragments.SavedFragment
 import com.justin.gari.models.uploadImagesModel.SingleClientImageInfoResponse
@@ -35,55 +37,37 @@ class VehiclesActivity : AppCompatActivity() {
     private val sharedPrefFile = "sharedPrefData"
     private var theme: Switch? = null
     private lateinit var settingsManager: SettingsManager
+    lateinit var binding: ActivityVehiclesBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         settingsManager = SettingsManager(this)
         if (settingsManager.loadNightModeState() == true) {
             setTheme(R.style.DarkGari)
-        } else
+        }
+        else
             setTheme(R.style.Gari)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_vehicles)
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
-        val sharedPreferences: SharedPreferences =
-            getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        binding = ActivityVehiclesBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
-        drawerLayout.addDrawerListener(toggle)
+        toggle = ActionBarDrawerToggle(this, binding.drawerLayout, R.string.open, R.string.close)
+        binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+        apiClient = ApiClient
 
         setUpTabs()
 
-        val client_id = sharedPreferences.getString("client_id", "default")
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        apiClient.getApiService(this).getUserImageInfo(client_id)
-            .enqueue(object : Callback<SingleClientImageInfoResponse> {
-                override fun onResponse(
-                    call: Call<SingleClientImageInfoResponse>,
-                    response: Response<SingleClientImageInfoResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        //fetching images to
-                        val userProfile =
-                            response.body()!!.single_clientInfo.user_photo_url.toString().trim()
-                        editor.putString("userPhoto", userProfile)
-                        editor.apply()
-                    }
-                }
-
-                override fun onFailure(call: Call<SingleClientImageInfoResponse>, t: Throwable) {
-                    Log.e("Gideon", "onFailure: ${t.message}")
-                }
-            })
+        getUserImageInfo();
 
 //        val profileHeader = sharedPreferences.getString("userPhoto", "default")
         val firstNameHeader = sharedPreferences.getString("first_name", "default")
         val lastNameHeader = sharedPreferences.getString("last_name", "default")
         val emailHeader = sharedPreferences.getString("email", "default")
-        val header: View = navView.getHeaderView(0)
+        val header: View = binding.navView.getHeaderView(0)
         val profileImage = header.findViewById(R.id.profile_image) as CircleImageView
         val firstNameTv = header.findViewById<View>(R.id.firstName) as TextView
         val lastNameTv = header.findViewById<View>(R.id.lastName) as TextView
@@ -107,13 +91,14 @@ class VehiclesActivity : AppCompatActivity() {
             if (isChecked) {
                 settingsManager.setNightModeState(true)
                 restartApp()
-            } else {
+            }
+            else {
                 settingsManager.setNightModeState(false)
                 restartApp()
             }
         }
 
-        navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
+        binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
             Log.i(ContentValues.TAG, "onNavigationItemSelected: " + item.itemId)
             when (item.itemId) {
                 R.id.home -> {
@@ -148,10 +133,31 @@ class VehiclesActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
             }
-            drawerLayout.closeDrawer(GravityCompat.START)
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
             Log.i(ContentValues.TAG, "onNavigationItemSelected: nothing clicked")
             false
         })
+    }
+
+    private fun getUserImageInfo() {
+        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        val client_id = sharedPreferences.getString("client_id", "default")
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        apiClient.getApiService(this).getUserImageInfo(client_id).enqueue(object : Callback<SingleClientImageInfoResponse> {
+                override fun onResponse(call: Call<SingleClientImageInfoResponse>, response: Response<SingleClientImageInfoResponse>) {
+                    if (response.isSuccessful) {
+                        //fetching images to
+                        //TODO: fix crash when value is null
+//                            val userProfile = response.body()!!.single_clientInfo.user_photo_url.toString().trim()
+//                            editor.putString("userPhoto", userProfile)
+//                            editor.apply()
+                    }
+                }
+
+                override fun onFailure(call: Call<SingleClientImageInfoResponse>, t: Throwable) {
+                    Log.e("Gideon", "onFailure: ${t.message}")
+                }
+            })
     }
 
     private fun restartApp() {

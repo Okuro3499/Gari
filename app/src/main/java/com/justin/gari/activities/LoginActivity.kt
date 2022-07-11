@@ -53,11 +53,9 @@ class LoginActivity : AppCompatActivity() {
             progressDialog.setMessage("Logging in...") // set message
             progressDialog.show()
 
-            val email = binding.etEmailAddress.text.toString().trim()
-            val password = binding.etPassword.text.toString().trim()
             val editor: SharedPreferences.Editor = sharedPreferences.edit()
 
-            val loginInfo = UserLogin(email, password)
+            val loginInfo = UserLogin(binding.etEmailAddress.text.toString().trim(), binding.etPassword.text.toString().trim())
             apiClient.getApiService(this).loginUser(loginInfo).enqueue(object : Callback<UserLoginResponse> {
                 override fun onResponse(call: Call<UserLoginResponse>, response: Response<UserLoginResponse> ) {
                     if (response.isSuccessful) {

@@ -21,6 +21,8 @@ import com.justin.gari.R
 import com.justin.gari.SettingsManager
 import com.justin.gari.URIPathHelper
 import com.justin.gari.api.ApiClient
+import com.justin.gari.databinding.ActivityMainBinding
+import com.justin.gari.databinding.ActivityProfileCompleteBinding
 import com.justin.gari.models.uploadImagesModel.*
 import com.justin.gari.models.userModels.UserDetailsResponse
 import com.squareup.picasso.Picasso
@@ -36,68 +38,40 @@ import java.io.File
 
 class ProfileCompleteActivity : AppCompatActivity() {
     lateinit var toggle: ActionBarDrawerToggle
-    private val sharedPrefFile = "sharedPrefData"
-    private lateinit var apiClient: ApiClient
-    private var theme: Switch? = null
-    private lateinit var settingsManager: SettingsManager
+    val sharedPrefFile = "sharedPrefData"
+    lateinit var apiClient: ApiClient
+    var theme: Switch? = null
+    lateinit var settingsManager: SettingsManager
+    lateinit var binding: ActivityProfileCompleteBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         settingsManager = SettingsManager(this)
-        if (settingsManager.loadNightModeState()==true){
+        if (settingsManager.loadNightModeState() == true) {
             setTheme(R.style.DarkGari)
-        } else
+        }
+        else
             setTheme(R.style.Gari)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_profile_complete)
+        binding = ActivityProfileCompleteBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
-        val sharedPreferences: SharedPreferences =
-            getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-
-        val firstName = findViewById<TextView>(R.id.tvFirstName)
-        val lastName = findViewById<TextView>(R.id.tvLastName)
-        val email = findViewById<TextView>(R.id.tvEmail)
-        val mobile = findViewById<TextView>(R.id.tvMobile)
-        val county = findViewById<TextView>(R.id.tvCounty)
-        val district = findViewById<TextView>(R.id.tvDistrict)
-        val estate = findViewById<TextView>(R.id.tvEstate)
-        val landMark = findViewById<TextView>(R.id.tvLandMark)
-        val imageDriverLicensePicker = findViewById<ImageView>(R.id.ivDl)
-        val imageIdCardPicker = findViewById<ImageView>(R.id.ivId)
-        val userPhotoPicker = findViewById<ImageView>(R.id.ivPhoto)
-        val btSubmit = findViewById<Button>(R.id.btSubmit)
+        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
 
         val clientId = sharedPreferences.getString("client_id", "default")
 
-        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
-        drawerLayout.addDrawerListener(toggle)
+        toggle = ActionBarDrawerToggle(this, binding.drawerLayout, R.string.open, R.string.close)
+        binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+        apiClient = ApiClient
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        val client_id = sharedPreferences.getString("client_id", "default")
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        apiClient.getApiService(this).getUserImageInfo(client_id).enqueue(object : Callback<SingleClientImageInfoResponse> {
-                override fun onResponse(call: Call<SingleClientImageInfoResponse>, response: Response<SingleClientImageInfoResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        //fetching images to
-                        val userProfile = response.body()!!.single_clientInfo.user_photo_url.toString().trim()
-                        editor.putString("userPhoto", userProfile)
-                        editor.apply()
-                    }
-                }
-
-                override fun onFailure(call: Call<SingleClientImageInfoResponse>, t: Throwable) {
-                    Log.e("Gideon", "onFailure: ${t.message}")
-                }
-            })
+        getUserImageinfo()
 
         val profileHeader = sharedPreferences.getString("userPhoto", "default")
         val firstNameHeader = sharedPreferences.getString("first_name", "default")
         val lastNameHeader = sharedPreferences.getString("last_name", "default")
         val emailHeader = sharedPreferences.getString("email", "default")
-        val header: View = navView.getHeaderView(0)
+        val header: View = binding.navView.getHeaderView(0)
         val profileImage = header.findViewById(R.id.profile_image) as CircleImageView
         val firstNameTv = header.findViewById<View>(R.id.firstName) as TextView
         firstNameTv.text = firstNameHeader.toString()
@@ -114,20 +88,21 @@ class ProfileCompleteActivity : AppCompatActivity() {
             .into(profileImage)
 
         val switchTheme = header.findViewById(R.id.themeSwitch) as Switch
-        if (settingsManager.loadNightModeState()==true){
-            switchTheme!!.isChecked=true
+        if (settingsManager.loadNightModeState() == true) {
+            switchTheme!!.isChecked = true
         }
-        switchTheme!!.setOnCheckedChangeListener { _, isChecked ->
+        switchTheme.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 settingsManager.setNightModeState(true)
                 restartApp()
-            } else {
+            }
+            else {
                 settingsManager.setNightModeState(false)
                 restartApp()
             }
         }
 
-        navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
+        binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
             Log.i(ContentValues.TAG, "onNavigationItemSelected: " + item.itemId)
             when (item.itemId) {
                 R.id.home -> {
@@ -164,24 +139,23 @@ class ProfileCompleteActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
             }
-            drawerLayout.closeDrawer(GravityCompat.START)
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
             Log.i(ContentValues.TAG, "onNavigationItemSelected: nothing clicked")
             false
         })
 
-        apiClient = ApiClient
         apiClient.getApiService(this).getUserDetails(clientId).enqueue(object : Callback<UserDetailsResponse> {
                 override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
                     if (response.isSuccessful) {
                         Log.e("Gideon", "onSuccess: ${response.body()}")
-                        firstName.text = response.body()!!.single_client.first_name.toString()
-                        lastName.text = response.body()!!.single_client.last_name.toString()
-                        email.text = response.body()!!.single_client.email.toString()
-                        mobile.text = response.body()!!.single_client.mobile.toString()
-                        county.text = response.body()!!.single_client.county.toString()
-                        district.text = response.body()!!.single_client.district.toString()
-                        estate.text = response.body()!!.single_client.estate.toString()
-                        landMark.text = response.body()!!.single_client.landmark.toString()
+                        binding.tvFirstName.text = response.body()!!.single_client.first_name.toString()
+                        binding.tvLastName.text = response.body()!!.single_client.last_name.toString()
+                        binding.tvEmail.text = response.body()!!.single_client.email.toString()
+                        binding.tvMobile.text = response.body()!!.single_client.mobile.toString()
+                        binding.tvCounty.text = response.body()!!.single_client.county.toString()
+                        binding.tvDistrict.text = response.body()!!.single_client.district.toString()
+                        binding.tvEstate.text = response.body()!!.single_client.estate.toString()
+                        binding.tvLandMark.text = response.body()!!.single_client.landmark.toString()
                     }
                 }
 
@@ -190,38 +164,24 @@ class ProfileCompleteActivity : AppCompatActivity() {
                 }
             })
 
-        btSubmit.setOnClickListener {
-            val client_id = clientId.toString().trim()
-            val contact1_name = findViewById<EditText>(R.id.etFullName).text.toString().trim()
-            val contact1_relationship = findViewById<EditText>(R.id.etRelationShip).text.toString().trim()
-            val contact1_mobile = findViewById<EditText>(R.id.etEmergencyMobile).text.toString().trim()
-            val contact2_name = findViewById<EditText>(R.id.etFullName2).text.toString().trim()
-            val contact2_relationship = findViewById<EditText>(R.id.etRelationShip2).text.toString().trim()
-            val contact2_mobile = findViewById<EditText>(R.id.etEmergencyMobile2).text.toString().trim()
-            val driver_licence_url = sharedPreferences.getString("DlCloudinary", "default").toString().trim()
-            val national_id_url = sharedPreferences.getString("nationalId", "default").toString().trim()
-            val user_photo_url = sharedPreferences.getString("userPhoto", "default").toString().trim()
-
+        binding.btSubmit.setOnClickListener {
             val contactInfo = Contacts(
-                client_id,
-                contact1_name,
-                contact1_relationship,
-                contact1_mobile,
-                contact2_name,
-                contact2_relationship,
-                contact2_mobile,
-                driver_licence_url,
-                national_id_url,
-                user_photo_url
+                binding.etFullName.text.toString().trim(),
+                binding.etRelationShip.text.toString().trim(),
+                binding.etRelationShip.text.toString().trim(),
+                binding.etEmergencyMobile.text.toString().trim(),
+                binding.etFullName2.text.toString().trim(),
+                binding.etRelationShip2.text.toString().trim(),
+                binding.etEmergencyMobile2.text.toString().trim(),
+                sharedPreferences.getString("DlCloudinary", "default").toString().trim(),
+                sharedPreferences.getString("nationalId", "default").toString().trim(),
+                sharedPreferences.getString("userPhoto", "default").toString().trim()
             )
+
             apiClient.getApiService(this).contactUpdate(contactInfo).enqueue(object : Callback<ImageInfoResponse> {
                     override fun onResponse(call: Call<ImageInfoResponse>, response: Response<ImageInfoResponse>) {
                         if (response.isSuccessful) {
-                            Toast.makeText(
-                                this@ProfileCompleteActivity,
-                                "Uploaded Successfully",
-                                Toast.LENGTH_LONG
-                            ).show()
+                            Toast.makeText(this@ProfileCompleteActivity, "Uploaded Successfully", Toast.LENGTH_LONG).show()
                             Log.e("Gideon", "onSuccess: ${response.body()}")
                         }
                     }
@@ -233,20 +193,34 @@ class ProfileCompleteActivity : AppCompatActivity() {
                 })
         }
 
-        imageDriverLicensePicker.setOnClickListener {
-            ImagePicker.with(this)
-                .start(0)
-        }
+        binding.ivDl.setOnClickListener { ImagePicker.with(this).start(0) }
 
-        imageIdCardPicker.setOnClickListener {
-            ImagePicker.with(this)
-                .start(1)
-        }
+        binding.ivId.setOnClickListener { ImagePicker.with(this).start(1) }
 
-        userPhotoPicker.setOnClickListener {
-            ImagePicker.with(this)
-                .start(2)
-        }
+        binding.ivPhoto.setOnClickListener { ImagePicker.with(this).start(2) }
+    }
+
+    private fun getUserImageinfo() {
+        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        val client_id = sharedPreferences.getString("client_id", "default")
+//        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+
+        apiClient.getApiService(this).getUserImageInfo(client_id).enqueue(object : Callback<SingleClientImageInfoResponse> {
+                override fun onResponse(call: Call<SingleClientImageInfoResponse>, response: Response<SingleClientImageInfoResponse>) {
+                    if (response.isSuccessful) {
+                        //fetching images to
+                        //TODO: fix crash when value is null
+//                            val userProfile = response.body()!!.single_clientInfo.user_photo_url.toString().trim()
+//                            editor.putString("userPhoto", userProfile)
+//                            editor.apply()
+
+                    }
+                }
+
+                override fun onFailure(call: Call<SingleClientImageInfoResponse>, t: Throwable) {
+                    Log.e("Gideon", "onFailure: ${t.message}")
+                }
+            })
     }
 
     private fun restartApp() {
@@ -261,8 +235,8 @@ class ProfileCompleteActivity : AppCompatActivity() {
         val userPhotoPicker = findViewById<ImageView>(R.id.ivPhoto)
 
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode === 0) {
-            if (resultCode === Activity.RESULT_OK) {
+        if (requestCode == 0) {
+            if (resultCode == Activity.RESULT_OK) {
                 //Image Uri will not be null for RESULT_OK
                 val uri: Uri = data?.data!!
                 // Use Uri object instead of File to avoid storage permissions
@@ -279,12 +253,13 @@ class ProfileCompleteActivity : AppCompatActivity() {
                 dlButton.setOnClickListener {
                     uploadDl(file, driverLicense)
                 }
-            } else if (resultCode === RESULT_CANCELED) {
+            }
+            else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
             }
         }
-        if (requestCode === 1) {
-            if (resultCode === RESULT_OK) {
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
                 //Image Uri will not be null for RESULT_OK
                 val uri: Uri = data?.data!!
                 // Use Uri object instead of File to avoid storage permissions
@@ -299,13 +274,13 @@ class ProfileCompleteActivity : AppCompatActivity() {
 
                 val btIdUpload = findViewById<Button>(R.id.btIdUpload)
                 btIdUpload.setOnClickListener { uploadId(file, identityCard) }
-            } else if (resultCode === RESULT_CANCELED) {
+            } else if (resultCode == RESULT_CANCELED) {
                 // Handle cancel
                 Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
             }
         }
-        if (requestCode === 2) {
-            if (resultCode === RESULT_OK) {
+        if (requestCode == 2) {
+            if (resultCode == RESULT_OK) {
                 //Image Uri will not be null for RESULT_OK
                 val uri: Uri = data?.data!!
                 // Use Uri object instead of File to avoid storage permissions
@@ -322,7 +297,8 @@ class ProfileCompleteActivity : AppCompatActivity() {
                 btUserPhotoUpload.setOnClickListener {
                     uploadPhoto(file, userPhoto)
                 }
-            } else if (resultCode === RESULT_CANCELED) {
+            }
+            else if (resultCode == RESULT_CANCELED) {
                 // Handle cancel
                 Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
             }
@@ -335,11 +311,19 @@ class ProfileCompleteActivity : AppCompatActivity() {
 
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
         val image = MultipartBody.Part.createFormData("image", file.name, driverLicense)
-        apiClient.getApiService(this).dlCloudinary(image).enqueue(object : Callback<DlCloudinaryResponse> {
-                override fun onResponse(call: Call<DlCloudinaryResponse>, response: Response<DlCloudinaryResponse>) {
+        apiClient.getApiService(this).dlCloudinary(image)
+            .enqueue(object : Callback<DlCloudinaryResponse> {
+                override fun onResponse(
+                    call: Call<DlCloudinaryResponse>,
+                    response: Response<DlCloudinaryResponse>
+                ) {
                     Log.e("Gideon", "cloudinary: $response")
                     if (response.isSuccessful) {
-                        Toast.makeText(this@ProfileCompleteActivity, "Driver license uploaded successful", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@ProfileCompleteActivity,
+                            "Driver license uploaded successful",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         editor.putString("DlCloudinary", response.body()!!.driverLicenceCloudinary)
                         editor.apply()
                     }
@@ -357,11 +341,19 @@ class ProfileCompleteActivity : AppCompatActivity() {
 
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
         val image = MultipartBody.Part.createFormData("image", file.name, identityCard)
-        apiClient.getApiService(this).idCloudinary(image).enqueue(object : Callback<IdCloudinaryResponse> {
-                override fun onResponse(call: Call<IdCloudinaryResponse>, response: Response<IdCloudinaryResponse>) {
+        apiClient.getApiService(this).idCloudinary(image)
+            .enqueue(object : Callback<IdCloudinaryResponse> {
+                override fun onResponse(
+                    call: Call<IdCloudinaryResponse>,
+                    response: Response<IdCloudinaryResponse>
+                ) {
                     Log.e("Gideon", "cloudinary: $response")
                     if (response.isSuccessful) {
-                        Toast.makeText(this@ProfileCompleteActivity, "national id uploaded successfully", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@ProfileCompleteActivity,
+                            "national id uploaded successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         editor.putString("nationalId", response.body()!!.nationalIdCloudinary)
                         editor.apply()
                     }
@@ -379,11 +371,19 @@ class ProfileCompleteActivity : AppCompatActivity() {
 
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
         val image = MultipartBody.Part.createFormData("image", file.name, userPhoto)
-        apiClient.getApiService(this).userPhotoCloudinary(image).enqueue(object : Callback<UserPhotoCloudinaryResponse> {
-                override fun onResponse(call: Call<UserPhotoCloudinaryResponse>, response: Response<UserPhotoCloudinaryResponse>) {
+        apiClient.getApiService(this).userPhotoCloudinary(image)
+            .enqueue(object : Callback<UserPhotoCloudinaryResponse> {
+                override fun onResponse(
+                    call: Call<UserPhotoCloudinaryResponse>,
+                    response: Response<UserPhotoCloudinaryResponse>
+                ) {
                     Log.e("Gideon", "cloudinary: $response")
                     if (response.isSuccessful) {
-                        Toast.makeText(this@ProfileCompleteActivity, "User Photo uploaded successfully", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@ProfileCompleteActivity,
+                            "User Photo uploaded successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         editor.putString("userPhoto", response.body()!!.userPhotoCloudinary)
                         editor.apply()
                     }

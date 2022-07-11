@@ -7,20 +7,15 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Switch
-import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
 import com.justin.gari.SettingsManager
 import com.justin.gari.api.ApiClient
-import com.justin.gari.databinding.ActivityLoginBinding
 import com.justin.gari.databinding.ActivityPaymentBinding
 import com.squareup.picasso.Picasso
-import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.nav_header.view.*
 
 class PaymentActivity : AppCompatActivity() {
@@ -89,12 +84,14 @@ class PaymentActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.profile -> {
-                    val intentProfile = Intent(this@PaymentActivity, ProfileCompleteActivity::class.java)
+                    val intentProfile =
+                        Intent(this@PaymentActivity, ProfileCompleteActivity::class.java)
                     startActivity(intentProfile)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.myVehicles -> {
-                    val intentMyVehicles = Intent(this@PaymentActivity, VehiclesActivity::class.java)
+                    val intentMyVehicles =
+                        Intent(this@PaymentActivity, VehiclesActivity::class.java)
                     startActivity(intentMyVehicles)
                     return@OnNavigationItemSelectedListener true
                 }
@@ -118,6 +115,60 @@ class PaymentActivity : AppCompatActivity() {
             Log.i(ContentValues.TAG, "onNavigationItemSelected: nothing clicked")
             false
         })
+
+        binding.mpesaButton.setOnClickListener {
+            if (binding.mpesa.visibility == View.GONE) {
+                binding.mpesa.visibility = View.VISIBLE
+
+                if (binding.visa.visibility == View.VISIBLE) {
+                    binding.visa.visibility = View.GONE
+                }
+                if (binding.masterCard.visibility == View.VISIBLE) {
+                    binding.masterCard.visibility = View.GONE
+                }
+            }
+//            else if (binding.mpesa.visibility == View.VISIBLE) {
+//                binding.mpesa.visibility = View.GONE
+//            }
+        }
+
+//        binding.paypalButton.setOnClickListener {
+//            if (binding.mpesa.visibility == View.GONE) {
+//                binding.mpesa.visibility = View.VISIBLE
+//            } else if (binding.mpesa.visibility == View.VISIBLE) {
+//                binding.mpesa.visibility = View.GONE
+//            }
+//        }
+
+        binding.visaButton.setOnClickListener {
+            if (binding.visa.visibility == View.GONE) {
+                binding.visa.visibility = View.VISIBLE
+                if (binding.mpesa.visibility == View.VISIBLE) {
+                    binding.mpesa.visibility = View.GONE
+                }
+                if (binding.masterCard.visibility == View.VISIBLE) {
+                    binding.masterCard.visibility = View.GONE
+                }
+            }
+//            else if (binding.visa.visibility == View.VISIBLE) {
+//                binding.visa.visibility = View.GONE
+//            }
+        }
+
+        binding.masterCardButton.setOnClickListener {
+            if (binding.masterCard.visibility == View.GONE) {
+                binding.masterCard.visibility = View.VISIBLE
+                if (binding.mpesa.visibility == View.VISIBLE) {
+                    binding.mpesa.visibility = View.GONE
+                }
+                if (binding.visa.visibility == View.VISIBLE) {
+                    binding.visa.visibility = View.GONE
+                }
+            }
+//            else if (binding.masterCard.visibility == View.VISIBLE) {
+//                binding.masterCard.visibility = View.GONE
+//            }
+        }
     }
 
     private fun restartApp() {
