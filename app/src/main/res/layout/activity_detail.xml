@@ -475,13 +475,13 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/titleBook"
                     android:layout_marginStart="4dp"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="2dp"
                     android:layout_toEndOf="@id/tvPrice"
                     android:text="@string/per_day"
                     android:textColor="?attr/textColor"
                     android:textSize="14sp"
                     app:layout_constraintStart_toEndOf="@+id/tvPrice"
-                    app:layout_constraintTop_toTopOf="@+id/titlePrice" />
+                    app:layout_constraintTop_toBottomOf="@+id/titleBook" />
 
                 <LinearLayout
                     android:id="@+id/linearLayout4"

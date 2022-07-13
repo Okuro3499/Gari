@@ -4,14 +4,13 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.*
+import android.widget.Switch
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.justin.gari.R
 import com.justin.gari.SettingsManager
 import com.justin.gari.api.ApiClient
-import com.justin.gari.api.ApiService
 import com.justin.gari.databinding.ActivityRegisterBinding
-import com.justin.gari.databinding.ActivityVehiclesBinding
 import com.justin.gari.models.userModels.signUpModel.NewUserData
 import com.justin.gari.models.userModels.signUpModel.NewUserResponse
 import retrofit2.Call
@@ -26,10 +25,9 @@ class RegisterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         settingsManager = SettingsManager(this)
-        if (settingsManager.loadNightModeState()==true){
+        if (settingsManager.loadNightModeState() == true) {
             setTheme(R.style.DarkGari)
-        }
-        else
+        } else
             setTheme(R.style.Gari)
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
@@ -57,26 +55,26 @@ class RegisterActivity : AppCompatActivity() {
             )
 
             apiClient.getApiService(this).createUser(signUpInfo).enqueue(object : Callback<NewUserResponse> {
-                override fun onResponse(call: Call<NewUserResponse>, response: Response<NewUserResponse>) {
-                    if (response.isSuccessful) {
-                        progressDialog.dismiss()
-                        Toast.makeText(this@RegisterActivity, "Registration Successful", Toast.LENGTH_LONG).show()
-                        Log.e("Gideon", "onSuccess: ${response.body()}")
+                    override fun onResponse(call: Call<NewUserResponse>, response: Response<NewUserResponse>) {
+                        if (response.isSuccessful) {
+                            progressDialog.dismiss()
+                            Toast.makeText(this@RegisterActivity, "Registration Successful", Toast.LENGTH_LONG).show()
+                            Log.e("Gideon", "onSuccess: ${response.body()}")
 
-                        val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
-                        startActivity(intent)
+                            val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+                            startActivity(intent)
+                        }
                     }
-                }
 
-                override fun onFailure(call: Call<NewUserResponse>, t: Throwable) {
-                    progressDialog.dismiss()
-                    Toast.makeText(this@RegisterActivity, "Registration Failed", Toast.LENGTH_LONG).show()
-                    Log.e("Gideon", "onFailure: ${t.message}")
-                }
-            })
+                    override fun onFailure(call: Call<NewUserResponse>, t: Throwable) {
+                        progressDialog.dismiss()
+                        Toast.makeText(this@RegisterActivity, "Registration Failed", Toast.LENGTH_LONG).show()
+                        Log.e("Gideon", "onFailure: ${t.message}")
+                    }
+                })
         }
 
-        binding.tvNoAccount.setOnClickListener{
+        binding.tvNoAccount.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }

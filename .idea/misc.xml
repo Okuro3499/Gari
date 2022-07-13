@@ -69,6 +69,7 @@
         <entry key="app/src/main/res/layout/activity_profile_complete.xml" value="0.24492385786802032" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.38686131386861317" />
         <entry key="app/src/main/res/layout/activity_vehicles.xml" value="0.19375" />
+        <entry key="app/src/main/res/layout/content_vehicles.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/fragment_bookings.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_history.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_saved.xml" value="0.1" />

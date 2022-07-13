@@ -13,20 +13,18 @@ import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.FragmentPagerAdapter
 import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
 import com.justin.gari.SettingsManager
-import com.justin.gari.adapters.ViewPagerAdapter
+import com.justin.gari.adapters.MyVehiclesAdapter
 import com.justin.gari.api.ApiClient
-import com.justin.gari.databinding.ActivityProfileCompleteBinding
 import com.justin.gari.databinding.ActivityVehiclesBinding
 import com.justin.gari.fragments.BookingsFragment
 import com.justin.gari.fragments.SavedFragment
 import com.justin.gari.models.uploadImagesModel.SingleClientImageInfoResponse
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.content_vehicles.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,15 +41,14 @@ class VehiclesActivity : AppCompatActivity() {
         settingsManager = SettingsManager(this)
         if (settingsManager.loadNightModeState() == true) {
             setTheme(R.style.DarkGari)
-        }
-        else
+        } else
             setTheme(R.style.Gari)
+
         super.onCreate(savedInstanceState)
         binding = ActivityVehiclesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         toggle = ActionBarDrawerToggle(this, binding.drawerLayout, R.string.open, R.string.close)
@@ -59,11 +56,15 @@ class VehiclesActivity : AppCompatActivity() {
         toggle.syncState()
         apiClient = ApiClient
 
-        setUpTabs()
+        binding.tabs.setupWithViewPager(binding.viewpager)
+        val myVehiclesAdapter = MyVehiclesAdapter(supportFragmentManager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT)
+        myVehiclesAdapter.addFragment(BookingsFragment(), "Bookings")
+        myVehiclesAdapter.addFragment(SavedFragment(), "Saved")
+        binding.viewpager.adapter = myVehiclesAdapter
 
         getUserImageInfo();
 
-//        val profileHeader = sharedPreferences.getString("userPhoto", "default")
+        //val profileHeader = sharedPreferences.getString("userPhoto", "default")
         val firstNameHeader = sharedPreferences.getString("first_name", "default")
         val lastNameHeader = sharedPreferences.getString("last_name", "default")
         val emailHeader = sharedPreferences.getString("email", "default")
@@ -85,14 +86,13 @@ class VehiclesActivity : AppCompatActivity() {
 
         val switchTheme = header.findViewById(R.id.themeSwitch) as Switch
         if (settingsManager.loadNightModeState() == true) {
-            switchTheme!!.isChecked = true
+            switchTheme.isChecked = true
         }
-        switchTheme!!.setOnCheckedChangeListener { _, isChecked ->
+        switchTheme.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 settingsManager.setNightModeState(true)
                 restartApp()
-            }
-            else {
+            } else {
                 settingsManager.setNightModeState(false)
                 restartApp()
             }
@@ -140,11 +140,16 @@ class VehiclesActivity : AppCompatActivity() {
     }
 
     private fun getUserImageInfo() {
-        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences =
+            getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
         val client_id = sharedPreferences.getString("client_id", "default")
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        apiClient.getApiService(this).getUserImageInfo(client_id).enqueue(object : Callback<SingleClientImageInfoResponse> {
-                override fun onResponse(call: Call<SingleClientImageInfoResponse>, response: Response<SingleClientImageInfoResponse>) {
+        apiClient.getApiService(this).getUserImageInfo(client_id)
+            .enqueue(object : Callback<SingleClientImageInfoResponse> {
+                override fun onResponse(
+                    call: Call<SingleClientImageInfoResponse>,
+                    response: Response<SingleClientImageInfoResponse>
+                ) {
                     if (response.isSuccessful) {
                         //fetching images to
                         //TODO: fix crash when value is null
@@ -166,16 +171,7 @@ class VehiclesActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun setUpTabs() {
-        val adapter = ViewPagerAdapter(supportFragmentManager)
-        adapter.addFragment(BookingsFragment(), "Bookings")
-        adapter.addFragment(SavedFragment(), "Saved")
-
-        viewPager.adapter = adapter
-        tabLayout.setupWithViewPager(viewPager)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) {
             true
         }
