@@ -19,12 +19,9 @@ import com.justin.gari.SettingsManager
 import com.justin.gari.adapters.SliderPageAdapter
 import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityDetailBinding
-import com.justin.gari.models.bookingCarModels.BookCar
-import com.justin.gari.models.bookingCarModels.BookCarResponse
 import com.justin.gari.models.carModels.SingleCarModel
 import com.justin.gari.models.saveCarModels.SaveCar
 import com.justin.gari.models.saveCarModels.SaveCarResponse
-import com.justin.gari.models.uploadImagesModel.SingleClientImageInfoResponse
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.nav_header.view.*
@@ -171,8 +168,8 @@ class DetailActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val client_id = sharedPreferences.getString("client_id", "default")
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+//        val client_id = sharedPreferences.getString("client_id", "default")
+//        val editor: SharedPreferences.Editor = sharedPreferences.edit()
 //        apiClient.getApiService(this).getUserImageInfo(client_id).enqueue(object : Callback<SingleClientImageInfoResponse> {
 //                override fun onResponse(call: Call<SingleClientImageInfoResponse>, response: Response<SingleClientImageInfoResponse>) {
 //                    if (response.isSuccessful) {
@@ -187,7 +184,7 @@ class DetailActivity : AppCompatActivity() {
 //                    Log.e("Gideon", "onFailure: ${t.message}")
 //                }
 //            })
-        val profileHeader = sharedPreferences.getString("userPhoto", "default")
+        val profileHeader = sharedPreferences.getString("userProfile", "default")
         val firstNameHeader = sharedPreferences.getString("first_name", "default")
         val lastNameHeader = sharedPreferences.getString("last_name", "default")
         val emailHeader = sharedPreferences.getString("email", "default")

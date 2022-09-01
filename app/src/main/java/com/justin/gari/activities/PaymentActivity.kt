@@ -48,7 +48,7 @@ class PaymentActivity : AppCompatActivity() {
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val profileHeader = sharedPreferences.getString("userPhoto", "default")
+        val profileHeader = sharedPreferences.getString("userProfile", "default")
         val firstNameHeader = sharedPreferences.getString("first_name", "default")
         val lastNameHeader = sharedPreferences.getString("last_name", "default")
         val emailHeader = sharedPreferences.getString("email", "default")

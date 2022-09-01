@@ -27,7 +27,8 @@ class RegisterActivity : AppCompatActivity() {
         settingsManager = SettingsManager(this)
         if (settingsManager.loadNightModeState() == true) {
             setTheme(R.style.DarkGari)
-        } else
+        }
+        else
             setTheme(R.style.Gari)
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)

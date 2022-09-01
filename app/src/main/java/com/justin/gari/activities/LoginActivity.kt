@@ -37,6 +37,7 @@ class LoginActivity : AppCompatActivity() {
             setTheme(R.style.DarkGari)
         } else
             setTheme(R.style.Gari)
+
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -67,11 +68,10 @@ class LoginActivity : AppCompatActivity() {
                         editor.putString("first_name", response.body()!!.user.first_name)
                         editor.putString("last_name", response.body()!!.user.last_name)
                         editor.putString("email", response.body()!!.user.email)
+                        editor.putString("userProfile", response.body()!!.user.user_photo_url)
                         editor.apply()
 
-                        response.body()!!.accessToken?.let { it1 ->
-                            sessionManager.saveAuthToken(it1)
-                        }
+                        response.body()!!.accessToken?.let { it1 -> sessionManager.saveAuthToken(it1) }
 
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         startActivity(intent)

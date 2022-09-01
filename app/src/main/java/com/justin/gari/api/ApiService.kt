@@ -18,8 +18,8 @@ import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
 
-interface ApiService {
 
+interface ApiService {
     @GET("/api/v1/cars")
     fun getAllCars(): Call<CarModel>
 
@@ -50,12 +50,15 @@ interface ApiService {
     @PATCH("/api/v1/cars/status/:car_id")
     fun changeStatus(@Path("car_id") car_id: String?)
 
-    @POST("api/v1/contact")
-    fun contactUpdate(@Body contacts: Contacts?): Call<ImageInfoResponse>
+    @PUT("/api/v1/contact/{client_id}")
+    fun contactUpdate(@Path("client_id") client_id: String?, @Body contacts: Contacts?): Call<UserDetailsResponse>
 
     @Multipart
     @POST("/api/v1/driverLicense/uploadCloudinary")
     fun dlCloudinary(@Part image: MultipartBody.Part): Call<DlCloudinaryResponse>
+
+    @PUT("/api/v1/dbDl/{client_id}")
+    fun dlCloudinaryResponseToDb(@Path("client_id") client_id: String?, @Body dlurl: DlUrl?): Call<UserDetailsResponse>
 
     @Multipart
     @POST("/api/v1/nationalId/uploadCloudinary")
@@ -65,7 +68,9 @@ interface ApiService {
     @POST("/api/v1/userPhoto/uploadCloudinary")
     fun userPhotoCloudinary(@Part image: MultipartBody.Part): Call<UserPhotoCloudinaryResponse>
 
-    @GET("/api/v1/imageinfo/{client_id}")
-    fun getUserImageInfo(@Path("client_id") client_id: String?): Call<SingleClientImageInfoResponse>
+    @PUT("/api/v1/dbnId/{client_id}")
+    fun nationalIdCloudinaryResponseToDb(@Path("client_id") client_id: String?, @Body nationalIdUrl: NationalIdUrl): Call<UserDetailsResponse>
 
+    @PUT("/api/v1/usPdb/{client_id}")
+    fun userPhotoCloudinaryResponseToDb(@Path("client_id") client_id: String?, @Body userPhotoUrl: UserPhotoUrl): Call<UserDetailsResponse>
 }

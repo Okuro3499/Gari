@@ -22,12 +22,8 @@ import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityVehiclesBinding
 import com.justin.gari.fragments.BookingsFragment
 import com.justin.gari.fragments.SavedFragment
-import com.justin.gari.models.uploadImagesModel.SingleClientImageInfoResponse
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class VehiclesActivity : AppCompatActivity() {
     lateinit var toggle: ActionBarDrawerToggle
@@ -62,9 +58,9 @@ class VehiclesActivity : AppCompatActivity() {
         myVehiclesAdapter.addFragment(SavedFragment(), "Saved")
         binding.viewpager.adapter = myVehiclesAdapter
 
-        getUserImageInfo();
+//        getUserImageInfo();
 
-        //val profileHeader = sharedPreferences.getString("userPhoto", "default")
+        val profileHeader = sharedPreferences.getString("userProfile", "default")
         val firstNameHeader = sharedPreferences.getString("first_name", "default")
         val lastNameHeader = sharedPreferences.getString("last_name", "default")
         val emailHeader = sharedPreferences.getString("email", "default")
@@ -78,7 +74,7 @@ class VehiclesActivity : AppCompatActivity() {
         emailTv.text = emailHeader.toString()
 
         Picasso.get()
-            .load(sharedPreferences.getString("userPhoto", "default"))
+            .load(profileHeader)
             .fit().centerCrop()
             .placeholder(R.drawable.user)
             .error(R.drawable.user)
@@ -92,7 +88,8 @@ class VehiclesActivity : AppCompatActivity() {
             if (isChecked) {
                 settingsManager.setNightModeState(true)
                 restartApp()
-            } else {
+            }
+            else {
                 settingsManager.setNightModeState(false)
                 restartApp()
             }
@@ -139,31 +136,31 @@ class VehiclesActivity : AppCompatActivity() {
         })
     }
 
-    private fun getUserImageInfo() {
-        val sharedPreferences: SharedPreferences =
-            getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-        val client_id = sharedPreferences.getString("client_id", "default")
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        apiClient.getApiService(this).getUserImageInfo(client_id)
-            .enqueue(object : Callback<SingleClientImageInfoResponse> {
-                override fun onResponse(
-                    call: Call<SingleClientImageInfoResponse>,
-                    response: Response<SingleClientImageInfoResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        //fetching images to
-                        //TODO: fix crash when value is null
-//                            val userProfile = response.body()!!.single_clientInfo.user_photo_url.toString().trim()
-//                            editor.putString("userPhoto", userProfile)
-//                            editor.apply()
-                    }
-                }
-
-                override fun onFailure(call: Call<SingleClientImageInfoResponse>, t: Throwable) {
-                    Log.e("Gideon", "onFailure: ${t.message}")
-                }
-            })
-    }
+//    private fun getUserImageInfo() {
+//        val sharedPreferences: SharedPreferences =
+//            getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+//        val client_id = sharedPreferences.getString("client_id", "default")
+//        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+//        apiClient.getApiService(this).getUserImageInfo(client_id)
+//            .enqueue(object : Callback<SingleClientImageInfoResponse> {
+//                override fun onResponse(
+//                    call: Call<SingleClientImageInfoResponse>,
+//                    response: Response<SingleClientImageInfoResponse>
+//                ) {
+//                    if (response.isSuccessful) {
+//                        //fetching images to
+//                        //TODO: fix crash when value is null
+////                            val userProfile = response.body()!!.single_clientInfo.user_photo_url.toString().trim()
+////                            editor.putString("userPhoto", userProfile)
+////                            editor.apply()
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<SingleClientImageInfoResponse>, t: Throwable) {
+//                    Log.e("Gideon", "onFailure: ${t.message}")
+//                }
+//            })
+//    }
 
     private fun restartApp() {
         val i = Intent(applicationContext, VehiclesActivity::class.java)

@@ -15,13 +15,9 @@ import com.justin.gari.R
 import com.justin.gari.SettingsManager
 import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityAboutBinding
-import com.justin.gari.models.uploadImagesModel.SingleClientImageInfoResponse
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_about.*
 import kotlinx.android.synthetic.main.nav_header.view.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class AboutActivity : AppCompatActivity() {
     lateinit var toggle: ActionBarDrawerToggle
@@ -35,8 +31,7 @@ class AboutActivity : AppCompatActivity() {
         if (settingsManager.loadNightModeState() == true) {
             setTheme(R.style.DarkGari)
         }
-        else
-            setTheme(R.style.Gari)
+        else setTheme(R.style.Gari)
         super.onCreate(savedInstanceState)
         binding = ActivityAboutBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -50,28 +45,28 @@ class AboutActivity : AppCompatActivity() {
         binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        val client_id = sharedPreferences.getString("client_id", "default")
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        apiClient.getApiService(this).getUserImageInfo(client_id).enqueue(
-            object : Callback<SingleClientImageInfoResponse> {
-                override fun onResponse(call: Call<SingleClientImageInfoResponse>, response: Response<SingleClientImageInfoResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        //fetching images to
-                        //TODO: fix crash when value is null
-//                            val userProfile = response.body()!!.single_clientInfo.user_photo_url.toString().trim()
-//                            editor.putString("userPhoto", userProfile)
-//                            editor.apply()
-                    }
-                }
+//        val client_id = sharedPreferences.getString("client_id", "default")
+//        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+//        apiClient.getApiService(this).getUserImageInfo(client_id).enqueue(
+//            object : Callback<SingleClientImageInfoResponse> {
+//                override fun onResponse(call: Call<SingleClientImageInfoResponse>, response: Response<SingleClientImageInfoResponse>
+//                ) {
+//                    if (response.isSuccessful) {
+//                        //fetching images to
+//                        //TODO: fix crash when value is null
+////                            val userProfile = response.body()!!.single_clientInfo.user_photo_url.toString().trim()
+////                            editor.putString("userPhoto", userProfile)
+////                            editor.apply()
+//                    }
+//                }
+//
+//                override fun onFailure(
+//                    call: Call<SingleClientImageInfoResponse>, t: Throwable) {
+//                    Log.e("Gideon", "onFailure: ${t.message}")
+//                }
+//            })
 
-                override fun onFailure(
-                    call: Call<SingleClientImageInfoResponse>, t: Throwable) {
-                    Log.e("Gideon", "onFailure: ${t.message}")
-                }
-            })
-
-        val profileHeader = sharedPreferences.getString("userPhoto", "default")
+        val profileHeader = sharedPreferences.getString("userProfile", "default")
         val firstNameHeader = sharedPreferences.getString("first_name", "default")
         val lastNameHeader = sharedPreferences.getString("last_name", "default")
         val emailHeader = sharedPreferences.getString("email", "default")

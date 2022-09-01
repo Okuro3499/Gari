@@ -1,6 +1,7 @@
 package com.justin.gari.activities
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -13,15 +14,14 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
 import com.justin.gari.SettingsManager
 import com.justin.gari.URIPathHelper
 import com.justin.gari.api.ApiClient
-import com.justin.gari.databinding.ActivityMainBinding
 import com.justin.gari.databinding.ActivityProfileCompleteBinding
 import com.justin.gari.models.uploadImagesModel.*
 import com.justin.gari.models.userModels.UserDetailsResponse
@@ -56,7 +56,6 @@ class ProfileCompleteActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-
         val clientId = sharedPreferences.getString("client_id", "default")
 
         toggle = ActionBarDrawerToggle(this, binding.drawerLayout, R.string.open, R.string.close)
@@ -65,9 +64,8 @@ class ProfileCompleteActivity : AppCompatActivity() {
         apiClient = ApiClient
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        getUserImageinfo()
 
-        val profileHeader = sharedPreferences.getString("userPhoto", "default")
+        val profileHeader = sharedPreferences.getString("userProfile", "default")
         val firstNameHeader = sharedPreferences.getString("first_name", "default")
         val lastNameHeader = sharedPreferences.getString("last_name", "default")
         val emailHeader = sharedPreferences.getString("email", "default")
@@ -81,7 +79,7 @@ class ProfileCompleteActivity : AppCompatActivity() {
         emailTv.text = emailHeader.toString()
 
         Picasso.get()
-            .load(sharedPreferences.getString("userPhoto", "default"))
+            .load(profileHeader)
             .fit().centerCrop()
             .placeholder(R.drawable.user)
             .error(R.drawable.user)
@@ -110,26 +108,22 @@ class ProfileCompleteActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.profile -> {
-                    val intentProfile =
-                        Intent(this@ProfileCompleteActivity, ProfileCompleteActivity::class.java)
+                    val intentProfile = Intent(this@ProfileCompleteActivity, ProfileCompleteActivity::class.java)
                     startActivity(intentProfile)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.myVehicles -> {
-                    val intentMyVehicles =
-                        Intent(this@ProfileCompleteActivity, VehiclesActivity::class.java)
+                    val intentMyVehicles = Intent(this@ProfileCompleteActivity, VehiclesActivity::class.java)
                     startActivity(intentMyVehicles)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {
-                    val intentLogin =
-                        Intent(this@ProfileCompleteActivity, LoginActivity::class.java)
+                    val intentLogin = Intent(this@ProfileCompleteActivity, LoginActivity::class.java)
                     startActivity(intentLogin)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.about -> {
-                    val intentAbout =
-                        Intent(this@ProfileCompleteActivity, AboutActivity::class.java)
+                    val intentAbout = Intent(this@ProfileCompleteActivity, AboutActivity::class.java)
                     startActivity(intentAbout)
                     return@OnNavigationItemSelectedListener true
                 }
@@ -156,6 +150,36 @@ class ProfileCompleteActivity : AppCompatActivity() {
                         binding.tvDistrict.text = response.body()!!.single_client.district.toString()
                         binding.tvEstate.text = response.body()!!.single_client.estate.toString()
                         binding.tvLandMark.text = response.body()!!.single_client.landmark.toString()
+                        binding.etFullName.setText(response.body()!!.single_client.contact1_name.toString())
+                        binding.etRelationShip.setText(response.body()!!.single_client.contact1_relationship.toString())
+                        binding.etEmergencyMobile.setText(response.body()!!.single_client.contact1_mobile.toString())
+                        binding.etFullName2.setText(response.body()!!.single_client.contact2_name.toString())
+                        binding.etRelationShip2.setText( response.body()!!.single_client.contact2_relationship.toString())
+                        binding.etEmergencyMobile2.setText(response.body()!!.single_client.contact1_mobile.toString())
+
+                        //driver license
+                        Picasso.get()
+                            .load(response.body()!!.single_client.driver_licence_url)
+                            .fit().centerCrop()
+                            .placeholder(R.drawable.click)
+                            .error(R.drawable.click)
+                            .into(binding.ivDl)
+
+                        //national id
+                        Picasso.get()
+                            .load(response.body()!!.single_client.national_id_url)
+                            .fit().centerCrop()
+                            .placeholder(R.drawable.click)
+                            .error(R.drawable.click)
+                            .into(binding.ivId)
+
+                        //userphoto
+                        Picasso.get()
+                            .load(response.body()!!.single_client.user_photo_url)
+                            .fit().centerCrop()
+                            .placeholder(R.drawable.click)
+                            .error(R.drawable.click)
+                            .into(binding.ivPhoto)
                     }
                 }
 
@@ -165,28 +189,34 @@ class ProfileCompleteActivity : AppCompatActivity() {
             })
 
         binding.btSubmit.setOnClickListener {
+            val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+            val client_id = sharedPreferences.getString("client_id", "default")
+
+            val progressDialog5 = ProgressDialog(this@ProfileCompleteActivity)
+            progressDialog5.setCancelable(false) // set cancelable to false
+            progressDialog5.setMessage("Uploading...") // set message
+            progressDialog5.show()
             val contactInfo = Contacts(
                 binding.etFullName.text.toString().trim(),
-                binding.etRelationShip.text.toString().trim(),
                 binding.etRelationShip.text.toString().trim(),
                 binding.etEmergencyMobile.text.toString().trim(),
                 binding.etFullName2.text.toString().trim(),
                 binding.etRelationShip2.text.toString().trim(),
-                binding.etEmergencyMobile2.text.toString().trim(),
-                sharedPreferences.getString("DlCloudinary", "default").toString().trim(),
-                sharedPreferences.getString("nationalId", "default").toString().trim(),
-                sharedPreferences.getString("userPhoto", "default").toString().trim()
+                binding.etEmergencyMobile2.text.toString().trim()
             )
 
-            apiClient.getApiService(this).contactUpdate(contactInfo).enqueue(object : Callback<ImageInfoResponse> {
-                    override fun onResponse(call: Call<ImageInfoResponse>, response: Response<ImageInfoResponse>) {
+            Log.e("Gideon", "onSuccess:$contactInfo")
+
+            apiClient.getApiService(this).contactUpdate(client_id, contactInfo).enqueue(object : Callback<UserDetailsResponse> {
+                    override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
                         if (response.isSuccessful) {
+                            progressDialog5.dismiss()
                             Toast.makeText(this@ProfileCompleteActivity, "Uploaded Successfully", Toast.LENGTH_LONG).show()
                             Log.e("Gideon", "onSuccess: ${response.body()}")
                         }
                     }
 
-                    override fun onFailure(call: Call<ImageInfoResponse>, t: Throwable) {
+                    override fun onFailure(call: Call<UserDetailsResponse>, t: Throwable) {
                         Toast.makeText(this@ProfileCompleteActivity, "${t.message}", Toast.LENGTH_LONG).show()
                         Log.e("Gideon", "onFailure: ${t.message}")
                     }
@@ -198,29 +228,6 @@ class ProfileCompleteActivity : AppCompatActivity() {
         binding.ivId.setOnClickListener { ImagePicker.with(this).start(1) }
 
         binding.ivPhoto.setOnClickListener { ImagePicker.with(this).start(2) }
-    }
-
-    private fun getUserImageinfo() {
-        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-        val client_id = sharedPreferences.getString("client_id", "default")
-//        val editor: SharedPreferences.Editor = sharedPreferences.edit()
-
-        apiClient.getApiService(this).getUserImageInfo(client_id).enqueue(object : Callback<SingleClientImageInfoResponse> {
-                override fun onResponse(call: Call<SingleClientImageInfoResponse>, response: Response<SingleClientImageInfoResponse>) {
-                    if (response.isSuccessful) {
-                        //fetching images to
-                        //TODO: fix crash when value is null
-//                            val userProfile = response.body()!!.single_clientInfo.user_photo_url.toString().trim()
-//                            editor.putString("userPhoto", userProfile)
-//                            editor.apply()
-
-                    }
-                }
-
-                override fun onFailure(call: Call<SingleClientImageInfoResponse>, t: Throwable) {
-                    Log.e("Gideon", "onFailure: ${t.message}")
-                }
-            })
     }
 
     private fun restartApp() {
@@ -246,13 +253,10 @@ class ProfileCompleteActivity : AppCompatActivity() {
 
                 Log.i("FilePath", filePath)
                 val file = File(filePath)
-                val driverLicense: RequestBody =
-                    file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                val driverLicense: RequestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
 
                 val dlButton = findViewById<Button>(R.id.btDlUpload)
-                dlButton.setOnClickListener {
-                    uploadDl(file, driverLicense)
-                }
+                dlButton.setOnClickListener { uploadDl(file, driverLicense) }
             }
             else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
@@ -269,12 +273,12 @@ class ProfileCompleteActivity : AppCompatActivity() {
 
                 Log.i("FilePath", filePath)
                 val file = File(filePath)
-                val identityCard: RequestBody =
-                    file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                val identityCard: RequestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
 
                 val btIdUpload = findViewById<Button>(R.id.btIdUpload)
                 btIdUpload.setOnClickListener { uploadId(file, identityCard) }
-            } else if (resultCode == RESULT_CANCELED) {
+            }
+            else if (resultCode == RESULT_CANCELED) {
                 // Handle cancel
                 Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
             }
@@ -290,13 +294,10 @@ class ProfileCompleteActivity : AppCompatActivity() {
 
                 Log.i("FilePath", filePath)
                 val file = File(filePath)
-                val userPhoto: RequestBody =
-                    file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                val userPhoto: RequestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
 
                 val btUserPhotoUpload = findViewById<Button>(R.id.btUserPhotoUpload)
-                btUserPhotoUpload.setOnClickListener {
-                    uploadPhoto(file, userPhoto)
-                }
+                btUserPhotoUpload.setOnClickListener { uploadPhoto(file, userPhoto) }
             }
             else if (resultCode == RESULT_CANCELED) {
                 // Handle cancel
@@ -306,26 +307,44 @@ class ProfileCompleteActivity : AppCompatActivity() {
     }
 
     private fun uploadDl(file: File, driverLicense: RequestBody) {
-        val sharedPreferences: SharedPreferences =
-            getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        val client_id = sharedPreferences.getString("client_id", "default")
 
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        val progressDialog0 = ProgressDialog(this@ProfileCompleteActivity)
+        progressDialog0.setCancelable(false) // set cancelable to false
+        progressDialog0.setMessage("Uploading...") // set message
+        progressDialog0.show()
+
         val image = MultipartBody.Part.createFormData("image", file.name, driverLicense)
-        apiClient.getApiService(this).dlCloudinary(image)
-            .enqueue(object : Callback<DlCloudinaryResponse> {
-                override fun onResponse(
-                    call: Call<DlCloudinaryResponse>,
-                    response: Response<DlCloudinaryResponse>
-                ) {
+        apiClient.getApiService(this).dlCloudinary(image).enqueue(object : Callback<DlCloudinaryResponse> {
+                override fun onResponse(call: Call<DlCloudinaryResponse>, response: Response<DlCloudinaryResponse>) {
                     Log.e("Gideon", "cloudinary: $response")
                     if (response.isSuccessful) {
-                        Toast.makeText(
-                            this@ProfileCompleteActivity,
-                            "Driver license uploaded successful",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        editor.putString("DlCloudinary", response.body()!!.driverLicenceCloudinary)
-                        editor.apply()
+                        progressDialog0.dismiss()
+                        Toast.makeText(this@ProfileCompleteActivity, "Driver license uploaded successful", Toast.LENGTH_SHORT).show()
+
+                        Log.e("Gideon", "cloudinaryresponse: ${response.body()!!.driverLicenceCloudinary}")
+
+                        val progressDialog1 = ProgressDialog(this@ProfileCompleteActivity)
+                        progressDialog1.setCancelable(false) // set cancelable to false
+                        progressDialog1.setMessage("Securing image...") // set message
+                        progressDialog1.show()
+
+                        val dlUrl = DlUrl(response.body()!!.driverLicenceCloudinary)
+
+                        apiClient.getApiService(this@ProfileCompleteActivity).dlCloudinaryResponseToDb(client_id, dlUrl).enqueue(object : Callback<UserDetailsResponse> {
+                                override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
+                                    if (response.isSuccessful) {
+                                        progressDialog1.dismiss()
+                                        Toast.makeText(this@ProfileCompleteActivity, "Image Secured", Toast.LENGTH_SHORT).show()
+                                        Log.e("Gideon", "onSuccess: ${response.body()}")
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<UserDetailsResponse>, t: Throwable) {
+                                    Log.e("Gideon", "onFailure: ${t.message}")
+                                }
+                            })
                     }
                 }
 
@@ -336,26 +355,41 @@ class ProfileCompleteActivity : AppCompatActivity() {
     }
 
     private fun uploadId(file: File, identityCard: RequestBody) {
-        val sharedPreferences: SharedPreferences =
-            getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        val client_id = sharedPreferences.getString("client_id", "default")
 
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        val progressDialog2 = ProgressDialog(this@ProfileCompleteActivity)
+        progressDialog2.setCancelable(false) // set cancelable to false
+        progressDialog2.setMessage("Uploading...") // set message
+        progressDialog2.show()
+
         val image = MultipartBody.Part.createFormData("image", file.name, identityCard)
-        apiClient.getApiService(this).idCloudinary(image)
-            .enqueue(object : Callback<IdCloudinaryResponse> {
-                override fun onResponse(
-                    call: Call<IdCloudinaryResponse>,
-                    response: Response<IdCloudinaryResponse>
-                ) {
+        apiClient.getApiService(this).idCloudinary(image).enqueue(object : Callback<IdCloudinaryResponse> {
+                override fun onResponse(call: Call<IdCloudinaryResponse>, response: Response<IdCloudinaryResponse>) {
                     Log.e("Gideon", "cloudinary: $response")
                     if (response.isSuccessful) {
-                        Toast.makeText(
-                            this@ProfileCompleteActivity,
-                            "national id uploaded successfully",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        editor.putString("nationalId", response.body()!!.nationalIdCloudinary)
-                        editor.apply()
+                        progressDialog2.dismiss()
+                        Toast.makeText(this@ProfileCompleteActivity, "national id uploaded successfully", Toast.LENGTH_SHORT).show()
+                        val nationalIdUrl = NationalIdUrl(response.body()!!.nationalIdCloudinary)
+
+                        val progressDialog3 = ProgressDialog(this@ProfileCompleteActivity)
+                        progressDialog3.setCancelable(false) // set cancelable to false
+                        progressDialog3.setMessage("Securing image...") // set message
+                        progressDialog3.show()
+
+                        apiClient.getApiService(this@ProfileCompleteActivity).nationalIdCloudinaryResponseToDb(client_id, nationalIdUrl).enqueue(object : Callback<UserDetailsResponse> {
+                            override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
+                                if (response.isSuccessful) {
+                                    progressDialog3.dismiss()
+                                    Toast.makeText(this@ProfileCompleteActivity, "Image Secured", Toast.LENGTH_SHORT).show()
+                                    Log.e("Gideon", "onSuccess: ${response.body()}")
+                                }
+                            }
+
+                            override fun onFailure(call: Call<UserDetailsResponse>, t: Throwable) {
+                                Log.e("Gideon", "onFailure: ${t.message}")
+                            }
+                        })
                     }
                 }
 
@@ -366,26 +400,43 @@ class ProfileCompleteActivity : AppCompatActivity() {
     }
 
     private fun uploadPhoto(file: File, userPhoto: RequestBody) {
-        val sharedPreferences: SharedPreferences =
-            getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-
+        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        val client_id = sharedPreferences.getString("client_id", "default")
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
+
+        val progressDialog4 = ProgressDialog(this@ProfileCompleteActivity)
+        progressDialog4.setCancelable(false) // set cancelable to false
+        progressDialog4.setMessage("Uploading...") // set message
+        progressDialog4.show()
+
         val image = MultipartBody.Part.createFormData("image", file.name, userPhoto)
-        apiClient.getApiService(this).userPhotoCloudinary(image)
-            .enqueue(object : Callback<UserPhotoCloudinaryResponse> {
-                override fun onResponse(
-                    call: Call<UserPhotoCloudinaryResponse>,
-                    response: Response<UserPhotoCloudinaryResponse>
-                ) {
+        apiClient.getApiService(this).userPhotoCloudinary(image).enqueue(object : Callback<UserPhotoCloudinaryResponse> {
+                override fun onResponse(call: Call<UserPhotoCloudinaryResponse>, response: Response<UserPhotoCloudinaryResponse>) {
                     Log.e("Gideon", "cloudinary: $response")
                     if (response.isSuccessful) {
-                        Toast.makeText(
-                            this@ProfileCompleteActivity,
-                            "User Photo uploaded successfully",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        editor.putString("userPhoto", response.body()!!.userPhotoCloudinary)
+                        progressDialog4.dismiss()
+                        Toast.makeText(this@ProfileCompleteActivity, "User Photo uploaded successfully", Toast.LENGTH_SHORT).show()
+                        val progressDialog5 = ProgressDialog(this@ProfileCompleteActivity)
+                        progressDialog5.setCancelable(false) // set cancelable to false
+                        progressDialog5.setMessage("Securing image...") // set message
+                        progressDialog5.show()
+
+                        val userPhotoUrl = UserPhotoUrl(response.body()!!.userPhotoCloudinary)
+                        editor.putString("userProfile", response.body()!!.userPhotoCloudinary)
                         editor.apply()
+                        apiClient.getApiService(this@ProfileCompleteActivity).userPhotoCloudinaryResponseToDb(client_id, userPhotoUrl).enqueue(object : Callback<UserDetailsResponse> {
+                            override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
+                                if (response.isSuccessful) {
+                                    progressDialog5.dismiss()
+                                    Toast.makeText(this@ProfileCompleteActivity, "Image Secured", Toast.LENGTH_SHORT).show()
+                                    Log.e("Gideon", "onSuccess: ${response.body()}")
+                                }
+                            }
+
+                            override fun onFailure(call: Call<UserDetailsResponse>, t: Throwable) {
+                                Log.e("Gideon", "onFailure: ${t.message}")
+                            }
+                        })
                     }
                 }
 
@@ -393,7 +444,6 @@ class ProfileCompleteActivity : AppCompatActivity() {
                     Log.e("Gideon", "onFailure: ${t.message}")
                 }
             })
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -402,5 +452,4 @@ class ProfileCompleteActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-
 }
