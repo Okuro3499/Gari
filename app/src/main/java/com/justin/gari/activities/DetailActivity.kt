@@ -189,9 +189,9 @@ class DetailActivity : AppCompatActivity() {
         val lastNameHeader = sharedPreferences.getString("last_name", "default")
         val emailHeader = sharedPreferences.getString("email", "default")
         val header = binding.navView.getHeaderView(0)
-        header.firstName.text = firstNameHeader.toString()
-        header.lastName.text = lastNameHeader.toString()
-        header.email.text = emailHeader.toString()
+//        header.firstName.text = firstNameHeader.toString()
+//        header.lastName.text = lastNameHeader.toString()
+//        header.email.text = emailHeader.toString()
         Picasso.get()
             .load(profileHeader)
             .fit().centerCrop()
@@ -226,8 +226,8 @@ class DetailActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.myVehicles -> {
-                    val intentMyVehicles = Intent(this@DetailActivity, VehiclesActivity::class.java)
-                    startActivity(intentMyVehicles)
+//                    val intentMyVehicles = Intent(this@DetailActivity, VehiclesActivity::class.java)
+//                    startActivity(intentMyVehicles)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {

@@ -45,11 +45,11 @@ class SavedFragment : Fragment() {
                     override fun onResponse(call: Call<SavedCarResponse>, response: Response<SavedCarResponse>
                     ) {
                         Log.e("Gideon", "onSuccess: ${response.body()}")
-                        if (response.isSuccessful) { recyclerview.apply {
-                                layoutManager = LinearLayoutManager(context)
-                                adapter = SavedCarAdapter(response.body()!!.saved_cars, context)
-                            }
-                        }
+//                        if (response.isSuccessful) { recyclerview.apply {
+//                                layoutManager = LinearLayoutManager(context)
+//                                adapter = SavedCarAdapter(response.body()!!.saved_cars, context)
+//                            }
+//                        }
                     }
 
                     override fun onFailure(call: Call<SavedCarResponse>, t: Throwable) {

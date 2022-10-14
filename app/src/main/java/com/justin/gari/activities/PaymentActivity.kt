@@ -91,8 +91,8 @@ class PaymentActivity : AppCompatActivity() {
                 }
                 R.id.myVehicles -> {
                     val intentMyVehicles =
-                        Intent(this@PaymentActivity, VehiclesActivity::class.java)
-                    startActivity(intentMyVehicles)
+//                        Intent(this@PaymentActivity, VehiclesActivity::class.java)
+//                    startActivity(intentMyVehicles)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {

@@ -6,206 +6,677 @@
     android:layout_height="match_parent"
     tools:context=".activities.RegisterActivity">
 
-  <RelativeLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/ivLogo"
-        android:layout_width="199dp"
-        android:layout_height="120dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        app:srcCompat="@drawable/logo"
-        android:contentDescription="@string/companylogo" />
+        <TextView
+            android:id="@+id/createTv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/poppins_extra_bold"
+            android:text="@string/create_account"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/etFirstName"
-        android:layout_width="140dp"
-        android:layout_height="39dp"
-        android:layout_below="@id/ivLogo"
-        android:layout_marginStart="32dp"
-        android:background="@drawable/custom_input"
-        android:ems="10"
-        android:hint="@string/first_name"
-        android:inputType="text"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:textColor="?attr/textColor" />
+        <TextView
+            android:id="@+id/createTv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="@string/create_your_account_here"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/createTv1" />
 
-    <EditText
-        android:id="@+id/etLastName"
-        android:layout_width="140dp"
-        android:layout_height="39dp"
-        android:layout_below="@id/ivLogo"
-        android:layout_marginStart="18dp"
-        android:layout_toEndOf="@+id/etFirstName"
-        android:background="@drawable/custom_input"
-        android:ems="10"
-        android:hint="@string/last_name"
-        android:inputType="text"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:textColor="?attr/textColor" />
+        <View
+            android:id="@+id/view1"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/createTv2" />
 
-    <EditText
-        android:id="@+id/etEmailAddress"
-        android:layout_width="300dp"
-        android:layout_height="39dp"
-        android:layout_below="@+id/etFirstName"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/custom_input"
-        android:ems="10"
-        android:hint="@string/mail"
-        android:inputType="textEmailAddress"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:textColor="?attr/textColor" />
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:baselineAligned="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view1">
 
-    <EditText
-        android:id="@+id/etMobile"
-        android:layout_width="300dp"
-        android:layout_height="39dp"
-        android:layout_below="@+id/etEmailAddress"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/custom_input"
-        android:ems="10"
-        android:hint="@string/mobil"
-        android:inputType="phone"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:textColor="?attr/textColor" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edtFirstName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                app:boxBackgroundColor="@color/md_white_1000"
+                app:boxStrokeColor="@color/md_white_1000"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view1">
 
+                <EditText
+                    android:id="@+id/etFirstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:autofillHints=""
+                    android:background="@drawable/custom_input"
+                    android:fontFamily="@font/poppins_regular"
+                    android:hint="@string/first_name"
+                    android:inputType="text"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="8dp"
+                    android:textColor="@color/md_black_1000" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/etCounty"
-        android:layout_width="140dp"
-        android:layout_height="39dp"
-        android:layout_below="@+id/etMobile"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/custom_input"
-        android:ems="10"
-        android:hint="@string/countie"
-        android:inputType="text"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:textColor="?attr/textColor" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edtLastName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                app:boxBackgroundColor="@color/md_white_1000"
+                app:boxStrokeColor="@color/md_white_1000"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view1">
 
-    <EditText
-        android:id="@+id/etDistrict"
-        android:layout_width="140dp"
-        android:layout_height="39dp"
-        android:layout_below="@+id/etMobile"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="10dp"
-        android:layout_toEndOf="@+id/etCounty"
-        android:background="@drawable/custom_input"
-        android:ems="10"
-        android:hint="@string/distric"
-        android:inputType="text"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:textColor="?attr/textColor" />
+                <EditText
+                    android:id="@+id/etLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:autofillHints=""
+                    android:background="@drawable/custom_input"
+                    android:fontFamily="@font/poppins_regular"
+                    android:hint="@string/last_name"
+                    android:inputType="text"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="8dp"
+                    android:textColor="@color/md_black_1000" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edtEmailAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            app:boxBackgroundColor="@color/md_white_1000"
+            app:boxStrokeColor="@color/md_white_1000"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
 
-    <EditText
-        android:id="@+id/etEstate"
-        android:layout_width="140dp"
-        android:layout_height="39dp"
-        android:layout_below="@+id/etCounty"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/custom_input"
-        android:ems="10"
-        android:hint="@string/estat"
-        android:inputType="text"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:textColor="?attr/textColor" />
+            <EditText
+                android:id="@+id/etEmailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:autofillHints=""
+                android:background="@drawable/custom_input"
+                android:fontFamily="@font/poppins_regular"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:paddingStart="12dp"
+                android:paddingEnd="8dp"
+                android:textColor="@color/md_black_1000" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/etLandMark"
-        android:layout_width="140dp"
-        android:layout_height="39dp"
-        android:layout_below="@+id/etDistrict"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="10dp"
-        android:layout_toEndOf="@+id/etEstate"
-        android:background="@drawable/custom_input"
-        android:ems="10"
-        android:hint="@string/landmak"
-        android:inputType="text"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:textColor="?attr/textColor" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edtMobile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            app:boxBackgroundColor="@color/md_white_1000"
+            app:boxStrokeColor="@color/md_white_1000"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edtEmailAddress">
 
-    <EditText
-        android:id="@+id/etPassword"
-        android:layout_width="250dp"
-        android:layout_height="39dp"
-        android:layout_below="@+id/etEstate"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/custom_input"
-        android:ems="10"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:textColor="?attr/textColor" />
+            <EditText
+                android:id="@+id/etMobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:autofillHints=""
+                android:background="@drawable/custom_input"
+                android:fontFamily="@font/poppins_regular"
+                android:hint="@string/mobil"
+                android:inputType="phone"
+                android:paddingStart="12dp"
+                android:paddingEnd="8dp"
+                android:textColor="@color/md_black_1000" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageButton
-        android:id="@+id/ibShow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/etEstate"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="18dp"
-        android:layout_toEndOf="@+id/etPassword"
-        android:background="@color/md_white_1000"
-        app:srcCompat="@drawable/outline_visibility_black_24dp"
-        android:contentDescription="@string/visibility_toggle" />
+        <LinearLayout
+            android:id="@+id/linearLayout6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:baselineAligned="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edtMobile">
 
-    <EditText
-        android:id="@+id/etcPassword"
-        android:layout_width="300dp"
-        android:layout_height="39dp"
-        android:layout_below="@+id/etPassword"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/custom_input"
-        android:ems="10"
-        android:hint="@string/confirm_password"
-        android:inputType="textPassword"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:textColor="?attr/textColor" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edtCounty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                app:boxBackgroundColor="@color/md_white_1000"
+                app:boxStrokeColor="@color/md_white_1000"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view1">
 
-    <Button
-        android:id="@+id/btRegister"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/etcPassword"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="10dp"
-        android:text="@string/register" />
+                <EditText
+                    android:id="@+id/etCounty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:autofillHints=""
+                    android:background="@drawable/custom_input"
+                    android:fontFamily="@font/poppins_regular"
+                    android:hint="@string/countie"
+                    android:inputType="text"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="8dp"
+                    android:textColor="@color/md_black_1000" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/tvNoAccount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btRegister"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="10dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="@string/already_have_an_account_login"
-        android:textSize="16sp" />
-  </RelativeLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edtDistrict"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                app:boxBackgroundColor="@color/md_white_1000"
+                app:boxStrokeColor="@color/md_white_1000"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view1">
+
+                <EditText
+                    android:id="@+id/etDistrict"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:autofillHints=""
+                    android:background="@drawable/custom_input"
+                    android:fontFamily="@font/poppins_regular"
+                    android:hint="@string/distric"
+                    android:inputType="text"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="8dp"
+                    android:textColor="@color/md_black_1000" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edtEstate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            app:boxBackgroundColor="@color/md_white_1000"
+            app:boxStrokeColor="@color/md_white_1000"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
+
+            <EditText
+                android:id="@+id/etEstate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:autofillHints=""
+                android:background="@drawable/custom_input"
+                android:fontFamily="@font/poppins_regular"
+                android:hint="@string/estat"
+                android:inputType="text"
+                android:paddingStart="12dp"
+                android:paddingEnd="8dp"
+                android:textColor="@color/md_black_1000" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edtLandMark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            app:boxBackgroundColor="@color/md_white_1000"
+            app:boxStrokeColor="@color/md_white_1000"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edtEstate">
+
+            <EditText
+                android:id="@+id/etLandMark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:autofillHints=""
+                android:background="@drawable/custom_input"
+                android:fontFamily="@font/poppins_regular"
+                android:hint="@string/landmak"
+                android:inputType="text"
+                android:paddingStart="12dp"
+                android:paddingEnd="8dp"
+                android:textColor="@color/md_black_1000" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edtPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            app:boxBackgroundColor="@color/md_white_1000"
+            app:boxStrokeColor="@color/md_white_1000"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edtLandMark"
+            app:passwordToggleEnabled="true">
+
+            <EditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:autofillHints=""
+                android:background="@drawable/custom_input"
+                android:drawablePadding="12dp"
+                android:fontFamily="@font/poppins_regular"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:paddingStart="10dp"
+                android:paddingEnd="8dp"
+                android:textColor="@color/md_black_1000" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edtcPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            app:boxBackgroundColor="@color/md_white_1000"
+            app:boxStrokeColor="@color/md_white_1000"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edtPassword"
+            app:passwordToggleEnabled="true">
+
+            <EditText
+                android:id="@+id/etcPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:autofillHints=""
+                android:background="@drawable/custom_input"
+                android:drawablePadding="12dp"
+                android:fontFamily="@font/poppins_regular"
+                android:hint="@string/confirm_password"
+                android:inputType="textPassword"
+                android:paddingStart="10dp"
+                android:paddingEnd="8dp"
+                android:textColor="@color/md_black_1000" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/button_bg_dark"
+            android:fontFamily="@font/poppins_bold"
+            android:text="@string/create_account"
+            android:textAllCaps="false"
+            android:textColor="@color/md_white_1000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edtcPassword" />
+
+        <TextView
+            android:id="@+id/or"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/poppins_extra_bold"
+            android:text="OR"
+            app:layout_constraintBottom_toTopOf="@+id/google"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btRegister" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/google"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/button_bg_light"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Sign up with Google"
+            android:textAllCaps="false"
+            android:textColor="@color/md_white_1000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/or" />
+
+      <LinearLayout
+          android:id="@+id/tvNoAccount"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:layout_marginBottom="20dp"
+          android:gravity="center"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/google">
+
+        <TextView
+            android:id="@+id/already"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="@string/already_have_an_account"
+            android:textColor="@color/colorPrimary" />
+
+        <TextView
+            android:id="@+id/login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="@string/login2"
+            android:textColor="@color/button" />
+      </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </ScrollView>
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+    <!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--    xmlns:tools="http://schemas.android.com/tools"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent"-->
+    <!--    tools:context=".activities.RegisterActivity">-->
+
+    <!--  <RelativeLayout-->
+    <!--      android:layout_width="match_parent"-->
+    <!--      android:layout_height="wrap_content">-->
+
+    <!--    <ImageView-->
+    <!--        android:id="@+id/ivLogo"-->
+    <!--        android:layout_width="199dp"-->
+    <!--        android:layout_height="120dp"-->
+    <!--        android:layout_centerHorizontal="true"-->
+    <!--        android:layout_marginTop="30dp"-->
+    <!--        app:srcCompat="@drawable/logo"-->
+    <!--        android:contentDescription="@string/companylogo" />-->
+
+    <!--    <EditText-->
+    <!--        android:id="@+id/etFirstName"-->
+    <!--        android:layout_width="140dp"-->
+    <!--        android:layout_height="39dp"-->
+    <!--        android:layout_below="@id/ivLogo"-->
+    <!--        android:layout_marginStart="32dp"-->
+    <!--        android:background="@drawable/custom_input"-->
+    <!--        android:ems="10"-->
+    <!--        android:hint="@string/first_name"-->
+    <!--        android:inputType="text"-->
+    <!--        android:paddingStart="12dp"-->
+    <!--        android:paddingEnd="12dp"-->
+    <!--        android:textColor="?attr/textColor" />-->
+
+    <!--    <EditText-->
+    <!--        android:id="@+id/etLastName"-->
+    <!--        android:layout_width="140dp"-->
+    <!--        android:layout_height="39dp"-->
+    <!--        android:layout_below="@id/ivLogo"-->
+    <!--        android:layout_marginStart="18dp"-->
+    <!--        android:layout_toEndOf="@+id/etFirstName"-->
+    <!--        android:background="@drawable/custom_input"-->
+    <!--        android:ems="10"-->
+    <!--        android:hint="@string/last_name"-->
+    <!--        android:inputType="text"-->
+    <!--        android:paddingStart="12dp"-->
+    <!--        android:paddingEnd="12dp"-->
+    <!--        android:textColor="?attr/textColor" />-->
+
+    <!--    <EditText-->
+    <!--        android:id="@+id/etEmailAddress"-->
+    <!--        android:layout_width="300dp"-->
+    <!--        android:layout_height="39dp"-->
+    <!--        android:layout_below="@+id/etFirstName"-->
+    <!--        android:layout_centerHorizontal="true"-->
+    <!--        android:layout_marginTop="10dp"-->
+    <!--        android:background="@drawable/custom_input"-->
+    <!--        android:ems="10"-->
+    <!--        android:hint="@string/mail"-->
+    <!--        android:inputType="textEmailAddress"-->
+    <!--        android:paddingStart="12dp"-->
+    <!--        android:paddingEnd="12dp"-->
+    <!--        android:textColor="?attr/textColor" />-->
+
+    <!--    <EditText-->
+    <!--        android:id="@+id/etMobile"-->
+    <!--        android:layout_width="300dp"-->
+    <!--        android:layout_height="39dp"-->
+    <!--        android:layout_below="@+id/etEmailAddress"-->
+    <!--        android:layout_centerHorizontal="true"-->
+    <!--        android:layout_marginTop="10dp"-->
+    <!--        android:background="@drawable/custom_input"-->
+    <!--        android:ems="10"-->
+    <!--        android:hint="@string/mobil"-->
+    <!--        android:inputType="phone"-->
+    <!--        android:paddingStart="12dp"-->
+    <!--        android:paddingEnd="12dp"-->
+    <!--        android:textColor="?attr/textColor" />-->
+
+
+    <!--    <EditText-->
+    <!--        android:id="@+id/etCounty"-->
+    <!--        android:layout_width="140dp"-->
+    <!--        android:layout_height="39dp"-->
+    <!--        android:layout_below="@+id/etMobile"-->
+    <!--        android:layout_marginStart="32dp"-->
+    <!--        android:layout_marginTop="10dp"-->
+    <!--        android:background="@drawable/custom_input"-->
+    <!--        android:ems="10"-->
+    <!--        android:hint="@string/countie"-->
+    <!--        android:inputType="text"-->
+    <!--        android:paddingStart="12dp"-->
+    <!--        android:paddingEnd="12dp"-->
+    <!--        android:textColor="?attr/textColor" />-->
+
+    <!--    <EditText-->
+    <!--        android:id="@+id/etDistrict"-->
+    <!--        android:layout_width="140dp"-->
+    <!--        android:layout_height="39dp"-->
+    <!--        android:layout_below="@+id/etMobile"-->
+    <!--        android:layout_marginStart="18dp"-->
+    <!--        android:layout_marginTop="10dp"-->
+    <!--        android:layout_toEndOf="@+id/etCounty"-->
+    <!--        android:background="@drawable/custom_input"-->
+    <!--        android:ems="10"-->
+    <!--        android:hint="@string/distric"-->
+    <!--        android:inputType="text"-->
+    <!--        android:paddingStart="12dp"-->
+    <!--        android:paddingEnd="12dp"-->
+    <!--        android:textColor="?attr/textColor" />-->
+
+
+    <!--    <EditText-->
+    <!--        android:id="@+id/etEstate"-->
+    <!--        android:layout_width="140dp"-->
+    <!--        android:layout_height="39dp"-->
+    <!--        android:layout_below="@+id/etCounty"-->
+    <!--        android:layout_marginStart="32dp"-->
+    <!--        android:layout_marginTop="10dp"-->
+    <!--        android:background="@drawable/custom_input"-->
+    <!--        android:ems="10"-->
+    <!--        android:hint="@string/estat"-->
+    <!--        android:inputType="text"-->
+    <!--        android:paddingStart="12dp"-->
+    <!--        android:paddingEnd="12dp"-->
+    <!--        android:textColor="?attr/textColor" />-->
+
+    <!--    <EditText-->
+    <!--        android:id="@+id/etLandMark"-->
+    <!--        android:layout_width="140dp"-->
+    <!--        android:layout_height="39dp"-->
+    <!--        android:layout_below="@+id/etDistrict"-->
+    <!--        android:layout_marginStart="18dp"-->
+    <!--        android:layout_marginTop="10dp"-->
+    <!--        android:layout_toEndOf="@+id/etEstate"-->
+    <!--        android:background="@drawable/custom_input"-->
+    <!--        android:ems="10"-->
+    <!--        android:hint="@string/landmak"-->
+    <!--        android:inputType="text"-->
+    <!--        android:paddingStart="12dp"-->
+    <!--        android:paddingEnd="12dp"-->
+    <!--        android:textColor="?attr/textColor" />-->
+
+    <!--    <EditText-->
+    <!--        android:id="@+id/etPassword"-->
+    <!--        android:layout_width="250dp"-->
+    <!--        android:layout_height="39dp"-->
+    <!--        android:layout_below="@+id/etEstate"-->
+    <!--        android:layout_marginStart="32dp"-->
+    <!--        android:layout_marginTop="10dp"-->
+    <!--        android:background="@drawable/custom_input"-->
+    <!--        android:ems="10"-->
+    <!--        android:hint="@string/password"-->
+    <!--        android:inputType="textPassword"-->
+    <!--        android:paddingStart="12dp"-->
+    <!--        android:paddingEnd="12dp"-->
+    <!--        android:textColor="?attr/textColor" />-->
+
+    <!--    <ImageButton-->
+    <!--        android:id="@+id/ibShow"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_below="@+id/etEstate"-->
+    <!--        android:layout_centerInParent="true"-->
+    <!--        android:layout_marginStart="15dp"-->
+    <!--        android:layout_marginTop="18dp"-->
+    <!--        android:layout_toEndOf="@+id/etPassword"-->
+    <!--        android:background="@color/md_white_1000"-->
+    <!--        app:srcCompat="@drawable/outline_visibility_black_24dp"-->
+    <!--        android:contentDescription="@string/visibility_toggle" />-->
+
+    <!--    <EditText-->
+    <!--        android:id="@+id/etcPassword"-->
+    <!--        android:layout_width="300dp"-->
+    <!--        android:layout_height="39dp"-->
+    <!--        android:layout_below="@+id/etPassword"-->
+    <!--        android:layout_centerHorizontal="true"-->
+    <!--        android:layout_marginTop="10dp"-->
+    <!--        android:background="@drawable/custom_input"-->
+    <!--        android:ems="10"-->
+    <!--        android:hint="@string/confirm_password"-->
+    <!--        android:inputType="textPassword"-->
+    <!--        android:paddingStart="12dp"-->
+    <!--        android:paddingEnd="12dp"-->
+    <!--        android:textColor="?attr/textColor" />-->
+
+    <!--    <Button-->
+    <!--        android:id="@+id/btRegister"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_below="@+id/etcPassword"-->
+    <!--        android:layout_centerHorizontal="true"-->
+    <!--        android:layout_centerVertical="true"-->
+    <!--        android:layout_marginTop="10dp"-->
+    <!--        android:text="@string/register" />-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/tvNoAccount"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_below="@+id/btRegister"-->
+    <!--        android:layout_centerHorizontal="true"-->
+    <!--        android:layout_centerVertical="true"-->
+    <!--        android:layout_marginTop="10dp"-->
+    <!--        android:clickable="true"-->
+    <!--        android:focusable="true"-->
+    <!--        android:text="@string/already_have_an_account_login"-->
+    <!--        android:textSize="16sp" />-->
+    <!--  </RelativeLayout>-->
+    <!--</ScrollView>-->

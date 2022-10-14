@@ -113,8 +113,8 @@ class ProfileCompleteActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.myVehicles -> {
-                    val intentMyVehicles = Intent(this@ProfileCompleteActivity, VehiclesActivity::class.java)
-                    startActivity(intentMyVehicles)
+//                    val intentMyVehicles = Intent(this@ProfileCompleteActivity, VehiclesActivity::class.java)
+//                    startActivity(intentMyVehicles)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {

@@ -34,6 +34,10 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        if (supportActionBar != null) {
+            supportActionBar!!.hide()
+        }
+
         apiClient = ApiClient
 
         binding.btRegister.setOnClickListener {

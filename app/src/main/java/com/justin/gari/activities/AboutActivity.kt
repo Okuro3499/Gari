@@ -107,8 +107,8 @@ class AboutActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.myVehicles -> {
-                    val intentMyVehicles = Intent(this@AboutActivity, VehiclesActivity::class.java)
-                    startActivity(intentMyVehicles)
+//                    val intentMyVehicles = Intent(this@AboutActivity, VehiclesActivity::class.java)
+//                    startActivity(intentMyVehicles)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {

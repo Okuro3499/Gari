@@ -22,7 +22,7 @@
     <string name="status">Status:</string>
     <string name="complete_profile">Complete Profile</string>
     <string name="name">Name:</string>
-    <string name="email">Email:</string>
+    <string name="email">Email</string>
     <string name="mobile">Mobile:</string>
     <string name="county">County:</string>
     <string name="district">District:</string>
@@ -64,8 +64,9 @@
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="register">Register</string>
-    <string name="already_have_an_account_login">Already have an account? Login</string>
-    <string name="don_t_have_an_account_register">Don’t have an account? Register</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="don_t_have_an_account">Don’t have an account?</string>
+    <string name="create_account"><u>Create Account?</u></string>
     <string name="email_address">Email Address</string>
     <string name="radio_selfDrive">Self Drive</string>
     <string name="radio_chauffeured">Chauffeured</string>
@@ -76,6 +77,7 @@
     <string name="login_using_fingerprint">Login using Fingerprint</string>
     <string name="fingerprint">fingerprint</string>
     <string name="login">Login</string>
+    <string name="login2"><u>Login</u></string>
     <string name="remember_me">Remember me</string>
     <string name="check_for_updates">Check for Updates</string>
     <string name="updatebutton">updateButton</string>
@@ -93,4 +95,6 @@
     <string name="upload">Upload</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login_here">Login here</string>
+    <string name="create_your_account_here">Create your account here</string>
 </resources>

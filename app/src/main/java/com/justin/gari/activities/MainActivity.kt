@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.GridView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var settingsManager: SettingsManager
     lateinit var binding: ActivityMainBinding
     val sharedPrefFile = "sharedPrefData"
+//    lateinit var adap: GridView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         settingsManager = SettingsManager(this)
@@ -119,8 +121,8 @@ class MainActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.myVehicles -> {
-                    val intentMyVehicles = Intent(this@MainActivity, VehiclesActivity::class.java)
-                    startActivity(intentMyVehicles)
+//                    val intentMyVehicles = Intent(this@MainActivity, VehiclesActivity::class.java)
+//                    startActivity(intentMyVehicles)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {
@@ -150,12 +152,17 @@ class MainActivity : AppCompatActivity() {
         apiClient.getApiService(this).getAllCars().enqueue(object : Callback<CarModel> {
             override fun onResponse(call: Call<CarModel>, response: Response<CarModel>) {
                 if (response.isSuccessful) {
-                    recyclerview.apply {
-                        binding.shimmerLayout.stopShimmer();
-                        binding.shimmerLayout.visibility = View.GONE;
-                        layoutManager = LinearLayoutManager(this@MainActivity)
-                        adapter = CarAdapter(response.body()!!.cars, context)
-                    }
+                    val carsAdapter = CarAdapter(response.body()!!.cars, this@MainActivity)
+                    binding.shimmerLayout.stopShimmer();
+                    binding.shimmerLayout.visibility = View.GONE;
+                    binding.recyclerview.adapter = carsAdapter
+
+//                    recyclerview.apply {
+//                        binding.shimmerLayout.stopShimmer();
+//                        binding.shimmerLayout.visibility = View.GONE;
+//                        layoutManager = LinearLayoutManager(this@MainActivity)
+//                        adapter = CarAdapter(response.body()!!.cars, context)
+//                    }
                 }
             }
 
