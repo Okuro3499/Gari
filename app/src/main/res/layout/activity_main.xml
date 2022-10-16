@@ -8,69 +8,143 @@
     android:background="?attr/backgroundColor"
     tools:context=".activities.MainActivity">
 
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmerLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/backgroundColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/greeting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Hello"
+                    android:textSize="17sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Gideon ☀"
+                    android:textSize="17sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/greeting"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:src="@drawable/menu"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <EditText
+            android:id="@+id/etSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:autofillHints=""
+            android:background="@drawable/custom_input"
+            android:drawableEnd="@drawable/search1"
+            android:drawablePadding="12dp"
+            android:fontFamily="@font/poppins_regular"
+            android:hint="Search"
+            android:inputType="text"
+            android:padding="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="8dp"
+            android:textColor="@color/md_black_1000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
-            <include layout="@layout/shimmer_layout" />
-
-            <include layout="@layout/shimmer_layout" />
-
-            <include layout="@layout/shimmer_layout" />
-
-            <include layout="@layout/shimmer_layout" />
-
-            <include layout="@layout/shimmer_layout" />
-
-            <include layout="@layout/shimmer_layout" />
-
-            <include layout="@layout/shimmer_layout" />
-
-            <include layout="@layout/shimmer_layout" />
-
-            <include layout="@layout/shimmer_layout" />
-
-            <include layout="@layout/shimmer_layout" />
-
-            <include layout="@layout/shimmer_layout" />
-
-            <include layout="@layout/shimmer_layout" />
-
-            <include layout="@layout/shimmer_layout" />
-
-            <include layout="@layout/shimmer_layout" />
-
-            <include layout="@layout/shimmer_layout" />
-        </LinearLayout>
-    </com.facebook.shimmer.ShimmerFrameLayout>
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-<!--            <androidx.recyclerview.widget.RecyclerView-->
-<!--                android:id="@+id/recyclerview"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content" />-->
-
-        <GridView
-            android:id="@+id/recyclerview"
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:horizontalSpacing="6dp"
-            android:numColumns="2"
-            android:verticalSpacing="6dp" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etSearch">
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:columnCount="2"
+                android:layout_marginEnd="10dp"
+                android:gravity="center"
+                android:rowCount="1">
+
+                <include layout="@layout/shimmer_layout" />
+
+                <include layout="@layout/shimmer_layout" />
+
+                <include layout="@layout/shimmer_layout" />
+
+                <include layout="@layout/shimmer_layout" />
+
+                <include layout="@layout/shimmer_layout" />
+
+                <include layout="@layout/shimmer_layout" />
+
+            </GridLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etSearch">
+
+            <GridView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:layout_marginEnd="10dp"
+                android:gravity="center"
+                android:layout_marginBottom="50dp"
+                android:horizontalSpacing="6dp"
+                android:numColumns="2"
+                android:verticalSpacing="6dp" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navView"

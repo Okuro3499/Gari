@@ -4,42 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
     android:background="?attr/backgroundColor"
     android:orientation="vertical">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
         android:src="@drawable/giddie"
         app:civ_border_color="#C4C4C4"
         app:civ_border_width="1dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-<!--    <ImageView-->
-<!--        android:layout_width="40dp"-->
-<!--        android:layout_height="40dp"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:layout_marginEnd="10dp"-->
-<!--        android:src="@drawable/moon"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
     <TextView
         android:id="@+id/firstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/profile_image"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="4dp"
         android:paddingTop="8dp"
+        android:text="Gideon"
         android:textColor="?attr/textColor"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/poppins_regular"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
@@ -47,14 +38,15 @@
         android:id="@+id/lastName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Okuro"
         android:layout_below="@+id/profile_image"
         android:layout_marginStart="10dp"
         android:layout_marginTop="4dp"
         android:layout_toEndOf="@+id/firstName"
         android:paddingTop="8dp"
+        android:fontFamily="@font/poppins_regular"
         android:textColor="?attr/textColor"
         android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/firstName"
         app:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
@@ -62,8 +54,10 @@
         android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
         android:layout_below="@+id/firstName"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="30dp"
+        android:text="gideonokuro@gmail.com"
         android:layout_marginTop="4dp"
         android:textColor="?attr/textColor"
         android:textSize="16.5sp"
@@ -74,24 +68,21 @@
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="10dp"
 
         android:background="@color/md_blue_grey_400"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/themeSwitch" />
 
-<!--<com.google.android.material.switchmaterial.SwitchMaterial-->
-<!--    android:id="@+id/switch2"-->
-<!--    android:layout_width="wrap_content"-->
-<!--    android:layout_below="@id/switch1"-->
-<!--    android:text="Dark Theme"-->
-<!--    android:layout_height="wrap_content"/>-->
     <Switch
         android:id="@+id/themeSwitch"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_below="@id/view"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:fontFamily="@font/poppins_regular"
         android:text="Dark Theme"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/view"
         app:layout_constraintTop_toBottomOf="@+id/email"
         tools:ignore="UseSwitchCompatOrMaterialXml" />

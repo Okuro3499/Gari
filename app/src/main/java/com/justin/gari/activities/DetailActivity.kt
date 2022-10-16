@@ -9,6 +9,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -52,6 +53,9 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        if (supportActionBar != null) {
+            supportActionBar!!.hide()
+        }
 
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
         binding.drawerLayout.addDrawerListener(toggle)
@@ -59,8 +63,10 @@ class DetailActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        //binding.shimmerLayout.startShimmer();
 
         binding.swipeRefresh.setOnRefreshListener {
+            //binding.shimmerLayout.startShimmer();
             getAllData()
         }
 
@@ -71,7 +77,7 @@ class DetailActivity : AppCompatActivity() {
             myCalendarFrom[Calendar.DAY_OF_MONTH] = dayFrom
             updateLabelFrom()
         }
-        binding.ETDFrom!!.setOnClickListener {
+        binding.ETDFrom.setOnClickListener {
             DatePickerDialog(
                 this@DetailActivity,
                 date1,
@@ -88,7 +94,7 @@ class DetailActivity : AppCompatActivity() {
             myCalendarTo[Calendar.DAY_OF_MONTH] = dayTo
             updateLabelTo()
         }
-        binding.ETDTo!!.setOnClickListener {
+        binding.ETDTo.setOnClickListener {
             DatePickerDialog(
                 this@DetailActivity,
                 date2,
@@ -125,7 +131,7 @@ class DetailActivity : AppCompatActivity() {
         }
 
         //make car booking
-        binding.btBook.setOnClickListener {
+//        binding.btBook.setOnClickListener {
 
 //            TODO: migrate booking actions
             //selected radio button
@@ -164,9 +170,9 @@ class DetailActivity : AppCompatActivity() {
 //                    }
 //                })
 
-            val intent = Intent(this, PaymentActivity::class.java)
-            startActivity(intent)
-        }
+//            val intent = Intent(this, PaymentActivity::class.java)
+//            startActivity(intent)
+//        }
 
 //        val client_id = sharedPreferences.getString("client_id", "default")
 //        val editor: SharedPreferences.Editor = sharedPreferences.edit()
@@ -189,9 +195,9 @@ class DetailActivity : AppCompatActivity() {
         val lastNameHeader = sharedPreferences.getString("last_name", "default")
         val emailHeader = sharedPreferences.getString("email", "default")
         val header = binding.navView.getHeaderView(0)
-//        header.firstName.text = firstNameHeader.toString()
-//        header.lastName.text = lastNameHeader.toString()
-//        header.email.text = emailHeader.toString()
+        header.firstName.text = firstNameHeader.toString()
+        header.lastName.text = lastNameHeader.toString()
+        header.email.text = emailHeader.toString()
         Picasso.get()
             .load(profileHeader)
             .fit().centerCrop()
@@ -258,6 +264,10 @@ class DetailActivity : AppCompatActivity() {
         apiClient.getApiService(this).getCarDetails(carId).enqueue(object : Callback<SingleCarModel> {
             override fun onResponse(call: Call<SingleCarModel>, response: Response<SingleCarModel>) {
                 if (response.isSuccessful) {
+                    //binding.shimmerLayout.stopShimmer();
+                    //binding.shimmerLayout.visibility = View.GONE;
+                    binding.cons.visibility = View.VISIBLE;
+
                     //fetching images to slider
                     val imageUrls = arrayOf(
                         response.body()!!.single_car.front_view.toString(),
@@ -287,10 +297,14 @@ class DetailActivity : AppCompatActivity() {
                     binding.tvFeature3.text = response.body()!!.single_car.feature_3.toString()
                     binding.tvFeature4.text = response.body()!!.single_car.feature_4.toString()
                     binding.tvFeature5.text = response.body()!!.single_car.feature_5.toString()
+
+                    Log.e("Gideon", "onSuccess: ${response.body()}")
                 }
             }
 
             override fun onFailure(call: Call<SingleCarModel>, t: Throwable) {
+                //binding.shimmerLayout.stopShimmer();
+                //binding.shimmerLayout.visibility = View.GONE;
                 Log.e("Gideon", "onFailure: ${t.message}")
             }
         })
@@ -312,22 +326,22 @@ class DetailActivity : AppCompatActivity() {
     }
 
     //get date from
-    fun updateLabelFrom() {
+    private fun updateLabelFrom() {
         val myFormatFrom = "dd/MM/yyyy"
         val dateFormatFrom = SimpleDateFormat(myFormatFrom, Locale.US)
-        binding.ETDFrom.setText(dateFormatFrom.format(myCalendarFrom.time))
+        binding.ETDFrom.text = dateFormatFrom.format(myCalendarFrom.time)
     }
 
     //get date to
-    fun updateLabelTo() {
+    private fun updateLabelTo() {
         val myFormatTo = "dd/MM/yyyy"
         val dateFormatTo = SimpleDateFormat(myFormatTo, Locale.US)
-        binding.ETDTo.setText(dateFormatTo.format(myCalendarTo.time))
+        binding.ETDTo.text = dateFormatTo.format(myCalendarTo.time)
         differenceBetweenDays()
     }
 
     //get the difference between to and from
-    fun differenceBetweenDays() {
+    private fun differenceBetweenDays() {
         val myFormat = SimpleDateFormat("dd/MM/yyyy", Locale.US)
         val toDate = binding.ETDTo.text.toString()
         val fromDate = binding.ETDFrom.text.toString()
@@ -342,16 +356,16 @@ class DetailActivity : AppCompatActivity() {
     }
 
     //multiply Price And Days
-    fun multiplyPriceAndDays() {
+    private fun multiplyPriceAndDays() {
         val price = tvPrice.text.toString()
         val noOfDays = tvTotalDays.text.toString()
         val finalPrice = price.toInt()
         val finalNoOfDays = noOfDays.toInt()
 
-        var total = StringBuilder().apply {
+        val total = StringBuilder().apply {
             append(finalPrice * finalNoOfDays)
         }
-        binding.tvTotalAmount.text = total
+        binding.tvTotalAmount.text = "Ksh. $total"
     }
 
     //items selected from navigation view

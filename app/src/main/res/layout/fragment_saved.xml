@@ -1,16 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragments.BookingsFragment">
+    android:layout_height="wrap_content"
+    android:background="@color/backgroundColor"
+    tools:context=".fragments.SavedFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview"
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</FrameLayout>
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:columnCount="2"
+            android:rowCount="4">
+
+            <include layout="@layout/shimmer_layout" />
+
+            <include layout="@layout/shimmer_layout" />
+
+            <include layout="@layout/shimmer_layout" />
+
+            <include layout="@layout/shimmer_layout" />
+
+            <include layout="@layout/shimmer_layout" />
+
+            <include layout="@layout/shimmer_layout" />
+
+        </GridLayout>
+
+        <!--        <GridLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:numColumns="auto_fit"-->
+        <!--            android:orientation="vertical">-->
+
+        <!--            <include layout="@layout/shimmer_layout" />-->
+
+        <!--            <include layout="@layout/shimmer_layout" />-->
+
+        <!--            <include layout="@layout/shimmer_layout" />-->
+
+        <!--            <include layout="@layout/shimmer_layout" />-->
+
+        <!--            <include layout="@layout/shimmer_layout" />-->
+
+        <!--            <include layout="@layout/shimmer_layout" />-->
+
+        <!--            <include layout="@layout/shimmer_layout" />-->
+
+        <!--            <include layout="@layout/shimmer_layout" />-->
+
+        <!--            <include layout="@layout/shimmer_layout" />-->
+
+        <!--            <include layout="@layout/shimmer_layout" />-->
+
+        <!--            <include layout="@layout/shimmer_layout" />-->
+
+        <!--            <include layout="@layout/shimmer_layout" />-->
+
+        <!--            <include layout="@layout/shimmer_layout" />-->
+
+        <!--            <include layout="@layout/shimmer_layout" />-->
+
+        <!--            <include layout="@layout/shimmer_layout" />-->
+        <!--        </GridLayout>-->
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
+
+        <!--            <androidx.recyclerview.widget.RecyclerView-->
+        <!--                android:id="@+id/recyclerview"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content" />-->
+
+        <GridView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:horizontalSpacing="6dp"
+            android:numColumns="2"
+            android:verticalSpacing="6dp" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,712 +8,834 @@
     android:background="?attr/backgroundColor"
     tools:context=".activities.DetailActivity">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefresh"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <ScrollView
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/backgroundColor">
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/arrowleftwhite"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvCarName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:textColor="@color/md_white_1000"
+                    android:textSize="17sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/back"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:src="@drawable/menu_white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!--        <com.facebook.shimmer.ShimmerFrameLayout-->
+        <!--            android:id="@+id/shimmerLayout"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:gravity="center"-->
+        <!--            android:orientation="vertical"-->
+        <!--            android:visibility="visible"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/appBarLayout">-->
+
+        <!--            <include layout="@layout/detail_shimmer" />-->
+        <!--        </com.facebook.shimmer.ShimmerFrameLayout>-->
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/viewPager"
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    app:fillColor="#FFFFFFFF"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:pageColor="#00000000"
-                    app:radius="6dp"
-                    app:slideInterval="3000"
-                    app:strokeColor="#FF777777"
-                    app:strokeWidth="1dp" />
-
-                <LinearLayout
-                    android:id="@+id/linearLayout"
+                <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:baselineAligned="false"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/viewPager">
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cons"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+<!--                        android:visibility="gone"-->
 
-                        <TextView
-                            android:id="@+id/titleCarName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/model"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvCarName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="2dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_toEndOf="@+id/titleCarName"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/titleTransmission"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/titleCarName"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/transmission"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvTransmission"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/tvCarName"
-                            android:layout_marginStart="2dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_toEndOf="@+id/titleTransmission"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/titleEngine"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/titleTransmission"
-
-                            android:layout_marginTop="4dp"
-                            android:text="@string/engine"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvEngine"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/tvTransmission"
-                            android:layout_marginStart="2dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_toEndOf="@+id/titleEngine"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/titleRegistration"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/titleEngine"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/registration"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvRegistration"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/tvEngine"
-                            android:layout_marginStart="2dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_toEndOf="@+id/titleRegistration"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/titleDriveOption"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/titleRegistration"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/drive"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvDriveOption"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/tvRegistration"
-                            android:layout_marginStart="2dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_toEndOf="@id/titleDriveOption"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/titleCompany"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/titleDriveOption"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/company"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvCompany"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/tvDriveOption"
-                            android:layout_marginStart="2dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_toEndOf="@id/titleCompany"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="30dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/titleStatus"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-
-                            android:layout_marginTop="4dp"
-                            android:text="@string/status"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+                        <androidx.viewpager.widget.ViewPager
+                            android:id="@+id/viewPager"
+                            android:layout_width="match_parent"
+                            android:layout_height="250dp"
+                            app:fillColor="#FFFFFFFF"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:pageColor="#00000000"
+                            app:radius="6dp"
+                            app:slideInterval="3000"
+                            app:strokeColor="#FF777777"
+                            app:strokeWidth="1dp" />
 
                         <TextView
                             android:id="@+id/tvStatus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="2dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_toEndOf="@id/titleStatus"
-                            android:textColor="@color/md_green_900"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/titleColor"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/titleStatus"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/color"
-                            android:textColor="?attr/textColor"
+                            android:layout_marginStart="6dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/availBackground"
+                            android:fontFamily="@font/poppins_regular"
+                            android:padding="4dp"
+                            android:textColor="@color/availText"
                             android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvColor"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/tvStatus"
-                            android:layout_marginStart="2dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_toEndOf="@+id/titleColor"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/titlePassengers"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/titleColor"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/passengers"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvPassengers"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/tvColor"
-                            android:layout_marginStart="2dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_toEndOf="@+id/titlePassengers"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/titleDoors"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/titlePassengers"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/doors"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvDoors"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/tvPassengers"
-                            android:layout_marginStart="2dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_toEndOf="@id/titleDoors"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp" />
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/viewPager" />
 
                         <ImageButton
                             android:id="@+id/ibSave"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/tvDoors"
-                            android:layout_centerInParent="true"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginEnd="51dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
                             android:background="@color/md_white_1000"
                             android:contentDescription="@string/save_button"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/viewPager"
                             app:srcCompat="@drawable/ic_baseline_favorite_border_30" />
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/titleFeatures"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="@string/features"
-                    android:textColor="?attr/textColor"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
-                <LinearLayout
-                    android:id="@+id/linearLayout2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:baselineAligned="false"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/titleFeatures">
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp">
 
                         <TextView
-                            android:id="@+id/titleFeature1"
+                            android:id="@+id/textView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/_1"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:layout_marginStart="6dp"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="Specifications"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvStatus" />
+
+                        <GridLayout
+                            android:id="@+id/grid1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:columnCount="3"
+                            android:gravity="center"
+                            android:rowCount="1"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                            <LinearLayout
+                                android:id="@+id/linearLayout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:layout_gravity="fill_horizontal"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/md_white_1000"
+                                android:orientation="vertical"
+                                android:padding="4dp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                                <TextView
+                                    android:id="@+id/titleRegistration"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/poppins_light"
+                                    android:text="@string/registration"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/tvRegistration"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="2dp"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="14sp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/linearLayout4"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:layout_gravity="fill_horizontal"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="4dp"
+                                android:background="@color/md_white_1000"
+                                android:orientation="vertical"
+                                android:padding="4dp"
+                                app:layout_constraintEnd_toStartOf="@+id/linearLayout7"
+                                app:layout_constraintStart_toEndOf="@+id/linearLayout"
+                                app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                                <TextView
+                                    android:id="@+id/titleColor"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/poppins_light"
+                                    android:text="@string/color"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/tvColor"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="2dp"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="14sp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/linearLayout7"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:layout_gravity="fill_horizontal"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:background="@color/md_white_1000"
+                                android:orientation="vertical"
+                                android:padding="4dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                                <TextView
+                                    android:id="@+id/titlePassengers"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/poppins_light"
+                                    android:text="@string/passengers"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/tvPassengers"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="2dp"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="14sp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/linearLayout8"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:layout_gravity="fill_horizontal"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/md_white_1000"
+                                android:orientation="vertical"
+                                android:padding="4dp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+                                <TextView
+                                    android:id="@+id/titleTransmission"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/poppins_light"
+                                    android:text="@string/transmission"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/tvTransmission"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="2dp"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="14sp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/linearLayout9"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:layout_gravity="fill_horizontal"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="4dp"
+                                android:background="@color/md_white_1000"
+                                android:orientation="vertical"
+                                android:padding="4dp"
+                                app:layout_constraintEnd_toStartOf="@+id/linearLayout10"
+                                app:layout_constraintStart_toEndOf="@+id/linearLayout8"
+                                app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+                                <TextView
+                                    android:id="@+id/titleEngine"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/poppins_light"
+                                    android:text="@string/engine"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/tvEngine"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="2dp"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="14sp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/linearLayout12"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:layout_gravity="fill_horizontal"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:background="@color/md_white_1000"
+                                android:orientation="vertical"
+                                android:padding="4dp">
+
+                                <TextView
+                                    android:id="@+id/titleDoors"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/poppins_light"
+                                    android:text="@string/doors"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/tvDoors"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="2dp"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="14sp" />
+
+                            </LinearLayout>
+                        </GridLayout>
+
+                        <GridLayout
+                            android:id="@+id/grid2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:columnCount="3"
+                            android:gravity="center"
+                            android:rowCount="1"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/grid1">
+
+                            <LinearLayout
+                                android:id="@+id/linearLayout11"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:layout_gravity="fill_horizontal"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="4dp"
+                                android:background="@color/md_white_1000"
+                                android:orientation="vertical"
+                                android:padding="4dp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
+
+                                <TextView
+                                    android:id="@+id/titleCompany"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/poppins_light"
+                                    android:text="@string/company"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/tvCompany"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="2dp"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="14sp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/linearLayout10"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:layout_gravity="fill_horizontal"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:background="@color/md_white_1000"
+                                android:orientation="vertical"
+                                android:padding="4dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+                                <TextView
+                                    android:id="@+id/titleDriveOption"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/poppins_light"
+                                    android:text="@string/drive"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/tvDriveOption"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="2dp"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+                        </GridLayout>
 
                         <TextView
-                            android:id="@+id/tvFeature1"
+                            android:id="@+id/textView2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="2dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_toEndOf="@id/titleFeature1"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp" />
+                            android:layout_marginStart="6dp"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="Features"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/grid2" />
+
+                        <GridLayout
+                            android:id="@+id/grid3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:columnCount="3"
+                            android:gravity="center"
+                            android:rowCount="1"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+                            <TextView
+                                android:id="@+id/tvFeature1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:layout_gravity="fill_horizontal"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/md_white_1000"
+                                android:orientation="vertical"
+                                android:padding="4dp" />
+
+                            <TextView
+                                android:id="@+id/tvFeature2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:layout_gravity="fill_horizontal"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="4dp"
+                                android:background="@color/md_white_1000"
+                                android:orientation="vertical"
+                                android:padding="4dp" />
+
+                            <TextView
+                                android:id="@+id/tvFeature3"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:layout_gravity="fill_horizontal"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:background="@color/md_white_1000"
+                                android:orientation="vertical"
+                                android:padding="4dp" />
+
+                            <TextView
+                                android:id="@+id/tvFeature4"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:layout_gravity="fill_horizontal"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/md_white_1000"
+                                android:orientation="vertical"
+                                android:padding="4dp" />
+
+                            <TextView
+                                android:id="@+id/tvFeature5"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:layout_gravity="fill_horizontal"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/md_white_1000"
+                                android:orientation="vertical"
+                                android:padding="4dp" />
+
+                        </GridLayout>
 
                         <TextView
-                            android:id="@+id/titleFeature2"
+                            android:id="@+id/titleDates"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/titleFeature1"
+                            android:layout_marginStart="6dp"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="Dates"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/grid3" />
 
-                            android:layout_marginTop="4dp"
-                            android:text="@string/_2"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+                        <LinearLayout
+                            android:id="@+id/ltDates"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginEnd="15dp"
+                            android:gravity="center"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/titleDates">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/tiFrom"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                app:boxBackgroundColor="@color/md_white_1000"
+                                app:boxStrokeColor="@color/md_white_1000"
+                                app:boxStrokeWidth="0dp"
+                                app:boxStrokeWidthFocused="0dp">
+
+                                <TextView
+                                    android:id="@+id/ETDFrom"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/custom_input"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:hint="@string/dd_mm_yyyy"
+                                    android:padding="4dp"
+                                    android:paddingStart="12dp"
+                                    android:paddingEnd="8dp"
+                                    android:textColor="@color/md_black_1000"
+                                    app:drawableStartCompat="@drawable/ic_baseline_date_range_24" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/poppins_bold"
+                                android:text="to" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/tiTo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                app:boxBackgroundColor="@color/md_white_1000"
+                                app:boxStrokeColor="@color/md_white_1000"
+                                app:boxStrokeWidth="0dp"
+                                app:boxStrokeWidthFocused="0dp"
+                                app:layout_constraintTop_toBottomOf="@+id/titleDates">
+
+                                <TextView
+                                    android:id="@+id/ETDTo"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:autofillHints=""
+                                    android:background="@drawable/custom_input"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:hint="@string/dd_mm_yyyy"
+                                    android:padding="4dp"
+                                    android:paddingStart="12dp"
+                                    android:paddingEnd="8dp"
+                                    android:textColor="@color/md_black_1000"
+                                    app:drawableStartCompat="@drawable/ic_baseline_date_range_24" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <GridLayout
+                            android:id="@+id/grid4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:columnCount="3"
+                            android:gravity="center"
+                            android:rowCount="1"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/ltDates">
+
+                            <LinearLayout
+                                android:id="@+id/tdays"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:layout_gravity="fill_horizontal"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="2dp"
+                                android:background="@color/md_white_1000"
+                                android:orientation="vertical"
+                                android:padding="4dp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/ltDates">
+
+                                <TextView
+                                    android:id="@+id/titleTotalDays"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/poppins_light"
+                                    android:text="@string/total_days"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/tvTotalDays"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="2dp"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:text="0"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="14sp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/tPrice"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:layout_gravity="fill_horizontal"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:background="@color/md_white_1000"
+                                android:orientation="vertical"
+                                android:padding="4dp"
+                                app:layout_constraintStart_toEndOf="@+id/tdays"
+                                app:layout_constraintTop_toBottomOf="@+id/ltDates">
+
+                                <TextView
+                                    android:id="@+id/titlePrice"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/poppins_light"
+                                    android:text="@string/price"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/tvPrice"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="2dp"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:textColor="?attr/textColor"
+                                    android:textSize="14sp" />
+
+                            </LinearLayout>
+
+                        </GridLayout>
 
                         <TextView
-                            android:id="@+id/tvFeature2"
+                            android:id="@+id/titleDriv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/titleFeature1"
-                            android:layout_marginStart="2dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_toEndOf="@id/titleFeature2"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp" />
+                            android:layout_marginStart="6dp"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="Drive"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/grid4" />
 
-                        <TextView
-                            android:id="@+id/titleFeature3"
+                        <RadioGroup
+                            android:id="@+id/radioDriveGroup"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/titleFeature2"
-
+                            android:layout_marginStart="10dp"
                             android:layout_marginTop="4dp"
-                            android:text="@string/_3"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:orientation="horizontal"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/titleDriv">
 
-                        <TextView
-                            android:id="@+id/tvFeature3"
-                            android:layout_width="wrap_content"
+                            <RadioButton
+                                android:id="@+id/radioSelfDrive"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/radio_selfDrive"
+                                android:textSize="14sp" />
+
+                            <RadioButton
+                                android:id="@+id/radioChauffeured"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="@string/radio_chauffeured"
+                                android:textSize="14sp" />
+                        </RadioGroup>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/edtDestination"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/titleFeature2"
-                            android:layout_marginStart="2dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_toEndOf="@id/titleFeature3"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp" />
-                    </RelativeLayout>
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
+                            app:boxBackgroundColor="@color/md_white_1000"
+                            app:boxStrokeColor="@color/md_white_1000"
+                            app:boxStrokeWidth="0dp"
+                            app:boxStrokeWidthFocused="0dp"
+                            app:layout_constraintBottom_toTopOf="@+id/bkCard"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/radioDriveGroup">
 
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="30dp"
-                        android:layout_weight="1">
+                            <EditText
+                                android:id="@+id/etDestination"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:autofillHints=""
+                                android:background="@drawable/custom_input"
+                                android:fontFamily="@font/poppins_regular"
+                                android:hint="@string/destination"
+                                android:inputType="text"
+                                android:padding="4dp"
+                                android:paddingStart="12dp"
+                                android:paddingEnd="8dp"
+                                android:textColor="@color/md_black_1000" />
+                        </com.google.android.material.textfield.TextInputLayout>
 
-                        <TextView
-                            android:id="@+id/titleFeature4"
-                            android:layout_width="wrap_content"
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/bkCard"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/_4"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:layout_marginBottom="50dp"
+                            android:background="@color/md_white_1000"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent">
 
-                        <TextView
-                            android:id="@+id/tvFeature4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="2dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_toEndOf="@id/titleFeature4"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp" />
+                            <TextView
+                                android:id="@+id/tvTotalAmount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:fontFamily="@font/poppins_regular"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
-                            android:id="@+id/titleFeature5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/titleFeature4"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/_5"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/btBook"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="15dp"
+                                android:layout_marginBottom="10dp"
+                                android:background="@drawable/button_bg_dark"
+                                android:fontFamily="@font/poppins_bold"
+                                android:padding="6dp"
+                                android:text="@string/book_now"
+                                android:textAllCaps="false"
+                                android:textColor="@color/md_white_1000"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
-                            android:id="@+id/tvFeature5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/titleFeature4"
-                            android:layout_marginStart="2dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_toEndOf="@id/titleFeature5"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    </RelativeLayout>
-                </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
-                    android:id="@+id/titleBook"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/book"
-                    android:textColor="?attr/textColor"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
-                <TextView
-                    android:id="@+id/titlePrice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/ksh"
-                    android:textColor="?attr/textColor"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/titleBook" />
-
-                <TextView
-                    android:id="@+id/tvPrice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/titleBook"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginTop="4dp"
-                    android:textColor="?attr/textColor"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toEndOf="@+id/titlePrice"
-                    app:layout_constraintTop_toBottomOf="@+id/titleBook" />
-
-                <TextView
-                    android:id="@+id/tvRate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/titleBook"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_toEndOf="@id/tvPrice"
-                    android:text="@string/per_day"
-                    android:textColor="?attr/textColor"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toEndOf="@+id/tvPrice"
-                    app:layout_constraintTop_toBottomOf="@+id/titleBook" />
-
-                <LinearLayout
-                    android:id="@+id/linearLayout4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="4dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/titlePrice">
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/titleFrom"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/from"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <EditText
-                            android:id="@+id/ETDFrom"
-                            android:layout_width="160dp"
-                            android:layout_height="30dp"
-                            android:layout_below="@id/titleFrom"
-                            android:layout_marginTop="4dp"
-                            android:autofillHints=""
-                            android:background="@drawable/custom_input"
-                            android:clickable="false"
-                            android:cursorVisible="false"
-                            android:drawableStart="@drawable/ic_baseline_date_range_24"
-                            android:drawablePadding="12dp"
-                            android:ems="10"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:hint="@string/dd_mm_yyyy"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="12dp"
-                            android:textColor="?attr/textColor"
-                            android:textColorHint="@color/md_grey_600"
-                            android:textSize="14sp" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="50dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/titleTo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/to"
-                            android:textColor="?attr/textColor"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <EditText
-                            android:id="@+id/ETDTo"
-                            android:layout_width="160dp"
-                            android:layout_height="30dp"
-                            android:layout_below="@id/titleTo"
-                            android:layout_marginTop="4dp"
-                            android:autofillHints=""
-                            android:background="@drawable/custom_input"
-                            android:clickable="false"
-                            android:cursorVisible="false"
-                            android:datePickerMode="calendar"
-                            android:drawableStart="@drawable/ic_baseline_date_range_24"
-                            android:drawablePadding="12dp"
-                            android:ems="10"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:hint="@string/dd_mm_yyyy"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="12dp"
-                            android:textColor="?attr/textColor"
-                            android:textColorHint="@color/md_grey_600"
-                            android:textSize="14sp" />
-                    </RelativeLayout>
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/titleTotal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/total"
-                    android:textColor="?attr/textColor"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
-
-                <TextView
-                    android:id="@+id/tvTotalDays"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/_0"
-                    android:textColor="?attr/textColor"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toEndOf="@+id/titleTotal"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
-
-                <TextView
-                    android:id="@+id/titleDays"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_toEndOf="@id/tvTotalDays"
-                    android:text="@string/days"
-                    android:textColor="?attr/textColor"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toEndOf="@+id/tvTotalDays"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
-
-                <TextView
-                    android:id="@+id/titleAmount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/ksh"
-                    android:textColor="?attr/textColor"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toEndOf="@id/titleDays"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
-
-                <TextView
-                    android:id="@+id/tvTotalAmount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/_0"
-                    android:textColor="?attr/textColor"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toEndOf="@id/titleAmount"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
-
-                <TextView
-                    android:id="@+id/titleDrive2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/titleTotal"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/drive"
-                    android:textColor="?attr/textColor"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/titleTotal" />
-
-                <RadioGroup
-                    android:id="@+id/radioDriveGroup"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintStart_toEndOf="@+id/titleDrive2"
-                    app:layout_constraintTop_toBottomOf="@+id/tvTotalDays">
-
-                    <RadioButton
-                        android:id="@+id/radioSelfDrive"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/radio_selfDrive"
-                        android:textSize="14sp" />
-
-                    <RadioButton
-                        android:id="@+id/radioChauffeured"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:text="@string/radio_chauffeured"
-                        android:textSize="14sp" />
-
-                </RadioGroup>
-
-                <TextView
-                    android:id="@+id/titleDestination"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/destination"
-                    android:textColor="?attr/textColor"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/titleDrive2" />
-
-                <EditText
-                    android:id="@+id/etDestination"
-                    android:layout_width="160dp"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginTop="4dp"
-                    android:autofillHints=""
-                    android:background="@drawable/custom_input"
-                    android:inputType="text"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    app:layout_constraintStart_toEndOf="@+id/titleDestination"
-                    app:layout_constraintTop_toBottomOf="@+id/titleDrive2" />
-
-                <Button
-                    android:id="@+id/btBook"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/book_now"
-                    android:textSize="17sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/etDestination" />
+                </ScrollView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navView"

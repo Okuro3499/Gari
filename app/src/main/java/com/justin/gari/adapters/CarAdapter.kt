@@ -1,13 +1,16 @@
 package com.justin.gari.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import com.justin.gari.R
+import com.justin.gari.activities.DetailActivity
 import com.justin.gari.models.carModels.Cars
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.nav_header.view.*
@@ -19,6 +22,7 @@ internal class CarAdapter(private val carList: List<Cars>, val context: Context)
     private lateinit var transmissionTextView: TextView
     private lateinit var priceTextView: TextView
     private lateinit var carImageView: ImageView
+    private lateinit var itemView : CardView
 
     // below method is use to return the count of course list
     override fun getCount(): Int {
@@ -58,9 +62,8 @@ internal class CarAdapter(private val carList: List<Cars>, val context: Context)
         transmissionTextView = convertView.findViewById(R.id.tvTransmission)
         carImageView = convertView.findViewById(R.id.tvImage)
         priceTextView = convertView.findViewById(R.id.tvPrice)
+        itemView= convertView.findViewById(R.id.itemView)
 
-
-//        fun bindView(cars: Cars) {
         carNameTextView.text = carList[position].car_name
         driveOptionTextView.text = carList[position].drive
         transmissionTextView.text = carList[position].transmission
@@ -70,9 +73,18 @@ internal class CarAdapter(private val carList: List<Cars>, val context: Context)
             .placeholder(R.drawable.vehicle_placeholder)
             .error(R.drawable.vehicle_placeholder)
             .into(carImageView)
-//        Picasso.get().load(carList[position].front_view).into(;
-//        carImageView.setImageResource(carList[position].front_view)
         priceTextView.text = "Ksh. " + carList[position].price
+
+        itemView.setOnClickListener {
+            //get position of selected item
+            val car = carList[position]
+
+            val carId: String? = car.car_id
+
+            val intent = Intent(context, DetailActivity::class.java)
+            intent.putExtra("car_id", carId)
+            context.startActivity(intent)
+        }
 
         return convertView
     }

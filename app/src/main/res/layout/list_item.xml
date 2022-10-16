@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/itemView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="15dp"
@@ -34,7 +35,7 @@
             android:fontFamily="@font/poppins_bold"
             android:text="Toyota Premio"
             android:textColor="?attr/textColor"
-            android:textSize="11sp"
+            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvImage" />
 
@@ -43,12 +44,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="4dp"
             android:layout_toEndOf="@+id/tvImage"
             android:fontFamily="@font/poppins_light"
             android:text="@string/drive"
             android:textColor="?attr/textColor"
-            android:textSize="11sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvCarName" />
@@ -58,12 +59,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="4dp"
             android:layout_toEndOf="@+id/titleDriveOption"
             android:fontFamily="@font/poppins_light"
             android:text="Self Drive/Chauffeured"
             android:textColor="?attr/textColor"
-            android:textSize="11sp"
+            android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/titleDriveOption"
             app:layout_constraintTop_toBottomOf="@+id/tvCarName" />
 
@@ -74,10 +75,10 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="4dp"
             android:layout_toEndOf="@+id/tvImage"
-            android:text="@string/transmission"
             android:fontFamily="@font/poppins_light"
+            android:text="@string/transmission"
             android:textColor="?attr/textColor"
-            android:textSize="11sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleDriveOption" />
@@ -89,11 +90,11 @@
             android:layout_below="@id/tvDriveOption"
             android:layout_marginStart="4dp"
             android:layout_marginTop="5dp"
-            android:fontFamily="@font/poppins_light"
             android:layout_toEndOf="@+id/titleTransmission"
+            android:fontFamily="@font/poppins_light"
             android:text="Automatic"
             android:textColor="?attr/textColor"
-            android:textSize="11sp"
+            android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/titleTransmission"
             app:layout_constraintTop_toBottomOf="@+id/titleDriveOption" />
 
@@ -103,10 +104,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="4dp"
-            android:text="3500"
             android:fontFamily="@font/poppins_semi_bold"
+            android:text="3500"
             android:textColor="?attr/textColor"
-            android:textSize="11sp"
+            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleTransmission" />
 
@@ -119,166 +120,13 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="10dp"
             android:layout_toEndOf="@+id/tvPrice"
-            android:text="@string/per_day"
             android:fontFamily="@font/poppins_semi_bold"
+            android:text="@string/per_day"
             android:textColor="?attr/textColor"
-            android:textSize="11sp"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvPrice" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!--    <RelativeLayout-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:padding="16dp">-->
-
-    <!--        <ImageView-->
-    <!--            android:id="@+id/tvImage"-->
-    <!--            android:layout_width="100dp"-->
-    <!--            android:layout_height="100dp"/>-->
-
-    <!--        <TextView-->
-    <!--            android:id="@+id/titleCarName"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_marginStart="10dp"-->
-    <!--            android:layout_marginTop="2dp"-->
-    <!--            android:layout_toEndOf="@+id/tvImage"-->
-    <!--            android:text="@string/model"-->
-    <!--            android:textColor="?attr/textColor"-->
-    <!--            android:textSize="11sp"-->
-    <!--            android:textStyle="bold" />-->
-
-    <!--        <TextView-->
-    <!--            android:id="@+id/tvCarName"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_marginStart="2dp"-->
-    <!--            android:layout_marginTop="2dp"-->
-    <!--            android:layout_toEndOf="@+id/titleCarName"-->
-    <!--            android:text="Toyota Premio"-->
-    <!--            android:textColor="?attr/textColor"-->
-    <!--            android:textSize="11sp" />-->
-
-    <!--        <TextView-->
-    <!--            android:id="@+id/titleDriveOption"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_below="@id/titleCarName"-->
-    <!--            android:layout_marginStart="10dp"-->
-    <!--            android:layout_marginTop="2dp"-->
-    <!--            android:layout_toEndOf="@+id/tvImage"-->
-    <!--            android:text="@string/drive"-->
-    <!--            android:textColor="?attr/textColor"-->
-    <!--            android:textSize="11sp"-->
-    <!--            android:textStyle="bold" />-->
-
-    <!--        <TextView-->
-    <!--            android:id="@+id/tvDriveOption"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_below="@id/tvCarName"-->
-    <!--            android:layout_marginStart="2dp"-->
-    <!--            android:layout_marginTop="2dp"-->
-    <!--            android:layout_toEndOf="@+id/titleDriveOption"-->
-    <!--            android:text="Self Drive/Chauffeured"-->
-    <!--            android:textColor="?attr/textColor"-->
-    <!--            android:textSize="11sp" />-->
-
-    <!--        <TextView-->
-    <!--            android:id="@+id/titleTransmission"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_below="@id/titleDriveOption"-->
-    <!--            android:layout_marginStart="10dp"-->
-    <!--            android:layout_marginTop="2dp"-->
-    <!--            android:layout_toEndOf="@+id/tvImage"-->
-    <!--            android:text="@string/transmission"-->
-    <!--            android:textColor="?attr/textColor"-->
-    <!--            android:textSize="11sp"-->
-    <!--            android:textStyle="bold" />-->
-
-    <!--        <TextView-->
-    <!--            android:id="@+id/tvTransmission"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_below="@id/tvDriveOption"-->
-    <!--            android:layout_marginStart="2dp"-->
-    <!--            android:layout_marginTop="2dp"-->
-    <!--            android:layout_toEndOf="@+id/titleTransmission"-->
-    <!--            android:text="Automatic"-->
-    <!--            android:textColor="?attr/textColor"-->
-    <!--            android:textSize="11sp"-->
-    <!--             />-->
-
-    <!--        <TextView-->
-    <!--            android:id="@+id/titlePrice"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_below="@id/titleTransmission"-->
-    <!--            android:layout_marginStart="10dp"-->
-    <!--            android:layout_marginTop="2dp"-->
-    <!--            android:layout_toEndOf="@+id/tvImage"-->
-    <!--            android:text="@string/price"-->
-    <!--            android:textColor="?attr/textColor"-->
-    <!--            android:textSize="11sp"-->
-    <!--            android:textStyle="bold" />-->
-
-    <!--        <TextView-->
-    <!--            android:id="@+id/tvPrice"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_below="@id/tvTransmission"-->
-    <!--            android:layout_marginStart="2dp"-->
-    <!--            android:layout_marginTop="2dp"-->
-    <!--            android:layout_toEndOf="@+id/titlePrice"-->
-    <!--            android:text="3500"-->
-    <!--            android:textColor="?attr/textColor"-->
-    <!--            android:textSize="11sp"/>-->
-
-    <!--            <TextView-->
-    <!--                android:id="@+id/titleRate"-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_below="@id/tvTransmission"-->
-    <!--                android:layout_marginStart="4dp"-->
-    <!--                android:layout_marginTop="2dp"-->
-    <!--                android:layout_toEndOf="@+id/tvPrice"-->
-    <!--                android:text="@string/per_day"-->
-    <!--                android:textColor="?attr/textColor"-->
-    <!--                android:textSize="11sp"/>-->
-
-    <!--        <TextView-->
-    <!--            android:id="@+id/titleStatus"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_below="@id/titlePrice"-->
-    <!--            android:layout_marginStart="10dp"-->
-    <!--            android:layout_marginTop="2dp"-->
-    <!--            android:layout_toEndOf="@+id/tvImage"-->
-    <!--            android:text="@string/status"-->
-    <!--            android:textColor="?attr/textColor"-->
-    <!--            android:textSize="11sp"-->
-    <!--            android:textStyle="bold" />-->
-
-    <!--        <TextView-->
-    <!--            android:id="@+id/tvStatus"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_below="@id/tvPrice"-->
-    <!--            android:layout_marginStart="2dp"-->
-    <!--            android:layout_marginTop="2dp"-->
-    <!--            android:layout_toEndOf="@+id/titleStatus"-->
-    <!--            android:text="Available"-->
-    <!--            android:textColor="@color/md_green_800"-->
-    <!--            android:textSize="11sp" />-->
-
-    <!--    </RelativeLayout>-->
 </androidx.cardview.widget.CardView>
-
-
-
-
-

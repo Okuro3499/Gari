@@ -7,12 +7,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.GridView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
 import com.justin.gari.SettingsManager
@@ -33,22 +31,25 @@ class MainActivity : AppCompatActivity() {
     lateinit var settingsManager: SettingsManager
     lateinit var binding: ActivityMainBinding
     val sharedPrefFile = "sharedPrefData"
-//    lateinit var adap: GridView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         settingsManager = SettingsManager(this)
         if (settingsManager.loadNightModeState() == true) {
             setTheme(R.style.DarkGari)
-        }
-        else setTheme(R.style.Gari)
+        } else setTheme(R.style.Gari)
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        if (supportActionBar != null) {
+            supportActionBar!!.hide()
+        }
 
-        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences =
+            getSharedPreferences(sharedPrefFile, MODE_PRIVATE)
         binding.shimmerLayout.startShimmer();
 
         binding.swipeRefresh.setOnRefreshListener {
+            binding.shimmerLayout.startShimmer();
             getAllData()
         }
 
@@ -156,20 +157,14 @@ class MainActivity : AppCompatActivity() {
                     binding.shimmerLayout.stopShimmer();
                     binding.shimmerLayout.visibility = View.GONE;
                     binding.recyclerview.adapter = carsAdapter
-
-//                    recyclerview.apply {
-//                        binding.shimmerLayout.stopShimmer();
-//                        binding.shimmerLayout.visibility = View.GONE;
-//                        layoutManager = LinearLayoutManager(this@MainActivity)
-//                        adapter = CarAdapter(response.body()!!.cars, context)
-//                    }
                 }
             }
 
             override fun onFailure(call: Call<CarModel>, t: Throwable) {
                 binding.shimmerLayout.stopShimmer();
                 binding.shimmerLayout.visibility = View.GONE;
-                Toast.makeText(this@MainActivity, "Check internet connectivity", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@MainActivity, "Check internet connectivity", Toast.LENGTH_LONG)
+                    .show()
                 Log.e("Gideon", "onFailure: ${t.message}")
             }
         })
