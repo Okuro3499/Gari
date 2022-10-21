@@ -85,14 +85,14 @@ class PaymentActivity : AppCompatActivity() {
                 }
                 R.id.profile -> {
                     val intentProfile =
-                        Intent(this@PaymentActivity, ProfileCompleteActivity::class.java)
+                        Intent(this@PaymentActivity, UserProfileActivity::class.java)
                     startActivity(intentProfile)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.myVehicles -> {
                     val intentMyVehicles =
-//                        Intent(this@PaymentActivity, VehiclesActivity::class.java)
-//                    startActivity(intentMyVehicles)
+                        Intent(this@PaymentActivity, VehiclesActivity::class.java)
+                    startActivity(intentMyVehicles)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {

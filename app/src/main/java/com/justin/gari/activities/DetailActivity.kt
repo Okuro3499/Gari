@@ -2,6 +2,7 @@ package com.justin.gari.activities
 
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -45,7 +46,7 @@ class DetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         settingsManager = SettingsManager(this)
-        if (settingsManager.loadNightModeState() == true) {
+        if (settingsManager.loadNightModeState()) {
             setTheme(R.style.DarkGari)
         }
         else setTheme(R.style.Gari)
@@ -108,6 +109,15 @@ class DetailActivity : AppCompatActivity() {
         //receiving intents
         val carId = intent.getStringExtra("car_id")
         getCarDetails()
+
+        binding.nav.setOnClickListener {
+            binding.drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        binding.back.setOnClickListener{
+            val intent = Intent(this@DetailActivity, MainActivity::class.java)
+            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+        }
 
         //save car for future bookings
         binding.ibSave.setOnClickListener {
@@ -205,7 +215,7 @@ class DetailActivity : AppCompatActivity() {
             .error(R.drawable.user)
             .into(header.profile_image)
 
-        if (settingsManager.loadNightModeState() == true) {
+        if (settingsManager.loadNightModeState()) {
             header.themeSwitch!!.isChecked = true
         }
         header.themeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
@@ -221,34 +231,35 @@ class DetailActivity : AppCompatActivity() {
 
         binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
             Log.i(ContentValues.TAG, "onNavigationItemSelected: " + item.itemId)
+            //TODO: set visibility
             when (item.itemId) {
                 R.id.home -> {
-                    startActivity(Intent(this@DetailActivity, MainActivity::class.java))
+                    startActivity(Intent(this@DetailActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.profile -> {
-                    val intentProfile = Intent(this@DetailActivity, ProfileCompleteActivity::class.java)
-                    startActivity(intentProfile)
+                    val intentProfile = Intent(this@DetailActivity, UserProfileActivity::class.java)
+                    startActivity(intentProfile.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.myVehicles -> {
-//                    val intentMyVehicles = Intent(this@DetailActivity, VehiclesActivity::class.java)
-//                    startActivity(intentMyVehicles)
+                    val intentMyVehicles = Intent(this@DetailActivity, VehiclesActivity::class.java)
+                    startActivity(intentMyVehicles.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {
                     val intentLogin = Intent(this@DetailActivity, LoginActivity::class.java)
-                    startActivity(intentLogin)
+                    startActivity(intentLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.about -> {
                     val intentAbout = Intent(this@DetailActivity, AboutActivity::class.java)
-                    startActivity(intentAbout)
+                    startActivity(intentAbout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.help -> {
-                    val intentHelp = Intent(this@DetailActivity, AboutActivity::class.java)
-                    startActivity(intentHelp)
+                    val intentHelp = Intent(this@DetailActivity, LoginActivity::class.java)
+                    startActivity(intentHelp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
             }
@@ -259,11 +270,18 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun getCarDetails() {
+        // display a progress dialog
+        val progressDialog = ProgressDialog(this@DetailActivity)
+        progressDialog.setCancelable(false) // set cancelable to false
+        progressDialog.setMessage("Fetching Details..") // set message
+        progressDialog.show()
+
         apiClient = ApiClient
         val carId = intent.getStringExtra("car_id")
         apiClient.getApiService(this).getCarDetails(carId).enqueue(object : Callback<SingleCarModel> {
             override fun onResponse(call: Call<SingleCarModel>, response: Response<SingleCarModel>) {
                 if (response.isSuccessful) {
+                    progressDialog.dismiss()
                     //binding.shimmerLayout.stopShimmer();
                     //binding.shimmerLayout.visibility = View.GONE;
                     binding.cons.visibility = View.VISIBLE;
@@ -303,6 +321,7 @@ class DetailActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<SingleCarModel>, t: Throwable) {
+                progressDialog.dismiss()
                 //binding.shimmerLayout.stopShimmer();
                 //binding.shimmerLayout.visibility = View.GONE;
                 Log.e("Gideon", "onFailure: ${t.message}")
@@ -312,9 +331,10 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun restartApp() {
-        val i = Intent(applicationContext, DetailActivity::class.java)
-        startActivity(i)
-        finish()
+        recreate()
+//        val i = Intent(applicationContext, DetailActivity::class.java)
+//        startActivity(i)
+//        finish()
     }
 
     private fun getAllData() {
@@ -374,5 +394,12 @@ class DetailActivity : AppCompatActivity() {
             true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this@DetailActivity, MainActivity::class.java)
+        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
     }
 }

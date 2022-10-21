@@ -26,12 +26,12 @@ import retrofit2.Response
 class SavedFragment : Fragment() {
     private lateinit var apiClient: ApiClient
     private val sharedPrefFile = "sharedPrefData"
-    lateinit var binding: FragmentSavedBinding
+    private var binding: FragmentSavedBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentSavedBinding.inflate(inflater, container, false);
-        return binding.root;
+        return binding!!.root;
     }
 
     @Override
@@ -46,9 +46,9 @@ class SavedFragment : Fragment() {
                     override fun onResponse(call: Call<SavedCarResponse>, response: Response<SavedCarResponse>) {
                         Log.e("Gideon", "onSuccess: ${response.body()}")
                         val savedAdapter = SavedCarAdapter(response.body()!!.saved_cars, context!!)
-                        binding.shimmerLayout.stopShimmer();
-                        binding.shimmerLayout.visibility = View.GONE;
-                        binding.recyclerview.adapter = savedAdapter
+                        binding?.shimmerLayout?.stopShimmer();
+                        binding?.shimmerLayout?.visibility = View.GONE;
+                        binding?.recyclerview?.adapter = savedAdapter
 //                        if (response.isSuccessful) { recyclerview.apply {
 //                                layoutManager = LinearLayoutManager(context)
 //                                adapter = SavedCarAdapter(response.body()!!.saved_cars, context)
@@ -57,6 +57,8 @@ class SavedFragment : Fragment() {
                     }
 
                     override fun onFailure(call: Call<SavedCarResponse>, t: Throwable) {
+                        binding?.shimmerLayout?.stopShimmer();
+                        binding?.shimmerLayout?.visibility = View.GONE;
                         Log.e("Gideon", "onFailure: ${t.message}")
                     }
                 })

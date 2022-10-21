@@ -1,13 +1,16 @@
 package com.justin.gari.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import com.justin.gari.R
+import com.justin.gari.activities.DetailActivity
 import com.justin.gari.models.bookingCarModels.BookingsResponseObject
 import com.squareup.picasso.Picasso
 
@@ -18,6 +21,7 @@ internal class BookingCarAdapter(private val bookedCarList: List<BookingsRespons
     private lateinit var transmissionTextView: TextView
     private lateinit var priceTextView: TextView
     private lateinit var carImageView: ImageView
+    private lateinit var itemView : CardView
 
     // below method is use to return the count of course list
     override fun getCount(): Int {
@@ -54,6 +58,7 @@ internal class BookingCarAdapter(private val bookedCarList: List<BookingsRespons
         transmissionTextView = convertView.findViewById(R.id.tvTransmission)
         carImageView = convertView.findViewById(R.id.tvImage)
         priceTextView = convertView.findViewById(R.id.tvPrice)
+        itemView= convertView.findViewById(R.id.itemView)
 
 
         carNameTextView.text = bookedCarList[position].car_name
@@ -66,6 +71,17 @@ internal class BookingCarAdapter(private val bookedCarList: List<BookingsRespons
             .error(R.drawable.vehicle_placeholder)
             .into(carImageView)
         priceTextView.text = "Ksh. " + bookedCarList[position].price
+
+        itemView.setOnClickListener {
+            //get position of selected item
+            val car = bookedCarList[position]
+
+            val carId: String? = car.car_id
+
+            val intent = Intent(context, DetailActivity::class.java)
+            intent.putExtra("car_id", carId)
+            context.startActivity(intent)
+        }
 
         return convertView
     }

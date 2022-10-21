@@ -14,6 +14,27 @@
         android:supportsRtl="true"
         android:theme="@style/Gari">
         <activity
+            android:name=".activities.EmergencyContactsActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".activities.UserSettingsActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".activities.EditProfileActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".activities.PaymentActivity"
             android:exported="true" />
         <activity
@@ -23,16 +44,14 @@
             android:name=".activities.AboutActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.ProfileCompleteActivity"
+            android:name=".activities.UserProfileActivity"
             android:exported="true" />
         <activity
             android:name=".activities.RegisterActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Gari_NoActionBar" />
+            android:exported="true" />
         <activity
             android:name=".activities.LoginActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Gari_NoActionBar" />
+            android:exported="true" />
         <activity
             android:name=".activities.DetailActivity"
             android:exported="true" />
@@ -41,6 +60,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

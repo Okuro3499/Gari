@@ -1,5 +1,6 @@
 package com.justin.gari.activities
 
+
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.SharedPreferences
@@ -24,6 +25,8 @@ import kotlinx.android.synthetic.main.nav_header.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
     lateinit var toggle: ActionBarDrawerToggle
@@ -34,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         settingsManager = SettingsManager(this)
-        if (settingsManager.loadNightModeState() == true) {
+        if (settingsManager.loadNightModeState()) {
             setTheme(R.style.DarkGari)
         } else setTheme(R.style.Gari)
         super.onCreate(savedInstanceState)
@@ -94,7 +97,23 @@ class MainActivity : AppCompatActivity() {
             .error(R.drawable.user)
             .into(header.profile_image)
 
-        if (settingsManager.loadNightModeState() == true) {
+        val c: Calendar = Calendar.getInstance()
+        val timeOfDay: Int = c.get(Calendar.HOUR_OF_DAY)
+
+        Log.d("timeOfDay", timeOfDay.toString() + "")
+        if (timeOfDay < 12) {
+            binding.greeting.setText(R.string.morning)
+        } else if (timeOfDay < 16) {
+            binding.greeting.setText(R.string.afternoon)
+        } else if (timeOfDay < 21) {
+            binding.greeting.setText(R.string.evening)
+        } else {
+            binding.greeting.setText(R.string.night)
+        }
+
+        binding.name.text = firstNameHeader.toString()
+
+        if (settingsManager.loadNightModeState()) {
             header.themeSwitch!!.isChecked = true
         }
         header.themeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
@@ -106,39 +125,41 @@ class MainActivity : AppCompatActivity() {
                 restartApp()
             }
         }
+        binding.nav.setOnClickListener {
+            binding.drawerLayout.openDrawer(GravityCompat.START)
+        }
 
         binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
             Log.i(TAG, "onNavigationItemSelected: " + item.itemId)
             //TODO: set visibility
             when (item.itemId) {
                 R.id.home -> {
-                    startActivity(Intent(this@MainActivity, MainActivity::class.java))
+                    startActivity(Intent(this@MainActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.profile -> {
-                    val intentProfile =
-                        Intent(this@MainActivity, ProfileCompleteActivity::class.java)
-                    startActivity(intentProfile)
+                    val intentProfile = Intent(this@MainActivity, UserProfileActivity::class.java)
+                    startActivity(intentProfile.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.myVehicles -> {
-//                    val intentMyVehicles = Intent(this@MainActivity, VehiclesActivity::class.java)
-//                    startActivity(intentMyVehicles)
+                    val intentMyVehicles = Intent(this@MainActivity, VehiclesActivity::class.java)
+                    startActivity(intentMyVehicles.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {
                     val intentLogin = Intent(this@MainActivity, LoginActivity::class.java)
-                    startActivity(intentLogin)
+                    startActivity(intentLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.about -> {
                     val intentAbout = Intent(this@MainActivity, AboutActivity::class.java)
-                    startActivity(intentAbout)
+                    startActivity(intentAbout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.help -> {
                     val intentHelp = Intent(this@MainActivity, LoginActivity::class.java)
-                    startActivity(intentHelp)
+                    startActivity(intentHelp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
             }

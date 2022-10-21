@@ -52,6 +52,10 @@
     <string name="total">Total:</string>
     <string name="days">days</string>
     <string name="destination">Destination</string>
+    <string name="morning">Good Morning,</string>
+    <string name="afternoon">Good Afternoon,</string>
+    <string name="evening">Good Evening,</string>
+    <string name="night">Good Night,</string>
     <string name="book_now">Book Now</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>

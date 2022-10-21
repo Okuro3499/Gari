@@ -83,7 +83,7 @@ internal class CarAdapter(private val carList: List<Cars>, val context: Context)
 
             val intent = Intent(context, DetailActivity::class.java)
             intent.putExtra("car_id", carId)
-            context.startActivity(intent)
+            context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
         }
 
         return convertView

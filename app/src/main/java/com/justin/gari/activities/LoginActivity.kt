@@ -28,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         settingsManager = SettingsManager(this)
-        if (settingsManager.loadNightModeState() == true) {
+        if (settingsManager.loadNightModeState()) {
             setTheme(R.style.DarkGari)
         } else setTheme(R.style.Gari)
 
@@ -59,11 +59,8 @@ class LoginActivity : AppCompatActivity() {
                 binding.etEmailAddress.text.toString().trim(),
                 binding.etPassword.text.toString().trim()
             )
-            apiClient.getApiService(this).loginUser(loginInfo)
-                .enqueue(object : Callback<UserLoginResponse> {
-                    override fun onResponse(
-                        call: Call<UserLoginResponse>, response: Response<UserLoginResponse>
-                    ) {
+            apiClient.getApiService(this).loginUser(loginInfo).enqueue(object : Callback<UserLoginResponse> {
+                    override fun onResponse(call: Call<UserLoginResponse>, response: Response<UserLoginResponse>) {
                         if (response.isSuccessful) {
                             progressDialog.dismiss()
                             Snackbar.make(it, "Login Successful", Snackbar.LENGTH_SHORT).show()
@@ -83,7 +80,7 @@ class LoginActivity : AppCompatActivity() {
                             }
 
                             val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                            startActivity(intent)
+                            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                         }
                     }
 
@@ -98,8 +95,8 @@ class LoginActivity : AppCompatActivity() {
 
         //Go to register activity if not registered
         binding.tvNoAccount.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
+            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
         }
     }
 }

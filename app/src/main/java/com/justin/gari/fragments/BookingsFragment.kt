@@ -12,7 +12,6 @@ import com.justin.gari.adapters.BookingCarAdapter
 import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.FragmentBookingsBinding
 import com.justin.gari.models.bookingCarModels.BookingsResponse
-import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,29 +19,39 @@ import retrofit2.Response
 class BookingsFragment : Fragment() {
     private lateinit var apiClient: ApiClient
     private val sharedPrefFile = "sharedPrefData"
-    lateinit var binding: FragmentBookingsBinding
+    private var binding: FragmentBookingsBinding? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentBookingsBinding.inflate(inflater, container, false);
-        return binding.root;
+        return binding!!.root;
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val sharedPreferences: SharedPreferences? = activity?.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences? =
+            activity?.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
         val clientId = sharedPreferences?.getString("client_id", "default")
-        binding.shimmerLayout.startShimmer();
+        binding?.shimmerLayout?.startShimmer();
 
         apiClient = ApiClient
         context?.let {
-            apiClient.getApiService(it).getBookedCars(clientId).enqueue(object : Callback<BookingsResponse> {
-                    override fun onResponse(call: Call<BookingsResponse>, response: Response<BookingsResponse>) {
+            apiClient.getApiService(it).getBookedCars(clientId)
+                .enqueue(object : Callback<BookingsResponse> {
+                    override fun onResponse(
+                        call: Call<BookingsResponse>,
+                        response: Response<BookingsResponse>
+                    ) {
                         if (response.isSuccessful) {
                             Log.e("Gideon", "onSuccess: ${response.body()}")
-                            val bookingAdapter = BookingCarAdapter(response.body()!!.myBooked_cars, context!!)
-                            binding.shimmerLayout.stopShimmer();
-                            binding.shimmerLayout.visibility = View.GONE;
-                            binding.recyclerview.adapter = bookingAdapter
+                            val bookingAdapter =
+                                BookingCarAdapter(response.body()!!.myBooked_cars, context!!)
+                            binding?.shimmerLayout?.stopShimmer();
+                            binding?.shimmerLayout?.visibility = View.GONE;
+                            binding?.recyclerview?.adapter = bookingAdapter
 //                            recyclerview.apply {
 //                                layoutManager = LinearLayoutManager(context)
 //                                adapter = BookingCarAdapter(response.body()!!.myBooked_cars, context)
@@ -51,6 +60,8 @@ class BookingsFragment : Fragment() {
                     }
 
                     override fun onFailure(call: Call<BookingsResponse>, t: Throwable) {
+                        binding?.shimmerLayout?.stopShimmer();
+                        binding?.shimmerLayout?.visibility = View.GONE;
                         Log.e("Gideon", "onFailure: ${t.message}")
                     }
                 })
