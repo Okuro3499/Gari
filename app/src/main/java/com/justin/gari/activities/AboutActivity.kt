@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_about.*
 import kotlinx.android.synthetic.main.nav_header.view.*
 
 class AboutActivity : AppCompatActivity() {
-    lateinit var toggle: ActionBarDrawerToggle
+//    lateinit var toggle: ActionBarDrawerToggle
     private val sharedPrefFile = "sharedPrefData"
     private lateinit var apiClient: ApiClient
     private lateinit var binding: ActivityAboutBinding
@@ -28,7 +28,7 @@ class AboutActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         settingsManager = SettingsManager(this)
-        if (settingsManager.loadNightModeState() == true) {
+        if (settingsManager.loadNightModeState()) {
             setTheme(R.style.DarkGari)
         }
         else setTheme(R.style.Gari)
@@ -36,14 +36,17 @@ class AboutActivity : AppCompatActivity() {
         binding = ActivityAboutBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        if (supportActionBar != null) {
+            supportActionBar!!.hide()
+        }
 
         apiClient = ApiClient
 
         val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
 
-        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
-        binding.drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
+//        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
+//        binding.drawerLayout.addDrawerListener(toggle)
+//        toggle.syncState()
 
 //        val client_id = sharedPreferences.getString("client_id", "default")
 //        val editor: SharedPreferences.Editor = sharedPreferences.edit()
@@ -81,7 +84,7 @@ class AboutActivity : AppCompatActivity() {
             .error(R.drawable.user)
             .into(header.profile_image)
 
-        if (settingsManager.loadNightModeState() == true) {
+        if (settingsManager.loadNightModeState()) {
             header.themeSwitch!!.isChecked = true
         }
         header.themeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
@@ -94,36 +97,47 @@ class AboutActivity : AppCompatActivity() {
             }
         }
 
+        binding.nav.setOnClickListener {
+            binding.drawerLayout.openDrawer(GravityCompat.START)
+        }
+
         binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
             Log.i(ContentValues.TAG, "onNavigationItemSelected: " + item.itemId)
+            //TODO: set visibility
             when (item.itemId) {
                 R.id.home -> {
-                    startActivity(Intent(this@AboutActivity, MainActivity::class.java))
+                    startActivity(
+                        Intent(this@AboutActivity, MainActivity::class.java).addFlags(
+                            Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        )
+                    )
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.profile -> {
-                    val intentProfile = Intent(this@AboutActivity, UserProfileActivity::class.java)
-                    startActivity(intentProfile)
+                    val intentProfile =
+                        Intent(this@AboutActivity, UserProfileActivity::class.java)
+                    startActivity(intentProfile.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.myVehicles -> {
-                    val intentMyVehicles = Intent(this@AboutActivity, VehiclesActivity::class.java)
-                    startActivity(intentMyVehicles)
+                    val intentMyVehicles =
+                        Intent(this@AboutActivity, VehiclesActivity::class.java)
+                    startActivity(intentMyVehicles.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {
                     val intentLogin = Intent(this@AboutActivity, LoginActivity::class.java)
-                    startActivity(intentLogin)
+                    startActivity(intentLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.about -> {
                     val intentAbout = Intent(this@AboutActivity, AboutActivity::class.java)
-                    startActivity(intentAbout)
+                    startActivity(intentAbout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.help -> {
                     val intentHelp = Intent(this@AboutActivity, LoginActivity::class.java)
-                    startActivity(intentHelp)
+                    startActivity(intentHelp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
             }
@@ -131,6 +145,11 @@ class AboutActivity : AppCompatActivity() {
             Log.i(ContentValues.TAG, "onNavigationItemSelected: nothing clicked")
             false
         })
+
+        binding.back.setOnClickListener {
+            val intent = Intent(this@AboutActivity, MainActivity::class.java)
+            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+        }
     }
 
     private fun restartApp() {
@@ -139,10 +158,10 @@ class AboutActivity : AppCompatActivity() {
         finish()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (toggle.onOptionsItemSelected(item)) {
-            true
-        }
-        return super.onOptionsItemSelected(item)
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        if (toggle.onOptionsItemSelected(item)) {
+//            true
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 }

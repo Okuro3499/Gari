@@ -41,13 +41,12 @@ class EditProfileActivity : AppCompatActivity() {
             setTheme(R.style.Gari)
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val sharedPreferences: SharedPreferences =
-            getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
         val clientId = sharedPreferences.getString("client_id", "default")
 
-        toggle = ActionBarDrawerToggle(this, binding.drawerLayout, R.string.open, R.string.close)
-        binding.drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
+//        toggle = ActionBarDrawerToggle(this, binding.drawerLayout, R.string.open, R.string.close)
+//        binding.drawerLayout.addDrawerListener(toggle)
+//        toggle.syncState()
         apiClient = ApiClient
 
 //        supportActionBar?.setDisplayHomeAsUpEnabled(true)

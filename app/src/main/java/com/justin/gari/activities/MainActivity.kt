@@ -1,6 +1,5 @@
 package com.justin.gari.activities
 
-
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.SharedPreferences
@@ -12,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
 import com.justin.gari.SettingsManager
@@ -26,7 +26,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-
 
 class MainActivity : AppCompatActivity() {
     lateinit var toggle: ActionBarDrawerToggle
@@ -47,8 +46,16 @@ class MainActivity : AppCompatActivity() {
             supportActionBar!!.hide()
         }
 
-        val sharedPreferences: SharedPreferences =
-            getSharedPreferences(sharedPrefFile, MODE_PRIVATE)
+
+        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE)
+        if(sharedPreferences.getString("token", null) == null){
+            binding.outNavView.visibility = View.VISIBLE
+            binding.navView.visibility = View.GONE
+//            binding.navView.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        } else {
+            binding.outNavView.visibility = View.GONE
+            binding.navView.visibility = View.VISIBLE
+        }
         binding.shimmerLayout.startShimmer();
 
         binding.swipeRefresh.setOnRefreshListener {
@@ -57,10 +64,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         getAllCars()
-
-        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
-        binding.drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -83,7 +86,7 @@ class MainActivity : AppCompatActivity() {
 //            })
 
         val profileHeader = sharedPreferences.getString("userProfile", "default")
-        val firstNameHeader = sharedPreferences.getString("first_name", "default")
+        val firstNameHeader = sharedPreferences.getString("first_name", "")
         val lastNameHeader = sharedPreferences.getString("last_name", "default")
         val emailHeader = sharedPreferences.getString("email", "default")
         val header = binding.navView.getHeaderView(0)
@@ -111,7 +114,9 @@ class MainActivity : AppCompatActivity() {
             binding.greeting.setText(R.string.night)
         }
 
-        binding.name.text = firstNameHeader.toString()
+        if (firstNameHeader != null){
+            binding.name.text = firstNameHeader.toString()
+        }
 
         if (settingsManager.loadNightModeState()) {
             header.themeSwitch!!.isChecked = true
@@ -126,7 +131,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.nav.setOnClickListener {
-            binding.drawerLayout.openDrawer(GravityCompat.START)
+            if(sharedPreferences.getString("token", null) == null){
+                binding.drawerLayout.openDrawer(GravityCompat.END)
+            } else{
+                binding.drawerLayout.openDrawer(GravityCompat.START)
+            }
+
         }
 
         binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
@@ -182,10 +192,14 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<CarModel>, t: Throwable) {
-                binding.shimmerLayout.stopShimmer();
-                binding.shimmerLayout.visibility = View.GONE;
-                Toast.makeText(this@MainActivity, "Check internet connectivity", Toast.LENGTH_LONG)
-                    .show()
+                binding.shimmerLayout.stopShimmer()
+                binding.shimmerLayout.visibility = View.GONE
+                binding.errorPage.visibility = View.VISIBLE
+                binding.message.text = t.message
+                binding.etSearch.visibility = View.GONE
+                binding.swipeRefresh.visibility = View.GONE
+
+                Toast.makeText(this@MainActivity, "Check internet connectivity", Toast.LENGTH_LONG).show()
                 Log.e("Gideon", "onFailure: ${t.message}")
             }
         })

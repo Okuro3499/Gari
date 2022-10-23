@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/login"
+        android:title="Login" />
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/signup"
+        android:title="Create Account" />
+
+    <item android:title="@string/faq">
+        <menu>
+            <item
+                android:id="@+id/about"
+                android:icon="@drawable/info1"
+                android:title="@string/about_gari" />
+            <item
+                android:id="@+id/help"
+                android:icon="@drawable/helpcircle1"
+                android:title="@string/need_assistance" />
+        </menu>
+    </item>
+</menu>

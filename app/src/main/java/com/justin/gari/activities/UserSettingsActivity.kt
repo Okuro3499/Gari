@@ -14,6 +14,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
 import com.justin.gari.SettingsManager
@@ -179,6 +180,12 @@ class UserSettingsActivity : AppCompatActivity() {
                     Log.e("Gideon", "onFailure: ${t.message}")
                 }
             })
+
+        binding.ivDl.setOnClickListener { ImagePicker.with(this).start(0) }
+
+        binding.ivId.setOnClickListener { ImagePicker.with(this).start(1) }
+
+        binding.ivPhoto.setOnClickListener { ImagePicker.with(this).start(2) }
 
     }
 
