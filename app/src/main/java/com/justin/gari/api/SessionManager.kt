@@ -5,8 +5,7 @@ import android.content.SharedPreferences
 import com.justin.gari.R
 
 class SessionManager(context: Context) {
-    private var prefs: SharedPreferences =
-        context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
+    private var prefs: SharedPreferences = context.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
 
     companion object {
         const val USER_TOKEN = "token"
@@ -25,6 +24,6 @@ class SessionManager(context: Context) {
      * Function to fetch auth token
      */
     fun fetchAuthToken(): String? {
-        return prefs.getString("token", null)
+        return prefs.getString(USER_TOKEN, null)
     }
 }

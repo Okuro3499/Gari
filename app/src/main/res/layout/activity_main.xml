@@ -41,7 +41,6 @@
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
                     android:fontFamily="@font/poppins_bold"
                     android:textSize="17sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -224,7 +223,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:visibility="gone"
         android:background="@color/backgroundColor"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
@@ -233,7 +231,6 @@
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/outNavView"
         android:layout_width="wrap_content"
-        android:visibility="gone"
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:background="@color/backgroundColor"

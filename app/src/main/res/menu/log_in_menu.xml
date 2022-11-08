@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
     <item
-        android:id="@+id/home"
+        android:id="@+id/login"
         android:icon="@drawable/login"
         android:title="Login" />
     <item
-        android:id="@+id/profile"
+        android:id="@+id/createAccount"
         android:icon="@drawable/signup"
         android:title="Create Account" />
 

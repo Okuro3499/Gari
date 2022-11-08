@@ -3,6 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/APPs/Gari/app/src/main/res/layout/activity_detail.xml" value="0.18802083333333333" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/layout/activity_main.xml" value="0.18802083333333333" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/layout/activity_register.xml" value="0.18802083333333333" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/layout/activity_user_settings.xml" value="0.18802083333333333" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/layout/fragment_bookings.xml" value="0.18802083333333333" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/layout/fragment_saved.xml" value="0.18802083333333333" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/menu/log_in_menu.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/HP/Desktop/contactSelector/Gari/app/src/main/res/drawable/custom_input.xml" value="0.1" />
         <entry key="..\:/Users/HP/Desktop/contactSelector/Gari/app/src/main/res/drawable/ic_baseline_date_range_24.xml" value="0.1655" />
         <entry key="..\:/Users/HP/Desktop/contactSelector/Gari/app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.1655" />

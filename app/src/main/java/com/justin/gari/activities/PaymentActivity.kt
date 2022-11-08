@@ -28,7 +28,7 @@ class PaymentActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         settingsManager = SettingsManager(this)
-        if (settingsManager.loadNightModeState() == true) {
+        if (settingsManager.loadNightModeState()) {
             setTheme(R.style.DarkGari)
         } else
             setTheme(R.style.Gari)
@@ -38,20 +38,20 @@ class PaymentActivity : AppCompatActivity() {
         setContentView(binding.root)
         apiClient = ApiClient
 
-        val sharedPreferences: SharedPreferences =
-            getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
 //        val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
 //        val navView: NavigationView = findViewById(R.id.nav_view)
 
-        toggle = ActionBarDrawerToggle(this, binding.drawerLayout, R.string.open, R.string.close)
-        binding.drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//        toggle = ActionBarDrawerToggle(this, binding.drawerLayout, R.string.open, R.string.close)
+//        binding.drawerLayout.addDrawerListener(toggle)
+//        toggle.syncState()
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val profileHeader = sharedPreferences.getString("userProfile", "default")
-        val firstNameHeader = sharedPreferences.getString("first_name", "default")
-        val lastNameHeader = sharedPreferences.getString("last_name", "default")
-        val emailHeader = sharedPreferences.getString("email", "default")
+        val firstNameHeader = sharedPreferences.getString("first_name", "")
+        val lastNameHeader = sharedPreferences.getString("last_name", "")
+        val emailHeader = sharedPreferences.getString("email", "")
         val header = binding.navView.getHeaderView(0)
         header.firstName.text = firstNameHeader.toString()
         header.lastName.text = lastNameHeader.toString()
@@ -63,7 +63,7 @@ class PaymentActivity : AppCompatActivity() {
             .error(R.drawable.user)
             .into(header.profile_image)
 
-        if (settingsManager.loadNightModeState() == true) {
+        if (settingsManager.loadNightModeState()) {
             header.themeSwitch!!.isChecked = true
         }
         header.themeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
@@ -96,8 +96,11 @@ class PaymentActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {
-                    val intentLogin = Intent(this@PaymentActivity, LoginActivity::class.java)
-                    startActivity(intentLogin)
+                    editor.clear()
+                    editor.apply()
+                    val intentLogout = Intent(this@PaymentActivity, MainActivity::class.java)
+                    startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                    finish()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.about -> {

@@ -3,6 +3,7 @@ package com.justin.gari.activities
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.widget.Switch
 import android.widget.Toast
@@ -41,25 +42,48 @@ class RegisterActivity : AppCompatActivity() {
         apiClient = ApiClient
 
         binding.btRegister.setOnClickListener {
-            // display a progress dialog
-            val progressDialog = ProgressDialog(this@RegisterActivity)
-            progressDialog.setCancelable(false) // set cancelable to false
-            progressDialog.setMessage("Creating account...") // set message
-            progressDialog.show()
+            if (TextUtils.isEmpty(binding.etFirstName.text.toString().trim())) {
+                binding.etFirstName.error = "Kindly enter first name"
+            } else if (TextUtils.isEmpty(binding.etLastName.text.toString().trim())) {
+                binding.etLastName.error = "Kindly enter last name"
+            } else if (TextUtils.isEmpty(binding.etEmailAddress.text.toString().trim())) {
+                binding.etEmailAddress.error = "Kindly enter email"
+            } else if(!binding.etEmailAddress.text.toString().trim().matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+".toRegex())) {
+                binding.etEmailAddress.error = "Kindly enter a valid email!"
+            } else if (TextUtils.isEmpty(binding.etMobile.text.toString().trim())) {
+                binding.etMobile.error = "Kindly enter mobile number"
+            }  else if (TextUtils.isEmpty(binding.etCounty.text.toString().trim())) {
+                binding.etCounty.error = "Kindly enter county"
+            } else if (TextUtils.isEmpty(binding.etDistrict.text.toString().trim())) {
+                binding.etDistrict.error = "Kindly enter district"
+            }  else if (TextUtils.isEmpty(binding.etEstate.text.toString().trim())) {
+                binding.etEstate.error = "Kindly enter estate"
+            }  else if (TextUtils.isEmpty(binding.etLandMark.text.toString().trim())) {
+                binding.etLandMark.error = "Kindly enter landmark"
+            } else if (TextUtils.isEmpty(binding.etPassword.text.toString().trim())) {
+                binding.etPassword.error = "Kindly enter password"
+            } else if (binding.etPassword.text.toString().trim()!=binding.etcPassword.text.toString().trim()) {
+                binding.etcPassword.error = "Passwords do not match"
+            } else {
+                // display a progress dialog
+                val progressDialog = ProgressDialog(this@RegisterActivity)
+                progressDialog.setCancelable(false) // set cancelable to false
+                progressDialog.setMessage("Creating account...") // set message
+                progressDialog.show()
 
-            val signUpInfo = NewUserData(
-                binding.etFirstName.text.toString().trim(),
-                binding.etLastName.text.toString().trim(),
-                binding.etEmailAddress.text.toString().trim(),
-                binding.etMobile.text.toString().trim(),
-                binding.etCounty.text.toString().trim(),
-                binding.etDistrict.text.toString().trim(),
-                binding.etEstate.text.toString().trim(),
-                binding.etLandMark.text.toString().trim(),
-                binding.etPassword.text.toString().trim()
-            )
+                val signUpInfo = NewUserData(
+                    binding.etFirstName.text.toString().trim(),
+                    binding.etLastName.text.toString().trim(),
+                    binding.etEmailAddress.text.toString().trim(),
+                    binding.etMobile.text.toString().trim(),
+                    binding.etCounty.text.toString().trim(),
+                    binding.etDistrict.text.toString().trim(),
+                    binding.etEstate.text.toString().trim(),
+                    binding.etLandMark.text.toString().trim(),
+                    binding.etPassword.text.toString().trim()
+                )
 
-            apiClient.getApiService(this).createUser(signUpInfo).enqueue(object : Callback<NewUserResponse> {
+                apiClient.getApiService(this).createUser(signUpInfo).enqueue(object : Callback<NewUserResponse> {
                     override fun onResponse(call: Call<NewUserResponse>, response: Response<NewUserResponse>) {
                         if (response.isSuccessful) {
                             progressDialog.dismiss()
@@ -77,6 +101,7 @@ class RegisterActivity : AppCompatActivity() {
                         Log.e("Gideon", "onFailure: ${t.message}")
                     }
                 })
+            }
         }
 
         binding.tvNoAccount.setOnClickListener {

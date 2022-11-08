@@ -49,18 +49,18 @@ class UserSettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityUserSettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val sharedPreferences: SharedPreferences =
-            getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-        val clientId = sharedPreferences.getString("client_id", "default")
+        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        val clientId = sharedPreferences.getString("client_id", "")
 
         if (supportActionBar != null) {
             supportActionBar!!.hide()
         }
 
         val profileHeader = sharedPreferences.getString("userProfile", "default")
-        val firstNameHeader = sharedPreferences.getString("first_name", "default")
-        val lastNameHeader = sharedPreferences.getString("last_name", "default")
-        val emailHeader = sharedPreferences.getString("email", "default")
+        val firstNameHeader = sharedPreferences.getString("first_name", "")
+        val lastNameHeader = sharedPreferences.getString("last_name", "")
+        val emailHeader = sharedPreferences.getString("email", "")
         val header: View = binding.navView.getHeaderView(0)
         val profileImage = header.findViewById(R.id.profile_image) as CircleImageView
         val firstNameTv = header.findViewById<View>(R.id.firstName) as TextView
@@ -81,6 +81,7 @@ class UserSettingsActivity : AppCompatActivity() {
         if (settingsManager.loadNightModeState()) {
             switchTheme.isChecked = true
         }
+
         switchTheme.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 settingsManager.setNightModeState(true)
@@ -97,7 +98,6 @@ class UserSettingsActivity : AppCompatActivity() {
 
         binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
             Log.i(ContentValues.TAG, "onNavigationItemSelected: " + item.itemId)
-            //TODO: set visibility
             when (item.itemId) {
                 R.id.home -> {
                     startActivity(
@@ -120,8 +120,11 @@ class UserSettingsActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {
-                    val intentLogin = Intent(this@UserSettingsActivity, LoginActivity::class.java)
-                    startActivity(intentLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    editor.clear()
+                    editor.apply()
+                    val intentLogout = Intent(this@UserSettingsActivity, MainActivity::class.java)
+                    startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                    finish()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.about -> {

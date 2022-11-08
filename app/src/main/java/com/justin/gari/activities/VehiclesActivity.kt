@@ -47,11 +47,12 @@ class VehiclesActivity : AppCompatActivity() {
         }
 
         val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        toggle = ActionBarDrawerToggle(this, binding.drawerLayout, R.string.open, R.string.close)
-        binding.drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
+//        toggle = ActionBarDrawerToggle(this, binding.drawerLayout, R.string.open, R.string.close)
+//        binding.drawerLayout.addDrawerListener(toggle)
+//        toggle.syncState()
         apiClient = ApiClient
 
         binding.tabs.setupWithViewPager(binding.viewpager)
@@ -63,9 +64,9 @@ class VehiclesActivity : AppCompatActivity() {
 //        getUserImageInfo();
 
         val profileHeader = sharedPreferences.getString("userProfile", "default")
-        val firstNameHeader = sharedPreferences.getString("first_name", "default")
-        val lastNameHeader = sharedPreferences.getString("last_name", "default")
-        val emailHeader = sharedPreferences.getString("email", "default")
+        val firstNameHeader = sharedPreferences.getString("first_name", "")
+        val lastNameHeader = sharedPreferences.getString("last_name", "")
+        val emailHeader = sharedPreferences.getString("email", "")
         val header: View = binding.navView.getHeaderView(0)
         val profileImage = header.findViewById(R.id.profile_image) as CircleImageView
         val firstNameTv = header.findViewById<View>(R.id.firstName) as TextView
@@ -83,7 +84,7 @@ class VehiclesActivity : AppCompatActivity() {
             .into(profileImage)
 
         val switchTheme = header.findViewById(R.id.themeSwitch) as Switch
-        if (settingsManager.loadNightModeState() == true) {
+        if (settingsManager.loadNightModeState()) {
             switchTheme.isChecked = true
         }
         switchTheme.setOnCheckedChangeListener { _, isChecked ->
@@ -117,8 +118,11 @@ class VehiclesActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {
-                    val intentLogin = Intent(this@VehiclesActivity, LoginActivity::class.java)
-                    startActivity(intentLogin)
+                    editor.clear()
+                    editor.apply()
+                    val intentLogout = Intent(this@VehiclesActivity, MainActivity::class.java)
+                    startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                    finish()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.about -> {

@@ -57,8 +57,11 @@ class SavedFragment : Fragment() {
                     }
 
                     override fun onFailure(call: Call<SavedCarResponse>, t: Throwable) {
-                        binding?.shimmerLayout?.stopShimmer();
-                        binding?.shimmerLayout?.visibility = View.GONE;
+                        binding?.shimmerLayout?.stopShimmer()
+                        binding?.shimmerLayout?.visibility = View.GONE
+                        binding?.errorPage?.visibility = View.VISIBLE
+                        binding?.message?.text  = t.message
+                        binding?.swipeRefresh?.visibility = View.GONE
                         Log.e("Gideon", "onFailure: ${t.message}")
                     }
                 })

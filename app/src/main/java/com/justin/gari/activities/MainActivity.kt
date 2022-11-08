@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -20,7 +19,6 @@ import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityMainBinding
 import com.justin.gari.models.carModels.CarModel
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header.view.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -46,16 +44,10 @@ class MainActivity : AppCompatActivity() {
             supportActionBar!!.hide()
         }
 
-
         val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE)
-        if(sharedPreferences.getString("token", null) == null){
-            binding.outNavView.visibility = View.VISIBLE
-            binding.navView.visibility = View.GONE
-//            binding.navView.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        } else {
-            binding.outNavView.visibility = View.GONE
-            binding.navView.visibility = View.VISIBLE
-        }
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+
+
         binding.shimmerLayout.startShimmer();
 
         binding.swipeRefresh.setOnRefreshListener {
@@ -64,8 +56,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         getAllCars()
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
 //        val client_id = sharedPreferences.getString("client_id", "default")
 //        val editor: SharedPreferences.Editor = sharedPreferences.edit()
@@ -87,8 +77,8 @@ class MainActivity : AppCompatActivity() {
 
         val profileHeader = sharedPreferences.getString("userProfile", "default")
         val firstNameHeader = sharedPreferences.getString("first_name", "")
-        val lastNameHeader = sharedPreferences.getString("last_name", "default")
-        val emailHeader = sharedPreferences.getString("email", "default")
+        val lastNameHeader = sharedPreferences.getString("last_name", "")
+        val emailHeader = sharedPreferences.getString("email", "")
         val header = binding.navView.getHeaderView(0)
         header.firstName.text = firstNameHeader.toString()
         header.lastName.text = lastNameHeader.toString()
@@ -114,8 +104,8 @@ class MainActivity : AppCompatActivity() {
             binding.greeting.setText(R.string.night)
         }
 
-        if (firstNameHeader != null){
-            binding.name.text = firstNameHeader.toString()
+        if (firstNameHeader != "") {
+            binding.name.text = ", $firstNameHeader"
         }
 
         if (settingsManager.loadNightModeState()) {
@@ -130,53 +120,108 @@ class MainActivity : AppCompatActivity() {
                 restartApp()
             }
         }
-        binding.nav.setOnClickListener {
-            if(sharedPreferences.getString("token", null) == null){
-                binding.drawerLayout.openDrawer(GravityCompat.END)
-            } else{
-                binding.drawerLayout.openDrawer(GravityCompat.START)
-            }
 
+        if (firstNameHeader != "") {
+            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END)
+            binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
+                Log.i(TAG, "onNavigationItemSelected: " + item.itemId)
+
+                when (item.itemId) {
+                    R.id.home -> {
+                        startActivity(
+                            Intent(this@MainActivity, MainActivity::class.java).addFlags(
+                                Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            )
+                        )
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.profile -> {
+                        val intentProfile =
+                            Intent(this@MainActivity, UserProfileActivity::class.java)
+                        startActivity(intentProfile.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.myVehicles -> {
+                        val intentMyVehicles =
+                            Intent(this@MainActivity, VehiclesActivity::class.java)
+                        startActivity(intentMyVehicles.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.logout -> {
+                        editor.clear()
+                        editor.apply()
+                        val intentLogout = Intent(this@MainActivity, LoginActivity::class.java)
+                        startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                        finish()
+                        return@OnNavigationItemSelectedListener true
+
+                    }
+                    R.id.about -> {
+                        val intentAbout = Intent(this@MainActivity, AboutActivity::class.java)
+                        startActivity(intentAbout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.help -> {
+                        val intentHelp = Intent(this@MainActivity, LoginActivity::class.java)
+                        startActivity(intentHelp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        return@OnNavigationItemSelectedListener true
+                    }
+                }
+                binding.drawerLayout.closeDrawer(GravityCompat.START)
+                Log.i(TAG, "onNavigationItemSelected: nothing clicked")
+                false
+            })
+        } else {
+            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.START)
+            binding.outNavView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
+                Log.i(TAG, "onNavigationItemSelected: " + item.itemId)
+
+                when (item.itemId) {
+                    R.id.login -> {
+                        startActivity(
+                            Intent(this@MainActivity, LoginActivity::class.java).addFlags(
+                                Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            )
+                        )
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.createAccount -> {
+                        val intentProfile = Intent(this@MainActivity, RegisterActivity::class.java)
+                        startActivity(intentProfile.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.about -> {
+                        val intentAbout = Intent(this@MainActivity, AboutActivity::class.java)
+                        startActivity(intentAbout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.help -> {
+                        val intentHelp = Intent(this@MainActivity, LoginActivity::class.java)
+                        startActivity(intentHelp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        return@OnNavigationItemSelectedListener true
+                    }
+                }
+                binding.drawerLayout.closeDrawer(GravityCompat.END)
+                Log.i(TAG, "onNavigationItemSelected: nothing clicked")
+                false
+            })
         }
 
-        binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
-            Log.i(TAG, "onNavigationItemSelected: " + item.itemId)
-            //TODO: set visibility
-            when (item.itemId) {
-                R.id.home -> {
-                    startActivity(Intent(this@MainActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.profile -> {
-                    val intentProfile = Intent(this@MainActivity, UserProfileActivity::class.java)
-                    startActivity(intentProfile.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.myVehicles -> {
-                    val intentMyVehicles = Intent(this@MainActivity, VehiclesActivity::class.java)
-                    startActivity(intentMyVehicles.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.logout -> {
-                    val intentLogin = Intent(this@MainActivity, LoginActivity::class.java)
-                    startActivity(intentLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.about -> {
-                    val intentAbout = Intent(this@MainActivity, AboutActivity::class.java)
-                    startActivity(intentAbout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.help -> {
-                    val intentHelp = Intent(this@MainActivity, LoginActivity::class.java)
-                    startActivity(intentHelp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-                    return@OnNavigationItemSelectedListener true
-                }
+        binding.nav.setOnClickListener {
+            if (firstNameHeader != "") {
+                binding.drawerLayout.openDrawer(GravityCompat.START)
+//                binding.drawerLayout.setDrawerLockMode(
+//                    DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
+//                    GravityCompat.END
+//                );
+            } else {
+                binding.drawerLayout.openDrawer(GravityCompat.END)
+//                binding.drawerLayout.setDrawerLockMode(
+//                    DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
+//                    GravityCompat.START
+//                );
             }
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-            Log.i(TAG, "onNavigationItemSelected: nothing clicked")
-            false
-        })
+        }
     }
 
     private fun getAllCars() {
@@ -199,7 +244,7 @@ class MainActivity : AppCompatActivity() {
                 binding.etSearch.visibility = View.GONE
                 binding.swipeRefresh.visibility = View.GONE
 
-                Toast.makeText(this@MainActivity, "Check internet connectivity", Toast.LENGTH_LONG).show()
+//                Toast.makeText(this@MainActivity, "Check internet connectivity", Toast.LENGTH_LONG).show()
                 Log.e("Gideon", "onFailure: ${t.message}")
             }
         })
@@ -225,4 +270,5 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
 }

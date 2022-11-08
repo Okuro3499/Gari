@@ -43,6 +43,7 @@ class AboutActivity : AppCompatActivity() {
         apiClient = ApiClient
 
         val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
 
 //        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
 //        binding.drawerLayout.addDrawerListener(toggle)
@@ -70,9 +71,9 @@ class AboutActivity : AppCompatActivity() {
 //            })
 
         val profileHeader = sharedPreferences.getString("userProfile", "default")
-        val firstNameHeader = sharedPreferences.getString("first_name", "default")
-        val lastNameHeader = sharedPreferences.getString("last_name", "default")
-        val emailHeader = sharedPreferences.getString("email", "default")
+        val firstNameHeader = sharedPreferences.getString("first_name", "")
+        val lastNameHeader = sharedPreferences.getString("last_name", "")
+        val emailHeader = sharedPreferences.getString("email", "")
         val header = binding.navView.getHeaderView(0)
         header.firstName.text = firstNameHeader.toString()
         header.lastName.text = lastNameHeader.toString()
@@ -103,7 +104,6 @@ class AboutActivity : AppCompatActivity() {
 
         binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
             Log.i(ContentValues.TAG, "onNavigationItemSelected: " + item.itemId)
-            //TODO: set visibility
             when (item.itemId) {
                 R.id.home -> {
                     startActivity(
@@ -126,9 +126,13 @@ class AboutActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {
-                    val intentLogin = Intent(this@AboutActivity, LoginActivity::class.java)
-                    startActivity(intentLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    editor.clear()
+                    editor.apply()
+                    val intentLogout = Intent(this@AboutActivity, MainActivity::class.java)
+                    startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                    finish()
                     return@OnNavigationItemSelectedListener true
+
                 }
                 R.id.about -> {
                     val intentAbout = Intent(this@AboutActivity, AboutActivity::class.java)
