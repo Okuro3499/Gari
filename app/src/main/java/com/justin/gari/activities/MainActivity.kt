@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -13,11 +12,11 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
-import com.justin.gari.SettingsManager
 import com.justin.gari.adapters.CarAdapter
 import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityMainBinding
 import com.justin.gari.models.carModels.CarModel
+import com.justin.gari.utils.SettingsManager
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.nav_header.view.*
 import retrofit2.Call
@@ -26,7 +25,6 @@ import retrofit2.Response
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    lateinit var toggle: ActionBarDrawerToggle
     lateinit var apiClient: ApiClient
     lateinit var settingsManager: SettingsManager
     lateinit var binding: ActivityMainBinding
@@ -37,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         if (settingsManager.loadNightModeState()) {
             setTheme(R.style.DarkGari)
         } else setTheme(R.style.Gari)
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -47,11 +46,7 @@ class MainActivity : AppCompatActivity() {
         val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
 
-
-        binding.shimmerLayout.startShimmer();
-
         binding.swipeRefresh.setOnRefreshListener {
-            binding.shimmerLayout.startShimmer();
             getAllData()
         }
 
@@ -122,7 +117,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (firstNameHeader != "") {
-            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END)
+            binding.drawerLayout.setDrawerLockMode(
+                DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
+                GravityCompat.END
+            )
             binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
                 Log.i(TAG, "onNavigationItemSelected: " + item.itemId)
 
@@ -150,7 +148,7 @@ class MainActivity : AppCompatActivity() {
                     R.id.logout -> {
                         editor.clear()
                         editor.apply()
-                        val intentLogout = Intent(this@MainActivity, LoginActivity::class.java)
+                        val intentLogout = Intent(this@MainActivity, MainActivity::class.java)
                         startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
                         finish()
                         return@OnNavigationItemSelectedListener true
@@ -172,7 +170,10 @@ class MainActivity : AppCompatActivity() {
                 false
             })
         } else {
-            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.START)
+            binding.drawerLayout.setDrawerLockMode(
+                DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
+                GravityCompat.START
+            )
             binding.outNavView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
                 Log.i(TAG, "onNavigationItemSelected: " + item.itemId)
 
@@ -222,9 +223,14 @@ class MainActivity : AppCompatActivity() {
 //                );
             }
         }
+
+        binding.refresh.setOnClickListener {
+            getAllData()
+        }
     }
 
     private fun getAllCars() {
+        binding.shimmerLayout.startShimmer();
         apiClient = ApiClient
         apiClient.getApiService(this).getAllCars().enqueue(object : Callback<CarModel> {
             override fun onResponse(call: Call<CarModel>, response: Response<CarModel>) {
@@ -263,12 +269,4 @@ class MainActivity : AppCompatActivity() {
             getAllCars()
         }
     }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (toggle.onOptionsItemSelected(item)) {
-            true
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
 }

@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
-import com.justin.gari.SettingsManager
+import com.justin.gari.utils.SettingsManager
 import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityEmergencyContactsBinding
 import com.justin.gari.models.userModels.UserDetailsResponse

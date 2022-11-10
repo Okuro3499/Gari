@@ -10,7 +10,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.justin.gari.R
-import com.justin.gari.SettingsManager
+import com.justin.gari.utils.SettingsManager
 import com.justin.gari.api.ApiClient
 import com.justin.gari.api.SessionManager
 import com.justin.gari.databinding.ActivityLoginBinding

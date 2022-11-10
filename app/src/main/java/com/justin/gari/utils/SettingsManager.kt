@@ -1,4 +1,4 @@
-package com.justin.gari
+package com.justin.gari.utils
 
 import android.content.Context
 import android.content.SharedPreferences

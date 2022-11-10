@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -18,12 +17,10 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
-import com.justin.gari.SettingsManager
+import com.justin.gari.utils.SettingsManager
 import com.justin.gari.adapters.SliderPageAdapter
 import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityDetailBinding
-import com.justin.gari.models.bookingCarModels.BookCar
-import com.justin.gari.models.bookingCarModels.BookCarResponse
 import com.justin.gari.models.carModels.SingleCarModel
 import com.justin.gari.models.saveCarModels.SaveCar
 import com.justin.gari.models.saveCarModels.SaveCarResponse

@@ -10,7 +10,7 @@
     <color name="bookedText">#F43F5E</color>
     <color name="availText">#14B8A6</color>
     <color name="availBackground">#CCFBF1</color>
-
+    <color name="white">#FFFFFF</color>
 
     <!--reds-->
     <color name="md_red_50">#FFEBEE</color>

@@ -9,7 +9,6 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -17,8 +16,8 @@ import androidx.core.view.GravityCompat
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
-import com.justin.gari.SettingsManager
-import com.justin.gari.URIPathHelper
+import com.justin.gari.utils.SettingsManager
+import com.justin.gari.utils.URIPathHelper
 import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityUserSettingsBinding
 import com.justin.gari.models.uploadImagesModel.*

@@ -6,32 +6,29 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
 import android.view.View
 import android.widget.Switch
 import android.widget.TextView
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.tabs.TabLayout
 import com.justin.gari.R
-import com.justin.gari.SettingsManager
 import com.justin.gari.adapters.MyVehiclesAdapter
 import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityVehiclesBinding
-import com.justin.gari.fragments.BookingsFragment
-import com.justin.gari.fragments.SavedFragment
+import com.justin.gari.utils.SettingsManager
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
 class VehiclesActivity : AppCompatActivity() {
-    lateinit var toggle: ActionBarDrawerToggle
     private lateinit var apiClient: ApiClient
     private val sharedPrefFile = "sharedPrefData"
     private var theme: Switch? = null
     private lateinit var settingsManager: SettingsManager
     lateinit var binding: ActivityVehiclesBinding
+    private var adapter: MyVehiclesAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         settingsManager = SettingsManager(this)
@@ -48,21 +45,38 @@ class VehiclesActivity : AppCompatActivity() {
 
         val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
-//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-//        toggle = ActionBarDrawerToggle(this, binding.drawerLayout, R.string.open, R.string.close)
-//        binding.drawerLayout.addDrawerListener(toggle)
-//        toggle.syncState()
         apiClient = ApiClient
 
-        binding.tabs.setupWithViewPager(binding.viewpager)
-        val myVehiclesAdapter = MyVehiclesAdapter(supportFragmentManager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT)
-        myVehiclesAdapter.addFragment(BookingsFragment(), "Bookings")
-        myVehiclesAdapter.addFragment(SavedFragment(), "Saved")
-        binding.viewpager.adapter = myVehiclesAdapter
+        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Bookings"))
+        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Saved"))
 
-//        getUserImageInfo();
+        val fragmentManager = supportFragmentManager
+        adapter = MyVehiclesAdapter(fragmentManager, lifecycle)
+        binding.viewPager2.adapter = adapter
 
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                binding.viewPager2.currentItem = tab.position
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
+
+        binding.viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                binding.tabLayout.selectTab(binding.tabLayout.getTabAt(position))
+            }
+        })
+
+//        binding.tabs.setupWithViewPager(binding.viewpager)
+//        val myVehiclesAdapter = MyVehiclesAdapter(supportFragmentManager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+//        )
+//        myVehiclesAdapter.addFragment(BookingsFragment(), "Bookings")
+//        myVehiclesAdapter.addFragment(SavedFragment(), "Saved")
+//        binding.viewpager.adapter = myVehiclesAdapter
+//
         val profileHeader = sharedPreferences.getString("userProfile", "default")
         val firstNameHeader = sharedPreferences.getString("first_name", "")
         val lastNameHeader = sharedPreferences.getString("last_name", "")
@@ -91,8 +105,7 @@ class VehiclesActivity : AppCompatActivity() {
             if (isChecked) {
                 settingsManager.setNightModeState(true)
                 restartApp()
-            }
-            else {
+            } else {
                 settingsManager.setNightModeState(false)
                 restartApp()
             }
@@ -106,14 +119,12 @@ class VehiclesActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.profile -> {
-                    val intentProfile =
-                        Intent(this@VehiclesActivity, UserProfileActivity::class.java)
+                    val intentProfile = Intent(this@VehiclesActivity, UserProfileActivity::class.java)
                     startActivity(intentProfile)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.myVehicles -> {
-                    val intentMyVehicles =
-                        Intent(this@VehiclesActivity, VehiclesActivity::class.java)
+                    val intentMyVehicles = Intent(this@VehiclesActivity, VehiclesActivity::class.java)
                     startActivity(intentMyVehicles)
                     return@OnNavigationItemSelectedListener true
                 }
@@ -172,12 +183,5 @@ class VehiclesActivity : AppCompatActivity() {
         val i = Intent(applicationContext, VehiclesActivity::class.java)
         startActivity(i)
         finish()
-    }
-
-        override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (toggle.onOptionsItemSelected(item)) {
-            true
-        }
-        return super.onOptionsItemSelected(item)
     }
 }
