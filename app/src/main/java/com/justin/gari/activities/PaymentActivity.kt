@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.nav_header.view.*
 class PaymentActivity : AppCompatActivity() {
     private val sharedPrefFile = "sharedPrefData"
     private lateinit var apiClient: ApiClient
-    lateinit var toggle: ActionBarDrawerToggle
 
     private lateinit var binding: ActivityPaymentBinding
     private lateinit var settingsManager: SettingsManager
@@ -40,13 +39,6 @@ class PaymentActivity : AppCompatActivity() {
 
         val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
-//        val drawerLayout: DrawerLayout = findViewById(R.id.drawerLayout)
-//        val navView: NavigationView = findViewById(R.id.nav_view)
-
-//        toggle = ActionBarDrawerToggle(this, binding.drawerLayout, R.string.open, R.string.close)
-//        binding.drawerLayout.addDrawerListener(toggle)
-//        toggle.syncState()
-//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val profileHeader = sharedPreferences.getString("userProfile", "default")
         val firstNameHeader = sharedPreferences.getString("first_name", "")
@@ -76,23 +68,31 @@ class PaymentActivity : AppCompatActivity() {
             }
         }
 
+        binding.nav.setOnClickListener {
+            binding.drawerLayout.openDrawer(GravityCompat.START)
+        }
+
         binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
             Log.i(ContentValues.TAG, "onNavigationItemSelected: " + item.itemId)
             when (item.itemId) {
                 R.id.home -> {
-                    startActivity(Intent(this@PaymentActivity, MainActivity::class.java))
+                    startActivity(
+                        Intent(this@PaymentActivity, MainActivity::class.java).addFlags(
+                            Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        )
+                    )
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.profile -> {
                     val intentProfile =
                         Intent(this@PaymentActivity, UserProfileActivity::class.java)
-                    startActivity(intentProfile)
+                    startActivity(intentProfile.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.myVehicles -> {
                     val intentMyVehicles =
                         Intent(this@PaymentActivity, VehiclesActivity::class.java)
-                    startActivity(intentMyVehicles)
+                    startActivity(intentMyVehicles.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {
@@ -105,12 +105,12 @@ class PaymentActivity : AppCompatActivity() {
                 }
                 R.id.about -> {
                     val intentAbout = Intent(this@PaymentActivity, AboutActivity::class.java)
-                    startActivity(intentAbout)
+                    startActivity(intentAbout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.help -> {
                     val intentHelp = Intent(this@PaymentActivity, LoginActivity::class.java)
-                    startActivity(intentHelp)
+                    startActivity(intentHelp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
             }
@@ -118,6 +118,11 @@ class PaymentActivity : AppCompatActivity() {
             Log.i(ContentValues.TAG, "onNavigationItemSelected: nothing clicked")
             false
         })
+
+        binding.back.setOnClickListener {
+            val intent = Intent(this@PaymentActivity, UserProfileActivity::class.java)
+            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+        }
 
         binding.mpesaButton.setOnClickListener {
             if (binding.mpesa.visibility == View.GONE) {

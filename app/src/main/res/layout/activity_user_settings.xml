@@ -18,7 +18,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="?attr/backgroundColor">
 
                 <com.google.android.material.appbar.AppBarLayout
                     android:id="@+id/appBarLayout"
@@ -77,6 +78,7 @@
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/poppins_bold"
                     android:text="Upload a scanned photo of your driver's license"
+                    android:textColor="?attr/textColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
@@ -104,7 +106,7 @@
                     android:fontFamily="@font/poppins_bold"
                     android:text="Upload"
                     android:textAllCaps="false"
-                    android:textColor="@color/md_white_1000"
+                    android:textColor="?attr/buttonTextColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/ivDl" />
@@ -116,6 +118,7 @@
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/poppins_bold"
                     android:text="Upload a scanned photo of your National ID/Passport"
+                    android:textColor="?attr/textColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btDlUpload" />
@@ -143,7 +146,7 @@
                     android:fontFamily="@font/poppins_bold"
                     android:text="Upload"
                     android:textAllCaps="false"
-                    android:textColor="@color/md_white_1000"
+                    android:textColor="?attr/buttonTextColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/ivId" />
@@ -155,6 +158,7 @@
                     android:layout_marginTop="10dp"
                     android:fontFamily="@font/poppins_bold"
                     android:text="Upload a a selfie of your face"
+                    android:textColor="?attr/textColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btIdUpload" />
@@ -175,12 +179,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="30dp"
                     android:background="@drawable/button_bg_dark"
                     android:fontFamily="@font/poppins_bold"
                     android:text="Upload"
                     android:textAllCaps="false"
-                    android:textColor="@color/md_white_1000"
+                    android:textColor="?attr/buttonTextColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/ivPhoto" />
@@ -197,7 +202,7 @@
                     android:fontFamily="@font/poppins_bold"
                     android:text="Submit"
                     android:textAllCaps="false"
-                    android:textColor="@color/md_white_1000"
+                    android:textColor="?attr/buttonTextColor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -214,7 +219,12 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="?attr/backgroundColor"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/nav_menu" />
+        app:itemIconTint="?attr/textColor"
+        app:itemTextAppearance="@font/poppins_regular"
+        app:itemTextColor="?attr/textColor"
+        app:menu="@menu/nav_menu"
+        app:subheaderColor="?attr/textColor" />
 </androidx.drawerlayout.widget.DrawerLayout>

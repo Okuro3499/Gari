@@ -25,7 +25,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class EditProfileActivity : AppCompatActivity() {
-    lateinit var toggle: ActionBarDrawerToggle
     val sharedPrefFile = "sharedPrefData"
     lateinit var apiClient: ApiClient
     var theme: Switch? = null
@@ -46,12 +45,8 @@ class EditProfileActivity : AppCompatActivity() {
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
         val clientId = sharedPreferences.getString("client_id", "default")
 
-//        toggle = ActionBarDrawerToggle(this, binding.drawerLayout, R.string.open, R.string.close)
-//        binding.drawerLayout.addDrawerListener(toggle)
-//        toggle.syncState()
         apiClient = ApiClient
 
-//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         if (supportActionBar != null) {
             supportActionBar!!.hide()
         }
@@ -148,10 +143,7 @@ class EditProfileActivity : AppCompatActivity() {
 
         apiClient.getApiService(this).getUserDetails(clientId).enqueue(object :
             Callback<UserDetailsResponse> {
-            override fun onResponse(
-                call: Call<UserDetailsResponse>,
-                response: Response<UserDetailsResponse>
-            ) {
+            override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
                 if (response.isSuccessful) {
                     Log.e("Gideon", "onSuccess: ${response.body()}")
                     binding.etFirstName.setText(response.body()!!.single_client.first_name.toString())
@@ -173,8 +165,5 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun restartApp() {
         recreate()
-//        val i = Intent(applicationContext, DetailActivity::class.java)
-//        startActivity(i)
-//        finish()
     }
 }

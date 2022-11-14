@@ -37,6 +37,8 @@ class VehiclesActivity : AppCompatActivity() {
         } else
             setTheme(R.style.Gari)
         super.onCreate(savedInstanceState)
+
+
         binding = ActivityVehiclesBinding.inflate(layoutInflater)
         setContentView(binding.root)
         if (supportActionBar != null) {
@@ -70,13 +72,6 @@ class VehiclesActivity : AppCompatActivity() {
             }
         })
 
-//        binding.tabs.setupWithViewPager(binding.viewpager)
-//        val myVehiclesAdapter = MyVehiclesAdapter(supportFragmentManager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
-//        )
-//        myVehiclesAdapter.addFragment(BookingsFragment(), "Bookings")
-//        myVehiclesAdapter.addFragment(SavedFragment(), "Saved")
-//        binding.viewpager.adapter = myVehiclesAdapter
-//
         val profileHeader = sharedPreferences.getString("userProfile", "default")
         val firstNameHeader = sharedPreferences.getString("first_name", "")
         val lastNameHeader = sharedPreferences.getString("last_name", "")
@@ -109,6 +104,19 @@ class VehiclesActivity : AppCompatActivity() {
                 settingsManager.setNightModeState(false)
                 restartApp()
             }
+        }
+
+        binding.nav.setOnClickListener {
+            if (firstNameHeader != "") {
+                binding.drawerLayout.openDrawer(GravityCompat.START)
+            } else {
+                binding.drawerLayout.openDrawer(GravityCompat.END)
+            }
+        }
+
+        binding.back.setOnClickListener {
+            val intent = Intent(this@VehiclesActivity, MainActivity::class.java)
+            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
         }
 
         binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->

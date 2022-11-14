@@ -12,23 +12,73 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/arrowleftwhite"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Payment"
+                    android:textColor="@color/md_white_1000"
+                    android:textSize="17sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/back"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <ImageView
+                    android:id="@+id/nav"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:src="@drawable/menu_white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
         <TextView
             android:id="@+id/titlePaymentOption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="15dp"
-            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/poppins_bold"
             android:text="Select Payment Method"
             android:textColor="?attr/textColor"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
         <LinearLayout
             android:id="@+id/paymentOptions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:background="?attr/backgroundColor"
             app:layout_constraintTop_toBottomOf="@+id/titlePaymentOption">
 
             <ImageView
@@ -37,7 +87,7 @@
                 android:layout_height="50dp"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/custom_input"
+                android:background="@drawable/payment_method_background"
                 android:padding="10dp"
                 android:src="@drawable/mpesa" />
 
@@ -47,7 +97,7 @@
                 android:layout_height="50dp"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/custom_input"
+                android:background="@drawable/payment_method_background"
                 android:padding="10dp"
                 android:src="@drawable/paypal" />
 
@@ -57,7 +107,7 @@
                 android:layout_height="50dp"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/custom_input"
+                android:background="@drawable/payment_method_background"
                 android:padding="10dp"
                 android:src="@drawable/visa" />
 
@@ -67,7 +117,7 @@
                 android:layout_height="50dp"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/custom_input"
+                android:background="@drawable/payment_method_background"
                 android:padding="10dp"
                 android:src="@drawable/mastercard" />
         </LinearLayout>
@@ -76,7 +126,7 @@
             android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/md_grey_600"
+            android:background="?attr/textColor"
             app:layout_constraintTop_toBottomOf="@+id/paymentOptions" />
 
         <LinearLayout
@@ -91,16 +141,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
                 android:text="Name:"
                 android:textColor="?attr/textColor"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/firstName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:fontFamily="@font/poppins_regular"
                 android:text="Gideon"
                 android:textColor="?attr/textColor"
                 android:textSize="14sp" />
@@ -110,6 +161,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:fontFamily="@font/poppins_regular"
                 android:text="Okuro"
                 android:textColor="?attr/textColor"
                 android:textSize="14sp" />
@@ -128,16 +180,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
                 android:text="Car Model:"
                 android:textColor="?attr/textColor"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/carName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:fontFamily="@font/poppins_regular"
                 android:text="Toyota Noah"
                 android:textColor="?attr/textColor"
                 android:textSize="14sp" />
@@ -156,15 +209,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
                 android:text="Drive:"
                 android:textColor="?attr/textColor"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textSize="14sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:fontFamily="@font/poppins_regular"
                 android:text="Self Drive"
                 android:textColor="?attr/textColor"
                 android:textSize="14sp" />
@@ -183,16 +237,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
                 android:text="Start Date:"
                 android:textColor="?attr/textColor"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/dateFrom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:fontFamily="@font/poppins_regular"
                 android:text="25/04/2022"
                 android:textColor="?attr/textColor"
                 android:textSize="14sp" />
@@ -210,16 +265,17 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="@font/poppins_bold"
                 android:text="End Date:"
                 android:textColor="?attr/textColor"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/dateTo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:fontFamily="@font/poppins_regular"
                 android:text="25/04/2022"
                 android:textColor="?attr/textColor"
                 android:textSize="14sp" />
@@ -237,15 +293,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
                 android:text="Total Amount to Pay:"
                 android:textColor="?attr/textColor"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textSize="14sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
+                android:fontFamily="@font/poppins_regular"
                 android:text="5000"
                 android:textColor="?attr/textColor"
                 android:textSize="14sp" />
@@ -261,11 +318,12 @@
             app:layout_constraintTop_toBottomOf="@+id/ltAmount" />
 
         <!--mpesa-->
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mpesa"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:background="?attr/backgroundColor"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -275,22 +333,27 @@
                 android:id="@+id/tvPVN"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
+                android:fontFamily="@font/poppins_bold"
                 android:text="Enter phone number you wish to use for payment"
-                android:textColor="?attr/textColor" />
+                android:textColor="?attr/textColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/etPhoneNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvPVN"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
                 app:boxBackgroundColor="#FFF"
                 app:boxStrokeColor="#FFF"
                 app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp">
+                app:boxStrokeWidthFocused="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvPVN">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/phoneNumber"
@@ -301,7 +364,7 @@
                     android:autofillHints=""
                     android:background="@drawable/custom_input"
                     android:drawablePadding="12dp"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/poppins_regular"
                     android:hint="Phone"
                     android:inputType="phone"
                     android:padding="15dp"
@@ -316,11 +379,15 @@
                 android:id="@+id/pay1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/etPhoneNumber"
-                android:layout_centerInParent="true"
-                android:text="make payment" />
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_bg_dark"
+                android:fontFamily="@font/poppins_bold"
+                android:text="make payment"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etPhoneNumber" />
 
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!--visaCard-->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -328,6 +395,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:background="?attr/backgroundColor"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -338,6 +406,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
+                android:fontFamily="@font/poppins_bold"
                 android:text="Enter your account details"
                 android:textColor="?attr/textColor"
                 android:textSize="16sp"
@@ -369,7 +438,7 @@
                     android:autofillHints=""
                     android:background="@drawable/custom_input"
                     android:drawablePadding="12dp"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/poppins_regular"
                     android:hint="Visa Card number"
                     android:inputType="number"
                     android:padding="15dp"
@@ -411,7 +480,7 @@
                         android:autofillHints=""
                         android:background="@drawable/custom_input"
                         android:drawablePadding="12dp"
-                        android:fontFamily="sans-serif-light"
+                        android:fontFamily="@font/poppins_regular"
                         android:hint="Valid until *"
                         android:inputType=""
                         android:padding="15dp"
@@ -444,7 +513,7 @@
                         android:autofillHints=""
                         android:background="@drawable/custom_input"
                         android:drawablePadding="12dp"
-                        android:fontFamily="sans-serif-light"
+                        android:fontFamily="@font/poppins_regular"
                         android:hint="CVV *"
                         android:inputType=""
                         android:padding="15dp"
@@ -482,7 +551,7 @@
                     android:autofillHints=""
                     android:background="@drawable/custom_input"
                     android:drawablePadding="12dp"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/poppins_regular"
                     android:hint="Card Holder Name"
                     android:inputType="text"
                     android:padding="15dp"
@@ -498,6 +567,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_bg_dark"
+                android:fontFamily="@font/poppins_bold"
                 android:text="make payment"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -511,6 +583,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:background="?attr/backgroundColor"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -521,6 +594,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
+                android:fontFamily="@font/poppins_bold"
                 android:text="Enter your account details"
                 android:textColor="?attr/textColor"
                 android:textSize="16sp"
@@ -552,7 +626,7 @@
                     android:autofillHints=""
                     android:background="@drawable/custom_input"
                     android:drawablePadding="12dp"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/poppins_regular"
                     android:hint="Master Card number"
                     android:inputType="number"
                     android:padding="15dp"
@@ -594,7 +668,7 @@
                         android:autofillHints=""
                         android:background="@drawable/custom_input"
                         android:drawablePadding="12dp"
-                        android:fontFamily="sans-serif-light"
+                        android:fontFamily="@font/poppins_regular"
                         android:hint="Valid until *"
                         android:inputType=""
                         android:padding="15dp"
@@ -627,7 +701,7 @@
                         android:autofillHints=""
                         android:background="@drawable/custom_input"
                         android:drawablePadding="12dp"
-                        android:fontFamily="sans-serif-light"
+                        android:fontFamily="@font/poppins_regular"
                         android:hint="CVV *"
                         android:inputType=""
                         android:padding="15dp"
@@ -665,7 +739,7 @@
                     android:autofillHints=""
                     android:background="@drawable/custom_input"
                     android:drawablePadding="12dp"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/poppins_regular"
                     android:hint="Card Holder Name"
                     android:inputType="text"
                     android:padding="15dp"
@@ -681,23 +755,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button_bg_dark"
+                android:fontFamily="@font/poppins_bold"
                 android:text="make payment"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etMasterCardHolderName" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
+        android:id="@+id/navView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="?attr/backgroundColor"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/nav_menu" />
+        app:itemIconTint="?attr/textColor"
+        app:itemTextAppearance="@font/poppins_regular"
+        app:itemTextColor="?attr/textColor"
+        app:menu="@menu/nav_menu"
+        app:subheaderColor="?attr/textColor" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

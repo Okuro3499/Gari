@@ -18,7 +18,7 @@
     <string name="model">Model:</string>
     <string name="drive">Drive:</string>
     <string name="transmission">Transmission:</string>
-    <string name="price">Price:</string>
+    <string name="price">Price per day:</string>
     <string name="status">Status:</string>
     <string name="complete_profile">Complete Profile</string>
     <string name="name">Name:</string>
@@ -97,6 +97,13 @@
     <string name="_0">0</string>
     <string name="visibility_toggle">visibility toggle</string>
     <string name="upload">Upload</string>
+    <string name="header1">Hire a car in very easy steps</string>
+    <string name="header2">Hire any car at very affordable rates</string>
+    <string name="header3">Choose the car you like from a variety</string>
+    <string name="subHeader1">Very easy steps to the car hire process</string>
+    <string name="subHeader2">Affordable rates for everyone</string>
+    <string name="subHeader3">We have variety of cars for you to choose from.</string>
+    <string name="skip">Skip</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="login_here">Login here</string>

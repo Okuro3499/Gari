@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -43,7 +42,8 @@ class MainActivity : AppCompatActivity() {
             supportActionBar!!.hide()
         }
 
-        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences =
+            getSharedPreferences(sharedPrefFile, MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
 
         binding.swipeRefresh.setOnRefreshListener {
@@ -74,6 +74,7 @@ class MainActivity : AppCompatActivity() {
         val firstNameHeader = sharedPreferences.getString("first_name", "")
         val lastNameHeader = sharedPreferences.getString("last_name", "")
         val emailHeader = sharedPreferences.getString("email", "")
+        val outHeader = binding.outNavView.getHeaderView(0)
         val header = binding.navView.getHeaderView(0)
         header.firstName.text = firstNameHeader.toString()
         header.lastName.text = lastNameHeader.toString()
@@ -91,11 +92,14 @@ class MainActivity : AppCompatActivity() {
         Log.d("timeOfDay", timeOfDay.toString() + "")
         if (timeOfDay < 12) {
             binding.greeting.setText(R.string.morning)
-        } else if (timeOfDay < 16) {
+        }
+        else if (timeOfDay < 16) {
             binding.greeting.setText(R.string.afternoon)
-        } else if (timeOfDay < 21) {
+        }
+        else if (timeOfDay < 21) {
             binding.greeting.setText(R.string.evening)
-        } else {
+        }
+        else {
             binding.greeting.setText(R.string.night)
         }
 
@@ -116,11 +120,18 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        outHeader.themeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                settingsManager.setNightModeState(true)
+                restartApp()
+            } else {
+                settingsManager.setNightModeState(false)
+                restartApp()
+            }
+        }
+
         if (firstNameHeader != "") {
-            binding.drawerLayout.setDrawerLockMode(
-                DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
-                GravityCompat.END
-            )
+            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END)
             binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
                 Log.i(TAG, "onNavigationItemSelected: " + item.itemId)
 
@@ -211,20 +222,14 @@ class MainActivity : AppCompatActivity() {
         binding.nav.setOnClickListener {
             if (firstNameHeader != "") {
                 binding.drawerLayout.openDrawer(GravityCompat.START)
-//                binding.drawerLayout.setDrawerLockMode(
-//                    DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
-//                    GravityCompat.END
-//                );
             } else {
                 binding.drawerLayout.openDrawer(GravityCompat.END)
-//                binding.drawerLayout.setDrawerLockMode(
-//                    DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
-//                    GravityCompat.START
-//                );
             }
         }
 
         binding.refresh.setOnClickListener {
+            binding.errorPage.visibility = View.GONE
+            binding.shimmerLayout.visibility = View.VISIBLE
             getAllData()
         }
     }

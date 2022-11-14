@@ -6,7 +6,7 @@
     </style>
 
     <!-- Base application theme. -->
-    <style name="Gari" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Gari" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/md_pink_500</item>
@@ -17,11 +17,15 @@
         <item name="colorOnSecondary">@color/md_black_1000</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
-        <item name="textColor">@color/md_black_1000</item>
-        <item name="backgroundColor">@color/md_white_1000</item>
+        <item name="textColor">@color/colorPrimary</item>
+        <item name="buttonColor">@color/colorPrimary</item>
+        <item name="buttonTextColor">@color/backgroundColor</item>
+        <item name="backgroundColor">@color/backgroundColor</item>
+        <item name="tabColor">@color/md_white_1000</item>
+        <item name="tabTextColor">@color/backgroundColor</item>
     </style>
 
-    <style name="DarkGari" parent="ThemeOverlay.MaterialComponents.Dark">
+    <style name="DarkGari" parent="ThemeOverlay.MaterialComponents.Light">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/md_pink_500</item>
@@ -33,11 +37,15 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
         <item name="textColor">@color/md_white_1000</item>
-        <item name="backgroundColor">@color/md_grey_800</item>
+        <item name="buttonColor">@color/backgroundColor</item>
+        <item name="buttonTextColor">@color/colorPrimary</item>
+        <item name="backgroundColor">@color/colorPrimary</item>
+        <item name="tabColor">#333646</item>
+        <item name="tabTextColor">@color/backgroundColor</item>
 
     </style>
 
-    <style name="Theme.Gari_NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Gari_NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <!-- Primary brand color. -->

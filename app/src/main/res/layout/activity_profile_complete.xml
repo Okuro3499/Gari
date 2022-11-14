@@ -5,13 +5,12 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor"
+    android:background="?attr/backgroundColor"
     tools:context=".activities.UserProfileActivity">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/backgroundColor">
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -80,7 +79,8 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:background="?attr/backgroundColor">
 
                     <TextView
                         android:id="@+id/textView3"
@@ -90,6 +90,7 @@
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/poppins_bold"
                         android:text="User Information"
+                        android:textColor="?attr/textColor"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -119,21 +120,24 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:fontFamily="@font/poppins_regular" />
+                            android:fontFamily="@font/poppins_regular"
+                            android:textColor="?attr/textColor" />
 
                         <TextView
                             android:id="@+id/tvEmail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:fontFamily="@font/poppins_regular" />
+                            android:fontFamily="@font/poppins_regular"
+                            android:textColor="?attr/textColor" />
 
                         <TextView
                             android:id="@+id/tvMobile"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:fontFamily="@font/poppins_regular" />
+                            android:fontFamily="@font/poppins_regular"
+                            android:textColor="?attr/textColor" />
 
 
                     </LinearLayout>
@@ -146,6 +150,7 @@
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/poppins_bold"
                         android:text="Location"
+                        android:textColor="?attr/textColor"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/profilePic" />
 
@@ -157,6 +162,7 @@
                         android:layout_marginEnd="15dp"
                         android:layout_marginBottom="15dp"
                         android:stretchColumns="1"
+                        android:textColor="?attr/textColor"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -167,13 +173,15 @@
                             <TextView
                                 android:fontFamily="@font/poppins_bold"
                                 android:padding="3dip"
-                                android:text="County:" />
+                                android:text="County:"
+                                android:textColor="?attr/textColor" />
 
                             <TextView
                                 android:id="@+id/tvCounty"
                                 android:fontFamily="@font/poppins_regular"
                                 android:gravity="left"
-                                android:padding="3dip" />
+                                android:padding="3dip"
+                                android:textColor="?attr/textColor" />
 
                         </TableRow>
 
@@ -182,13 +190,15 @@
                             <TextView
                                 android:fontFamily="@font/poppins_bold"
                                 android:padding="3dip"
-                                android:text="District:" />
+                                android:text="District:"
+                                android:textColor="?attr/textColor" />
 
                             <TextView
                                 android:id="@+id/tvDistrict"
                                 android:fontFamily="@font/poppins_regular"
                                 android:gravity="left"
-                                android:padding="3dip" />
+                                android:padding="3dip"
+                                android:textColor="?attr/textColor" />
 
                         </TableRow>
 
@@ -197,13 +207,15 @@
                             <TextView
                                 android:fontFamily="@font/poppins_bold"
                                 android:padding="3dip"
-                                android:text="Estate:" />
+                                android:text="Estate:"
+                                android:textColor="?attr/textColor" />
 
                             <TextView
                                 android:id="@+id/tvEstate"
                                 android:fontFamily="@font/poppins_regular"
                                 android:gravity="left"
-                                android:padding="3dip" />
+                                android:padding="3dip"
+                                android:textColor="?attr/textColor" />
 
                         </TableRow>
 
@@ -212,13 +224,15 @@
                             <TextView
                                 android:fontFamily="@font/poppins_bold"
                                 android:padding="3dip"
-                                android:text="Landmark:" />
+                                android:text="Landmark:"
+                                android:textColor="?attr/textColor" />
 
                             <TextView
                                 android:id="@+id/tvLandMark"
                                 android:fontFamily="@font/poppins_regular"
                                 android:gravity="left"
-                                android:padding="3dip" />
+                                android:padding="3dip"
+                                android:textColor="?attr/textColor" />
 
                         </TableRow>
                     </TableLayout>
@@ -241,7 +255,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp">
+                    android:background="?attr/backgroundColor"
+                    android:paddingBottom="10dp">
 
                     <TextView
                         android:id="@+id/textView5"
@@ -251,6 +266,7 @@
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/poppins_bold"
                         android:text="Profile"
+                        android:textColor="?attr/textColor"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -260,20 +276,23 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
+                        android:textColor="?attr/textColor"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView5">
 
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:src="@drawable/edit" />
+                            android:src="@drawable/edit"
+                            android:textColor="?attr/textColor" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:fontFamily="@font/poppins_regular"
-                            android:text="Edit Profile" />
+                            android:text="Edit Profile"
+                            android:textColor="?attr/textColor" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -282,20 +301,23 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
+                        android:textColor="?attr/textColor"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/ltEditProfile">
 
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:src="@drawable/settings" />
+                            android:src="@drawable/settings"
+                            android:textColor="?attr/textColor" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:fontFamily="@font/poppins_regular"
-                            android:text="User Settings" />
+                            android:text="User Settings"
+                            android:textColor="?attr/textColor" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -304,6 +326,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
+                        android:textColor="?attr/textColor"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/ltUserSettings">
 
@@ -317,432 +340,12 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:fontFamily="@font/poppins_regular"
-                            android:text="Emergency Contacts" />
+                            android:text="Emergency Contacts"
+                            android:textColor="?attr/textColor" />
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
             </androidx.cardview.widget.CardView>
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <!--        <RelativeLayout-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content">-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/tvComplete"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_marginStart="20dp"-->
-        <!--                android:layout_marginTop="10dp"-->
-        <!--                android:layout_marginBottom="20dp"-->
-        <!--                android:text="@string/complete_profile"-->
-        <!--                android:textColor="?attr/textColor"-->
-        <!--                android:textSize="18sp"-->
-        <!--                android:textStyle="bold" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/titleName"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@+id/tvComplete"-->
-        <!--                android:layout_marginStart="10dp"-->
-        <!--                android:layout_marginTop="2dp"-->
-        <!--                android:text="@string/name"-->
-        <!--                android:textColor="?attr/textColor"-->
-        <!--                android:textSize="16.5sp"-->
-        <!--                android:textStyle="bold" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/tvFirstName"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@+id/tvComplete"-->
-        <!--                android:layout_marginStart="60dp"-->
-        <!--                android:layout_marginTop="2dp"-->
-        <!--                android:textColor="?attr/textColor"-->
-        <!--                android:textSize="16.5sp" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/tvLastName"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@+id/tvComplete"-->
-        <!--                android:layout_marginStart="4dp"-->
-        <!--                android:layout_marginTop="2dp"-->
-        <!--                android:layout_toEndOf="@+id/tvFirstName"-->
-        <!--                android:textColor="?attr/textColor"-->
-        <!--                android:textSize="16.5sp" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/titleEmail"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@+id/titleName"-->
-        <!--                android:layout_marginStart="10dp"-->
-        <!--                android:layout_marginTop="2dp"-->
-        <!--                android:text="@string/email"-->
-        <!--                android:textColor="?attr/textColor"-->
-        <!--                android:textSize="16.5sp"-->
-        <!--                android:textStyle="bold" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/tvEmail"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@+id/tvFirstName"-->
-        <!--                android:layout_marginStart="60dp"-->
-        <!--                android:layout_marginTop="2dp"-->
-        <!--                android:textColor="?attr/textColor"-->
-        <!--                android:textSize="16.5sp" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/titleMobile"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@+id/titleEmail"-->
-        <!--                android:layout_marginStart="10dp"-->
-        <!--                android:layout_marginTop="2dp"-->
-        <!--                android:text="@string/mobile"-->
-        <!--                android:textColor="?attr/textColor"-->
-        <!--                android:textSize="16.5sp"-->
-        <!--                android:textStyle="bold" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/tvMobile"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@+id/tvEmail"-->
-        <!--                android:layout_marginStart="67dp"-->
-        <!--                android:layout_marginTop="2dp"-->
-        <!--                android:textColor="?attr/textColor"-->
-        <!--                android:textSize="16.5sp" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/titleCounty"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@+id/titleMobile"-->
-        <!--                android:layout_marginStart="10dp"-->
-        <!--                android:layout_marginTop="2dp"-->
-        <!--                android:text="@string/county"-->
-        <!--                android:textColor="?attr/textColor"-->
-        <!--                android:textSize="16.5sp"-->
-        <!--                android:textStyle="bold" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/tvCounty"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@+id/tvMobile"-->
-        <!--                android:layout_marginStart="69dp"-->
-        <!--                android:layout_marginTop="2dp"-->
-        <!--                android:textColor="?attr/textColor"-->
-        <!--                android:textSize="16.5sp" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/titleDistrict"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@+id/titleMobile"-->
-        <!--                android:layout_marginStart="160dp"-->
-        <!--                android:layout_marginTop="2dp"-->
-        <!--                android:text="@string/district"-->
-        <!--                android:textColor="?attr/textColor"-->
-        <!--                android:textSize="16.5sp"-->
-        <!--                android:textStyle="bold" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/tvDistrict"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@+id/tvMobile"-->
-        <!--                android:layout_marginStart="6dp"-->
-        <!--                android:layout_marginTop="2dp"-->
-        <!--                android:layout_toEndOf="@+id/titleDistrict"-->
-        <!--                android:textColor="?attr/textColor"-->
-        <!--                android:textSize="16.5sp" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/titleEstate"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@+id/titleCounty"-->
-        <!--                android:layout_marginStart="10dp"-->
-        <!--                android:layout_marginTop="2dp"-->
-        <!--                android:text="@string/estate"-->
-        <!--                android:textColor="?attr/textColor"-->
-        <!--                android:textSize="16.5sp"-->
-        <!--                android:textStyle="bold" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/tvEstate"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@+id/tvCounty"-->
-        <!--                android:layout_marginStart="65dp"-->
-        <!--                android:layout_marginTop="2dp"-->
-        <!--                android:textColor="?attr/textColor"-->
-        <!--                android:textSize="16.5sp" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/titleLandmark"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@+id/titleDistrict"-->
-        <!--                android:layout_marginStart="160dp"-->
-        <!--                android:layout_marginTop="2dp"-->
-        <!--                android:text="@string/landmark"-->
-        <!--                android:textColor="?attr/textColor"-->
-        <!--                android:textSize="16.5sp"-->
-        <!--                android:textStyle="bold" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/tvLandMark"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@+id/tvCounty"-->
-        <!--                android:layout_marginStart="6dp"-->
-        <!--                android:layout_marginTop="2dp"-->
-        <!--                android:layout_toEndOf="@+id/titleLandmark"-->
-        <!--                android:textColor="?attr/textColor"-->
-        <!--                android:textSize="16.5sp" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/titleDlUpload"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@id/tvEstate"-->
-        <!--                android:layout_centerHorizontal="true"-->
-        <!--                android:layout_centerVertical="true"-->
-        <!--                android:layout_marginTop="15dp"-->
-        <!--                android:text="@string/upload_scanned_photo_of_drivers_license"-->
-        <!--                android:textColor="?attr/textColor"-->
-        <!--                android:textSize="16.5sp" />-->
-
-        <!--            <ImageView-->
-        <!--                android:id="@+id/ivDl"-->
-        <!--                android:layout_width="210dp"-->
-        <!--                android:layout_height="150dp"-->
-        <!--                android:layout_below="@id/titleDlUpload"-->
-        <!--                android:layout_centerInParent="true"-->
-        <!--                android:layout_marginTop="8dp"-->
-        <!--                android:contentDescription="@string/driving_license_photo"-->
-        <!--                app:srcCompat="@drawable/click" />-->
-
-        <!--            <Button-->
-        <!--                android:id="@+id/btDlUpload"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@id/ivDl"-->
-        <!--                android:layout_centerInParent="true"-->
-        <!--                android:text="@string/upload"-->
-        <!--                android:textSize="16.5sp"-->
-        <!--                tools:ignore="DuplicateSpeakableTextCheck" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/titleIdUpload"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@id/btDlUpload"-->
-        <!--                android:layout_centerHorizontal="true"-->
-        <!--                android:layout_centerVertical="true"-->
-        <!--                android:layout_marginTop="10dp"-->
-        <!--                android:text="@string/upload_scanned_photo_of_identification_card_passport"-->
-        <!--                android:textColor="?attr/textColor" />-->
-
-        <!--            <ImageView-->
-        <!--                android:id="@+id/ivId"-->
-        <!--                android:layout_width="210dp"-->
-        <!--                android:layout_height="150dp"-->
-        <!--                android:layout_below="@id/titleIdUpload"-->
-        <!--                android:layout_centerInParent="true"-->
-        <!--                android:layout_marginTop="8dp"-->
-        <!--                android:contentDescription="@string/identification_card_photo"-->
-        <!--                app:srcCompat="@drawable/click" />-->
-
-        <!--            <Button-->
-        <!--                android:id="@+id/btIdUpload"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@id/ivId"-->
-        <!--                android:layout_centerInParent="true"-->
-        <!--                android:text="@string/upload"-->
-        <!--                android:textSize="16.5sp" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/titlePhotoUpload"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@id/btIdUpload"-->
-        <!--                android:layout_centerHorizontal="true"-->
-        <!--                android:layout_centerVertical="true"-->
-        <!--                android:layout_marginTop="10dp"-->
-        <!--                android:text="@string/upload_a_clear_image_showing_your_face"-->
-        <!--                android:textColor="?attr/textColor" />-->
-
-        <!--            <ImageView-->
-        <!--                android:id="@+id/ivPhoto"-->
-        <!--                android:layout_width="210dp"-->
-        <!--                android:layout_height="150dp"-->
-        <!--                android:layout_below="@id/titlePhotoUpload"-->
-        <!--                android:layout_centerInParent="true"-->
-        <!--                android:layout_marginTop="8dp"-->
-        <!--                android:contentDescription="@string/user_photo"-->
-        <!--                app:srcCompat="@drawable/click" />-->
-
-        <!--            <Button-->
-        <!--                android:id="@+id/btUserPhotoUpload"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@id/ivPhoto"-->
-        <!--                android:layout_centerInParent="true"-->
-        <!--                android:text="@string/upload"-->
-        <!--                android:textSize="16.5sp" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/titleEmergencyContact"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@id/btUserPhotoUpload"-->
-        <!--                android:layout_marginStart="20dp"-->
-        <!--                android:layout_marginTop="10dp"-->
-        <!--                android:text="@string/enter_emergency_contacts"-->
-        <!--                android:textColor="?attr/textColor"-->
-        <!--                android:textStyle="bold" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/tvContact1"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@id/titleEmergencyContact"-->
-        <!--                android:layout_marginStart="20dp"-->
-        <!--                android:layout_marginTop="10dp"-->
-        <!--                android:text="@string/first_contact"-->
-        <!--                android:textColor="?attr/textColor"-->
-        <!--                android:textStyle="bold" />-->
-
-        <!--            <EditText-->
-        <!--                android:id="@+id/etFullName"-->
-        <!--                android:layout_width="300dp"-->
-        <!--                android:layout_height="39dp"-->
-        <!--                android:layout_below="@+id/tvContact1"-->
-        <!--                android:layout_marginStart="20dp"-->
-        <!--                android:layout_marginTop="10dp"-->
-        <!--                android:autofillHints=""-->
-        <!--                android:background="@drawable/custom_input"-->
-        <!--                android:ems="10"-->
-        <!--                android:hint="@string/full_name"-->
-        <!--                android:inputType="text"-->
-        <!--                android:paddingStart="12dp"-->
-        <!--                android:paddingEnd="12dp"-->
-        <!--                android:textColor="?attr/textColor" />-->
-
-        <!--            <EditText-->
-        <!--                android:id="@+id/etRelationShip"-->
-        <!--                android:layout_width="200dp"-->
-        <!--                android:layout_height="39dp"-->
-        <!--                android:layout_below="@+id/etFullName"-->
-        <!--                android:layout_marginStart="20dp"-->
-        <!--                android:layout_marginTop="10dp"-->
-        <!--                android:autofillHints=""-->
-        <!--                android:background="@drawable/custom_input"-->
-        <!--                android:ems="10"-->
-        <!--                android:hint="@string/relationship"-->
-        <!--                android:inputType="text"-->
-        <!--                android:paddingStart="12dp"-->
-        <!--                android:paddingEnd="12dp"-->
-        <!--                android:textColor="?attr/textColor" />-->
-
-        <!--            <EditText-->
-        <!--                android:id="@+id/etEmergencyMobile"-->
-        <!--                android:layout_width="200dp"-->
-        <!--                android:layout_height="39dp"-->
-        <!--                android:layout_below="@+id/etRelationShip"-->
-        <!--                android:layout_marginStart="20dp"-->
-        <!--                android:layout_marginTop="10dp"-->
-        <!--                android:autofillHints=""-->
-        <!--                android:background="@drawable/custom_input"-->
-        <!--                android:ems="10"-->
-        <!--                android:hint="@string/mobil"-->
-        <!--                android:inputType="phone"-->
-        <!--                android:paddingStart="12dp"-->
-        <!--                android:paddingEnd="12dp"-->
-        <!--                android:textColor="?attr/textColor" />-->
-
-        <!--            <TextView-->
-        <!--                android:id="@+id/titleContact2"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@id/etEmergencyMobile"-->
-        <!--                android:layout_marginStart="20dp"-->
-        <!--                android:layout_marginTop="10dp"-->
-        <!--                android:text="@string/second_contact"-->
-        <!--                android:textColor="?attr/textColor"-->
-        <!--                android:textStyle="bold" />-->
-
-        <!--            <EditText-->
-        <!--                android:id="@+id/etFullName2"-->
-        <!--                android:layout_width="300dp"-->
-        <!--                android:layout_height="39dp"-->
-        <!--                android:layout_below="@+id/titleContact2"-->
-        <!--                android:layout_marginStart="20dp"-->
-        <!--                android:layout_marginTop="10dp"-->
-        <!--                android:autofillHints=""-->
-        <!--                android:background="@drawable/custom_input"-->
-        <!--                android:ems="10"-->
-        <!--                android:hint="@string/full_name"-->
-        <!--                android:inputType="text"-->
-        <!--                android:paddingStart="12dp"-->
-        <!--                android:paddingEnd="12dp"-->
-        <!--                android:textColor="?attr/textColor" />-->
-
-        <!--            <EditText-->
-        <!--                android:id="@+id/etRelationShip2"-->
-        <!--                android:layout_width="200dp"-->
-        <!--                android:layout_height="39dp"-->
-        <!--                android:layout_below="@+id/etFullName2"-->
-        <!--                android:layout_marginStart="20dp"-->
-        <!--                android:layout_marginTop="10dp"-->
-        <!--                android:autofillHints=""-->
-        <!--                android:background="@drawable/custom_input"-->
-        <!--                android:ems="10"-->
-        <!--                android:hint="@string/relationship"-->
-        <!--                android:inputType="text"-->
-        <!--                android:paddingStart="12dp"-->
-        <!--                android:paddingEnd="12dp"-->
-        <!--                android:textColor="?attr/textColor" />-->
-
-        <!--            <EditText-->
-        <!--                android:id="@+id/etEmergencyMobile2"-->
-        <!--                android:layout_width="200dp"-->
-        <!--                android:layout_height="39dp"-->
-        <!--                android:layout_below="@+id/etRelationShip2"-->
-        <!--                android:layout_marginStart="20dp"-->
-        <!--                android:layout_marginTop="10dp"-->
-        <!--                android:autofillHints=""-->
-        <!--                android:background="@drawable/custom_input"-->
-        <!--                android:ems="10"-->
-        <!--                android:hint="@string/mobil"-->
-        <!--                android:inputType="phone"-->
-        <!--                android:paddingStart="12dp"-->
-        <!--                android:paddingEnd="12dp"-->
-        <!--                android:textColor="?attr/textColor" />-->
-
-        <!--            <Button-->
-        <!--                android:id="@+id/btSubmit"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_below="@id/etEmergencyMobile2"-->
-        <!--                android:layout_alignParentEnd="true"-->
-        <!--                android:layout_marginTop="15dp"-->
-        <!--                android:layout_marginEnd="25dp"-->
-        <!--                android:layout_marginBottom="15dp"-->
-        <!--                android:text="@string/submit" />-->
-
-        <!--        </RelativeLayout>-->
-
     </ScrollView>
 
     <com.google.android.material.navigation.NavigationView
@@ -750,9 +353,14 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="?attr/backgroundColor"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/nav_menu" />
+        app:itemIconTint="?attr/textColor"
+        app:itemTextAppearance="@font/poppins_regular"
+        app:itemTextColor="?attr/textColor"
+        app:menu="@menu/nav_menu"
+        app:subheaderColor="?attr/textColor" />
 </androidx.drawerlayout.widget.DrawerLayout>
 
 

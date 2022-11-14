@@ -5,13 +5,13 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor"
+    android:background="?attr/backgroundColor"
     tools:context=".activities.EditProfileActivity">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/backgroundColor">
+        android:background="?attr/backgroundColor">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -106,7 +106,7 @@
                         android:inputType="text"
                         android:paddingStart="12dp"
                         android:paddingEnd="8dp"
-                        android:textColor="@color/md_black_1000" />
+                        android:textColor="@color/colorPrimary" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -137,7 +137,7 @@
                         android:inputType="text"
                         android:paddingStart="12dp"
                         android:paddingEnd="8dp"
-                        android:textColor="@color/md_black_1000" />
+                        android:textColor="@color/colorPrimary" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
@@ -170,7 +170,7 @@
                     android:inputType="textEmailAddress"
                     android:paddingStart="12dp"
                     android:paddingEnd="8dp"
-                    android:textColor="@color/md_black_1000" />
+                    android:textColor="@color/colorPrimary" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -202,7 +202,7 @@
                     android:inputType="phone"
                     android:paddingStart="12dp"
                     android:paddingEnd="8dp"
-                    android:textColor="@color/md_black_1000" />
+                    android:textColor="@color/colorPrimary" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
@@ -245,7 +245,7 @@
                         android:inputType="text"
                         android:paddingStart="12dp"
                         android:paddingEnd="8dp"
-                        android:textColor="@color/md_black_1000" />
+                        android:textColor="@color/colorPrimary" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -276,7 +276,7 @@
                         android:inputType="text"
                         android:paddingStart="12dp"
                         android:paddingEnd="8dp"
-                        android:textColor="@color/md_black_1000" />
+                        android:textColor="@color/colorPrimary" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
@@ -309,7 +309,7 @@
                     android:inputType="text"
                     android:paddingStart="12dp"
                     android:paddingEnd="8dp"
-                    android:textColor="@color/md_black_1000" />
+                    android:textColor="@color/colorPrimary" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -341,7 +341,7 @@
                     android:inputType="text"
                     android:paddingStart="12dp"
                     android:paddingEnd="8dp"
-                    android:textColor="@color/md_black_1000" />
+                    android:textColor="@color/colorPrimary" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatButton
@@ -355,7 +355,7 @@
                 android:fontFamily="@font/poppins_bold"
                 android:text="Submit"
                 android:textAllCaps="false"
-                android:textColor="@color/md_white_1000"
+                android:textColor="?attr/buttonTextColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edtLandMark" />
@@ -367,7 +367,12 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="?attr/backgroundColor"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/nav_menu" />
+        app:itemIconTint="?attr/textColor"
+        app:itemTextAppearance="@font/poppins_regular"
+        app:itemTextColor="?attr/textColor"
+        app:menu="@menu/nav_menu"
+        app:subheaderColor="?attr/textColor" />
 </androidx.drawerlayout.widget.DrawerLayout>

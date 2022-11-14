@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/backgroundColor"
+    android:background="?attr/backgroundColor"
     android:orientation="vertical">
-    <!--    android:background="?attr/backgroundColor"-->
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
@@ -28,7 +27,6 @@
         android:layout_marginTop="4dp"
         android:fontFamily="@font/poppins_regular"
         android:paddingTop="8dp"
-        android:text="Gideon"
         android:textColor="?attr/textColor"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +42,6 @@
         android:layout_toEndOf="@+id/firstName"
         android:fontFamily="@font/poppins_regular"
         android:paddingTop="8dp"
-        android:text="Okuro"
         android:textColor="?attr/textColor"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/firstName"
@@ -58,7 +55,6 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="4dp"
         android:fontFamily="@font/poppins_regular"
-        android:text="gideonokuro@gmail.com"
         android:textColor="?attr/textColor"
         android:textSize="16.5sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +64,7 @@
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/md_blue_grey_400"
+        android:background="?attr/textColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/themeSwitch" />
 
@@ -81,6 +77,7 @@
         android:layout_marginEnd="15dp"
         android:fontFamily="@font/poppins_regular"
         android:text="Dark Theme"
+        android:textColor="?attr/textColor"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/view"
         app:layout_constraintTop_toBottomOf="@+id/email"

@@ -8,16 +8,17 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.Switch
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
-import com.justin.gari.utils.SettingsManager
 import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityProfileCompleteBinding
 import com.justin.gari.models.userModels.UserDetailsResponse
+import com.justin.gari.utils.SettingsManager
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_profile_complete.*
@@ -37,14 +38,14 @@ class UserProfileActivity : AppCompatActivity() {
         settingsManager = SettingsManager(this)
         if (settingsManager.loadNightModeState()) {
             setTheme(R.style.DarkGari)
-        }
-        else
+        } else
             setTheme(R.style.Gari)
         super.onCreate(savedInstanceState)
         binding = ActivityProfileCompleteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences =
+            getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
         val clientId = sharedPreferences.getString("client_id", "default")
 
@@ -92,8 +93,7 @@ class UserProfileActivity : AppCompatActivity() {
             if (isChecked) {
                 settingsManager.setNightModeState(true)
                 restartApp()
-            }
-            else {
+            } else {
                 settingsManager.setNightModeState(false)
                 restartApp()
             }
@@ -107,16 +107,23 @@ class UserProfileActivity : AppCompatActivity() {
             Log.i(ContentValues.TAG, "onNavigationItemSelected: " + item.itemId)
             when (item.itemId) {
                 R.id.home -> {
-                    startActivity(Intent(this@UserProfileActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    startActivity(
+                        Intent(
+                            this@UserProfileActivity,
+                            MainActivity::class.java
+                        ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    )
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.profile -> {
-                    val intentProfile = Intent(this@UserProfileActivity, UserProfileActivity::class.java)
+                    val intentProfile =
+                        Intent(this@UserProfileActivity, UserProfileActivity::class.java)
                     startActivity(intentProfile.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.myVehicles -> {
-                    val intentMyVehicles = Intent(this@UserProfileActivity, VehiclesActivity::class.java)
+                    val intentMyVehicles =
+                        Intent(this@UserProfileActivity, VehiclesActivity::class.java)
                     startActivity(intentMyVehicles.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
@@ -144,23 +151,30 @@ class UserProfileActivity : AppCompatActivity() {
             false
         })
 
-        binding.back.setOnClickListener{
+        binding.back.setOnClickListener {
             val intent = Intent(this@UserProfileActivity, MainActivity::class.java)
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
         }
 
-        apiClient.getApiService(this).getUserDetails(clientId).enqueue(object : Callback<UserDetailsResponse> {
-                override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
+        apiClient.getApiService(this).getUserDetails(clientId)
+            .enqueue(object : Callback<UserDetailsResponse> {
+                override fun onResponse(
+                    call: Call<UserDetailsResponse>,
+                    response: Response<UserDetailsResponse>
+                ) {
                     if (response.isSuccessful) {
                         Log.e("Gideon", "onSuccess: ${response.body()}")
-                        binding.tvName.text = response.body()!!.single_client.first_name.toString() + " " + response.body()!!.single_client.last_name.toString()
+                        binding.tvName.text =
+                            response.body()!!.single_client.first_name.toString() + " " + response.body()!!.single_client.last_name.toString()
 //                        binding.tvLastName.text = response.body()!!.single_client.last_name.toString()
                         binding.tvEmail.text = response.body()!!.single_client.email.toString()
                         binding.tvMobile.text = response.body()!!.single_client.mobile.toString()
                         binding.tvCounty.text = response.body()!!.single_client.county.toString()
-                        binding.tvDistrict.text = response.body()!!.single_client.district.toString()
+                        binding.tvDistrict.text =
+                            response.body()!!.single_client.district.toString()
                         binding.tvEstate.text = response.body()!!.single_client.estate.toString()
-                        binding.tvLandMark.text = response.body()!!.single_client.landmark.toString()
+                        binding.tvLandMark.text =
+                            response.body()!!.single_client.landmark.toString()
                         Picasso.get()
                             .load(profileHeader)
                             .fit().centerCrop()
@@ -206,17 +220,17 @@ class UserProfileActivity : AppCompatActivity() {
                 }
             })
 
-        binding.ltEditProfile.setOnClickListener{
+        binding.ltEditProfile.setOnClickListener {
             val intent = Intent(this@UserProfileActivity, EditProfileActivity::class.java)
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
         }
 
-        binding.ltUserSettings.setOnClickListener{
+        binding.ltUserSettings.setOnClickListener {
             val intent = Intent(this@UserProfileActivity, UserSettingsActivity::class.java)
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
         }
 
-        binding.ltEmergency.setOnClickListener{
+        binding.ltEmergency.setOnClickListener {
             val intent = Intent(this@UserProfileActivity, EmergencyContactsActivity::class.java)
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
         }

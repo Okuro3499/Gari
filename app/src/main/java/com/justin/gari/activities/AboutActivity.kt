@@ -17,7 +17,6 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.nav_header.view.*
 
 class AboutActivity : AppCompatActivity() {
-//    lateinit var toggle: ActionBarDrawerToggle
     private val sharedPrefFile = "sharedPrefData"
     private lateinit var apiClient: ApiClient
     private lateinit var binding: ActivityAboutBinding
@@ -32,7 +31,7 @@ class AboutActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAboutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         if (supportActionBar != null) {
             supportActionBar!!.hide()
         }
@@ -41,10 +40,6 @@ class AboutActivity : AppCompatActivity() {
 
         val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
-
-//        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
-//        binding.drawerLayout.addDrawerListener(toggle)
-//        toggle.syncState()
 
 //        val client_id = sharedPreferences.getString("client_id", "default")
 //        val editor: SharedPreferences.Editor = sharedPreferences.edit()
@@ -158,11 +153,4 @@ class AboutActivity : AppCompatActivity() {
         startActivity(i)
         finish()
     }
-
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        if (toggle.onOptionsItemSelected(item)) {
-//            true
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
 }

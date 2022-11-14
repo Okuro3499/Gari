@@ -11,7 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/backgroundColor"
+        android:background="?attr/backgroundColor"
         android:focusable="true"
         android:focusableInTouchMode="true">
 
@@ -19,7 +19,7 @@
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/backgroundColor"
+            android:background="?attr/backgroundColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -34,6 +34,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:fontFamily="@font/poppins_bold"
+                    android:textColor="?attr/textColor"
                     android:textSize="17sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -44,6 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_bold"
+                    android:textColor="?attr/textColor"
                     android:textSize="17sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/greeting"
@@ -78,6 +80,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/poppins_bold"
                 android:text="Oops Sorry!"
+                android:textColor="?attr/textColor"
                 android:textSize="30sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -99,6 +102,7 @@
                 android:fontFamily="@font/poppins_bold"
                 android:gravity="center"
                 android:text="It looks like something went wrong"
+                android:textColor="?attr/textColor"
                 android:textSize="25sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -110,6 +114,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
                 android:gravity="center"
+                android:textColor="?attr/textColor"
                 android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -127,7 +132,7 @@
                 android:fontFamily="@font/poppins_bold"
                 android:text="Refresh"
                 android:textAllCaps="false"
-                android:textColor="@color/md_white_1000"
+                android:textColor="?attr/buttonTextColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -152,6 +157,8 @@
             android:paddingStart="10dp"
             android:paddingEnd="8dp"
             android:textColor="@color/md_black_1000"
+            app:boxBackgroundColor="@color/md_white_1000"
+            app:boxStrokeColor="@color/md_white_1000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
@@ -231,19 +238,27 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/backgroundColor"
+        android:background="?attr/backgroundColor"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/nav_menu" />
+        app:itemIconTint="?attr/textColor"
+        app:itemTextAppearance="@font/poppins_regular"
+        app:itemTextColor="?attr/textColor"
+        app:menu="@menu/nav_menu"
+        app:subheaderColor="?attr/textColor" />
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/outNavView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:background="@color/backgroundColor"
+        android:background="?attr/backgroundColor"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/logged_out_header"
-        app:menu="@menu/log_in_menu" />
+        app:itemIconTint="?attr/textColor"
+        app:itemTextAppearance="@font/poppins_regular"
+        app:itemTextColor="?attr/textColor"
+        app:menu="@menu/log_in_menu"
+        app:subheaderColor="?attr/textColor" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
