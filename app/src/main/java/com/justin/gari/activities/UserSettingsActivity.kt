@@ -50,7 +50,8 @@ class UserSettingsActivity : AppCompatActivity() {
         setContentView(binding.root)
         val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        val clientId = sharedPreferences.getString("client_id", "")
+        val userId = sharedPreferences.getString("user_id", "")
+        val roleId = sharedPreferences.getString("role_id", "")
 
         if (supportActionBar != null) {
             supportActionBar!!.hide()
@@ -148,13 +149,13 @@ class UserSettingsActivity : AppCompatActivity() {
         }
 
         apiClient = ApiClient
-        apiClient.getApiService(this).getUserDetails(clientId).enqueue(object : Callback<UserDetailsResponse> {
+        apiClient.getApiService(this).getUserDetails(userId, roleId).enqueue(object : Callback<UserDetailsResponse> {
                 override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
                     if (response.isSuccessful) {
                         Log.e("Gideon", "onSuccess: ${response.body()}")
                         //driver license
                         Picasso.get()
-                            .load(response.body()!!.single_client.driver_licence_url)
+                            .load(response.body()!!.single_user.driver_licence_url)
                             .fit().centerCrop()
                             .placeholder(R.drawable.click)
                             .error(R.drawable.click)
@@ -162,7 +163,7 @@ class UserSettingsActivity : AppCompatActivity() {
 
                         //national id
                         Picasso.get()
-                            .load(response.body()!!.single_client.national_id_url)
+                            .load(response.body()!!.single_user.national_id_url)
                             .fit().centerCrop()
                             .placeholder(R.drawable.click)
                             .error(R.drawable.click)
@@ -170,7 +171,7 @@ class UserSettingsActivity : AppCompatActivity() {
 
                         //userphoto
                         Picasso.get()
-                            .load(response.body()!!.single_client.user_photo_url)
+                            .load(response.body()!!.single_user.user_photo_url)
                             .fit().centerCrop()
                             .placeholder(R.drawable.click)
                             .error(R.drawable.click)

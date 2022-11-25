@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.justin.gari.R
 import com.justin.gari.adapters.SliderPageAdapter
 import com.justin.gari.api.ApiClient
@@ -31,6 +32,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -42,6 +44,7 @@ class DetailActivity : AppCompatActivity() {
     private val myCalendarTo: Calendar = Calendar.getInstance()
     var selectedDrive: String? = null
     private lateinit var settingsManager: SettingsManager
+    var total : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         settingsManager = SettingsManager(this)
@@ -157,29 +160,22 @@ class DetailActivity : AppCompatActivity() {
 
         //save car for future bookings
         binding.ibSave.setOnClickListener {
+            val today: LocalDate = LocalDate.now()
             val car_id = carId
-            val client_id = sharedPreferences.getString("client_id", "default")
-            val saveInfo = SaveCar(car_id, client_id)
+            val user_id = sharedPreferences.getString("user_id", "")
+            val saveInfo = SaveCar(car_id, user_id, today.toString())
 
-            apiClient.getApiService(this).saveCar(saveInfo)
-                .enqueue(object : Callback<SaveCarResponse> {
-                    override fun onResponse(
-                        call: Call<SaveCarResponse>,
-                        response: Response<SaveCarResponse>
-                    ) {
+            apiClient.getApiService(this).saveCar(saveInfo).enqueue(object : Callback<SaveCarResponse> {
+                    override fun onResponse(call: Call<SaveCarResponse>,
+                        response: Response<SaveCarResponse>) {
                         if (response.isSuccessful) {
-                            Toast.makeText(
-                                this@DetailActivity,
-                                "Saved Successfully",
-                                Toast.LENGTH_LONG
-                            ).show()
+                            Snackbar.make(it, "Saved Successfully", Snackbar.LENGTH_SHORT).show()
                             Log.e("Gideon", "onSuccess: ${response.body()}")
                         }
                     }
 
                     override fun onFailure(call: Call<SaveCarResponse>, t: Throwable) {
-                        Toast.makeText(this@DetailActivity, "${t.message}", Toast.LENGTH_LONG)
-                            .show()
+                        Snackbar.make(it, "Failed to save kindly retry", Snackbar.LENGTH_SHORT).show()
                         Log.e("Gideon", "onFailure: ${t.message}")
                     }
                 })
@@ -193,8 +189,7 @@ class DetailActivity : AppCompatActivity() {
             } else if (binding.ETDTo.text.toString().trim() == "") {
                 binding.ETDTo.error = "Kindly choose to date"
             } else if (binding.radioDriveGroup.checkedRadioButtonId == -1) {
-                Toast.makeText(this@DetailActivity, "Kindly choose drive mode", Toast.LENGTH_LONG)
-                    .show();
+                Toast.makeText(this@DetailActivity, "Kindly choose drive mode", Toast.LENGTH_LONG).show();
             } else if (TextUtils.isEmpty(binding.etDestination.text.toString().trim())) {
                 binding.etDestination.error = "Kindly enter a destination!"
             } else {
@@ -204,55 +199,27 @@ class DetailActivity : AppCompatActivity() {
                 } else if (binding.radioChauffeured.isChecked) {
                     selectedDrive = binding.radioChauffeured.text.toString()
                 }
-//
-//                val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
-//                binding.ETDFrom.text = dateFormat.format(myCalendarFrom.time)
-//                binding.ETDTo.text = dateFormat.format(myCalendarTo.time)
-//
-//                val car_id = carId
-//                val client_id = sharedPreferences.getString("client_id", "")
-//                val book_date_from = binding.ETDFrom!!.text.toString().trim()
-//                val book_date_to = binding.ETDTo!!.text.toString().trim()
-//                val destination = binding.etDestination.text.toString().trim()
-//                val drive = selectedDrive
-//                val total_days = tvTotalDays.text.toString().trim()
-//                val total_amount = tvTotalAmount.text.toString().trim()
-//                val bookingInfo = BookCar(
-//                    car_id,
-//                    client_id,
-//                    book_date_from,
-//                    book_date_to,
-//                    destination,
-//                    drive,
-//                    total_days,
-//                    total_amount
-//                )
-//
-//                apiClient.getApiService(this).bookingCar(bookingInfo)
-//                    .enqueue(object : Callback<BookCarResponse> {
-//                        override fun onResponse(
-//                            call: Call<BookCarResponse>,
-//                            response: Response<BookCarResponse>
-//                        ) {
-//                            if (response.isSuccessful) {
-//                                Toast.makeText(
-//                                    this@DetailActivity,
-//                                    "Booked Successfully",
-//                                    Toast.LENGTH_LONG
-//                                ).show()
-//                                Log.e("Gideon", "onSuccess: ${response.body()!!.book_car}")
-//                            }
-//                        }
-//
-//                        override fun onFailure(call: Call<BookCarResponse>, t: Throwable) {
-//                            Toast.makeText(this@DetailActivity, "${t.message}", Toast.LENGTH_LONG)
-//                                .show()
-//                            Log.e("Gideon", "onFailure: ${t.message}")
-//                        }
-//                    })
+
 
                 if (firstNameHeader != "") {
                     val intent = Intent(this, PaymentActivity::class.java)
+                    val car_id = carId
+                    val book_date_from = binding.ETDFrom.text.toString().trim()
+                    val book_date_to = binding.ETDTo.text.toString().trim()
+                    val destination = binding.etDestination.text.toString().trim()
+                    val drive = selectedDrive
+                    val total_days = tvTotalDays.text.toString().trim()
+                    val total_amount = total
+                    intent.putExtra("car_name", binding.tvCarName.text.toString())
+                    intent.putExtra("drive", drive.toString())
+                    intent.putExtra("car_id", car_id.toString())
+                    intent.putExtra("book_date_from", book_date_from)
+                    intent.putExtra("book_date_to", book_date_to)
+                    intent.putExtra("destination", destination)
+                    intent.putExtra("total_days",total_days)
+                    intent.putExtra("total_amount",total_amount)
+                    intent.putExtra("amntPerDay", binding.tvPrice.text.toString())
+
                     startActivity(intent)
                 } else {
                     val intent = Intent(this, LoginActivity::class.java)
@@ -314,7 +281,8 @@ class DetailActivity : AppCompatActivity() {
                 Log.i(ContentValues.TAG, "onNavigationItemSelected: nothing clicked")
                 false
             })
-        } else {
+        }
+        else {
             binding.drawerLayout.setDrawerLockMode(
                 DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
                 GravityCompat.START
@@ -365,12 +333,8 @@ class DetailActivity : AppCompatActivity() {
 
         apiClient = ApiClient
         val carId = intent.getStringExtra("car_id")
-        apiClient.getApiService(this).getCarDetails(carId)
-            .enqueue(object : Callback<SingleCarModel> {
-                override fun onResponse(
-                    call: Call<SingleCarModel>,
-                    response: Response<SingleCarModel>
-                ) {
+        apiClient.getApiService(this).getCarDetails(carId).enqueue(object : Callback<SingleCarModel> {
+                override fun onResponse(call: Call<SingleCarModel>, response: Response<SingleCarModel>) {
                     if (response.isSuccessful) {
                         progressDialog.dismiss()
                         binding.cons.visibility = View.VISIBLE;
@@ -390,14 +354,11 @@ class DetailActivity : AppCompatActivity() {
 
                         binding.tvCarName.text = response.body()!!.single_car.car_name.toString()
                         binding.tvStatus.text = response.body()!!.single_car.status.toString()
-                        binding.tvTransmission.text =
-                            response.body()!!.single_car.transmission.toString()
+                        binding.tvTransmission.text = response.body()!!.single_car.transmission.toString()
                         binding.tvEngine.text = response.body()!!.single_car.engine.toString()
                         binding.tvColor.text = response.body()!!.single_car.color.toString()
-                        binding.tvRegistration.text =
-                            response.body()!!.single_car.registration.toString()
-                        binding.tvPassengers.text =
-                            response.body()!!.single_car.passengers.toString()
+                        binding.tvRegistration.text = response.body()!!.single_car.registration.toString()
+                        binding.tvPassengers.text = response.body()!!.single_car.passengers.toString()
                         binding.tvCompany.text = response.body()!!.single_car.company.toString()
                         binding.tvPrice.text = response.body()!!.single_car.price.toString()
                         binding.tvDoors.text = response.body()!!.single_car.doors.toString()
@@ -422,19 +383,11 @@ class DetailActivity : AppCompatActivity() {
                     Log.e("Gideon", "onFailure: ${t.message}")
                 }
             })
-
     }
 
     private fun restartApp() {
         recreate()
     }
-
-//    private fun getAllData() {
-//        if (binding.swipeRefresh.isRefreshing) {
-//            binding.swipeRefresh.isRefreshing = false
-//            getCarDetails()
-//        }
-//    }
 
     //get date from
     private fun updateLabelFrom() {
@@ -474,9 +427,9 @@ class DetailActivity : AppCompatActivity() {
         val finalPrice = price.toInt()
         val finalNoOfDays = noOfDays.toInt()
 
-        val total = StringBuilder().apply {
+        total = StringBuilder().apply {
             append(finalPrice * finalNoOfDays)
-        }
+        }.toString()
         binding.tvTotalAmount.text = "Ksh. $total"
     }
 

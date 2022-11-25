@@ -38,39 +38,39 @@ class SavedFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sharedPreferences: SharedPreferences? = activity?.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-        val clientId = sharedPreferences?.getString("client_id", "default")
+        val userId = sharedPreferences?.getString("user_id", "")
 
         apiClient = ApiClient
         context?.let {
-            apiClient.getApiService(it).getSavedCars(clientId).enqueue(object : Callback<SavedCarResponse> {
-                    override fun onResponse(call: Call<SavedCarResponse>, response: Response<SavedCarResponse>) {
-                        Log.e("Gideon", "onSuccess: ${response.body()}")
-                        val savedAdapter = SavedCarAdapter(response.body()!!.saved_cars, context!!)
-                        binding?.shimmerLayout?.stopShimmer();
-                        binding?.shimmerLayout?.visibility = View.GONE;
-                        binding?.recyclerview?.adapter = savedAdapter
-//                        if (response.isSuccessful) { recyclerview.apply {
-//                                layoutManager = LinearLayoutManager(context)
-//                                adapter = SavedCarAdapter(response.body()!!.saved_cars, context)
-//                            }
-//                        }
-                    }
+            apiClient.getApiService(it).getSavedCars(userId).enqueue(object : Callback<SavedCarResponse> {
+                override fun onResponse(call: Call<SavedCarResponse>, response: Response<SavedCarResponse>) {
+                    Log.e("Gideon", "onSuccess: ${response.body()}")
+                    val savedAdapter = SavedCarAdapter(response.body()!!.saved_cars, context!!)
+                    binding?.shimmerLayout?.stopShimmer()
+                    binding?.shimmerLayout?.visibility = View.GONE;
+                    binding?.recyclerview?.adapter = savedAdapter
+//                  if (response.isSuccessful) { recyclerview.apply {
+//                      layoutManager = LinearLayoutManager(context)
+//                      adapter = SavedCarAdapter(response.body()!!.saved_cars, context)
+//                      }
+//                    }
+                }
 
-                    override fun onFailure(call: Call<SavedCarResponse>, t: Throwable) {
-                        binding?.shimmerLayout?.stopShimmer()
-                        binding?.shimmerLayout?.visibility = View.GONE
-                        binding?.errorPage?.visibility = View.VISIBLE
-                        binding?.message?.text  = t.message
-                        binding?.swipeRefresh?.visibility = View.GONE
-                        Log.e("Gideon", "onFailure: ${t.message}")
-                    }
-                })
+                override fun onFailure(call: Call<SavedCarResponse>, t: Throwable) {
+                    binding?.shimmerLayout?.stopShimmer()
+                    binding?.shimmerLayout?.visibility = View.GONE
+                    binding?.errorPage?.visibility = View.VISIBLE
+                    binding?.message?.text  = t.message
+                    binding?.swipeRefresh?.visibility = View.GONE
+                    Log.e("Gideon", "onFailure: ${t.message}")
+                }
+            })
         }
 
 //        swipeRefresh.setOnRefreshListener {
 //            apiClient = ApiClient
 //            context?.let {
-//                apiClient.getApiService(it).getSavedCars(clientId)
+//                apiClient.getApiService(it).getSavedCars(userId)
 //                    .enqueue(object : Callback<SavedCarResponse> {
 //                        override fun onResponse(
 //                            call: Call<SavedCarResponse>,

@@ -41,7 +41,8 @@ class EmergencyContactsActivity : AppCompatActivity() {
 
         val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        val clientId = sharedPreferences.getString("client_id", "")
+        val userId = sharedPreferences.getString("user_id", "")
+        val roleId = sharedPreferences.getString("role_id", "")
 
         if (supportActionBar != null) {
             supportActionBar!!.hide()
@@ -140,17 +141,47 @@ class EmergencyContactsActivity : AppCompatActivity() {
         }
 
         apiClient = ApiClient
-        apiClient.getApiService(this).getUserDetails(clientId).enqueue(object : Callback<UserDetailsResponse> {
+        apiClient.getApiService(this).getUserDetails(userId, roleId).enqueue(object : Callback<UserDetailsResponse> {
             override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
                 if (response.isSuccessful) {
                     Log.e("Gideon", "onSuccess: ${response.body()}")
 
-                    binding.etFullName1.setText(response.body()!!.single_client.contact1_name.toString())
-                    binding.etRelationShip1.setText(response.body()!!.single_client.contact1_relationship.toString())
-                    binding.etEmergencyMobile1.setText(response.body()!!.single_client.contact1_mobile.toString())
-                    binding.etFullName2.setText(response.body()!!.single_client.contact2_name.toString())
-                    binding.etRelationShip2.setText(response.body()!!.single_client.contact2_relationship.toString())
-                    binding.etEmergencyMobile2.setText(response.body()!!.single_client.contact1_mobile.toString())
+                    binding.etFullName1.setText(
+                        if(response.body()!!.single_user.contact1_name.toString() == "null") {
+                            ""
+                        } else{
+                            response.body()!!.single_user.contact1_name.toString()
+                        })
+                    binding.etRelationShip1.setText(
+                        if(response.body()!!.single_user.contact1_relationship.toString() == "null"){
+                            ""
+                        } else{
+                            response.body()!!.single_user.contact1_relationship.toString()
+                        })
+                    binding.etEmergencyMobile1.setText(
+                        if(response.body()!!.single_user.contact1_mobile.toString() == "null"){
+                            ""
+                        } else{
+                            response.body()!!.single_user.contact1_mobile.toString()
+                        })
+                    binding.etFullName2.setText(
+                        if(response.body()!!.single_user.contact2_name.toString() == "null"){
+                            ""
+                        } else{
+                            response.body()!!.single_user.contact2_name.toString()
+                        })
+                    binding.etRelationShip2.setText(
+                        if(response.body()!!.single_user.contact2_relationship.toString() == "null"){
+                            ""
+                        } else{
+                            response.body()!!.single_user.contact2_relationship.toString()
+                        })
+                    binding.etEmergencyMobile2.setText(
+                        if(response.body()!!.single_user.contact1_mobile.toString() == "null"){
+                            ""
+                        } else{
+                            response.body()!!.single_user.contact1_mobile.toString()
+                        })
                 }
             }
 
@@ -163,8 +194,5 @@ class EmergencyContactsActivity : AppCompatActivity() {
 
     private fun restartApp() {
         recreate()
-//        val i = Intent(applicationContext, UserProfileActivity::class.java)
-//        startActivity(i)
-//        finish()
     }
 }

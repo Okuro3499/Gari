@@ -43,7 +43,8 @@ class EditProfileActivity : AppCompatActivity() {
 
         val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        val clientId = sharedPreferences.getString("client_id", "default")
+        val userId = sharedPreferences.getString("user_id", "")
+        val roleId = sharedPreferences.getString("role_id", "")
 
         apiClient = ApiClient
 
@@ -141,19 +142,19 @@ class EditProfileActivity : AppCompatActivity() {
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
         }
 
-        apiClient.getApiService(this).getUserDetails(clientId).enqueue(object :
+        apiClient.getApiService(this).getUserDetails(userId, roleId).enqueue(object :
             Callback<UserDetailsResponse> {
             override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
                 if (response.isSuccessful) {
                     Log.e("Gideon", "onSuccess: ${response.body()}")
-                    binding.etFirstName.setText(response.body()!!.single_client.first_name.toString())
-                    binding.etLastName.setText(response.body()!!.single_client.last_name.toString())
-                    binding.etEmailAddress.setText(response.body()!!.single_client.email.toString())
-                    binding.etMobile.setText(response.body()!!.single_client.mobile.toString())
-                    binding.etCounty.setText(response.body()!!.single_client.county.toString())
-                    binding.etDistrict.setText(response.body()!!.single_client.district.toString())
-                    binding.etEstate.setText(response.body()!!.single_client.estate.toString())
-                    binding.etLandMark.setText(response.body()!!.single_client.landmark.toString())
+                    binding.etFirstName.setText(response.body()!!.single_user.first_name.toString())
+                    binding.etLastName.setText(response.body()!!.single_user.last_name.toString())
+                    binding.etEmailAddress.setText(response.body()!!.single_user.email.toString())
+                    binding.etMobile.setText(response.body()!!.single_user.mobile.toString())
+                    binding.etCounty.setText(response.body()!!.single_user.county.toString())
+                    binding.etDistrict.setText(response.body()!!.single_user.district.toString())
+                    binding.etEstate.setText(response.body()!!.single_user.estate.toString())
+                    binding.etLandMark.setText(response.body()!!.single_user.landmark.toString())
                 }
             }
 

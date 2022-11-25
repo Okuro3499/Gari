@@ -29,40 +29,40 @@ class BookingsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sharedPreferences: SharedPreferences? = activity?.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-        val clientId = sharedPreferences?.getString("client_id", "")
+        val userId = sharedPreferences?.getString("user_id", "")
         binding?.shimmerLayout?.startShimmer();
 
         apiClient = ApiClient
         context?.let {
-            apiClient.getApiService(it).getBookedCars(clientId).enqueue(object : Callback<BookingsResponse> {
-                    override fun onResponse(call: Call<BookingsResponse>, response: Response<BookingsResponse>) {
-                        if (response.isSuccessful) {
-                            Log.e("Gideon", "onSuccess: ${response.body()}")
-                            val bookingAdapter = BookingCarAdapter(response.body()!!.myBooked_cars, context!!)
-                            binding?.shimmerLayout?.stopShimmer();
-                            binding?.shimmerLayout?.visibility = View.GONE;
-                            binding?.recyclerview?.adapter = bookingAdapter
-//                            recyclerview.apply {
-//                                layoutManager = LinearLayoutManager(context)
-//                                adapter = BookingCarAdapter(response.body()!!.myBooked_cars, context)
-//                            }
-                        }
-                    }
-
-                    override fun onFailure(call: Call<BookingsResponse>, t: Throwable) {
+            apiClient.getApiService(it).getBookedCars(userId).enqueue(object : Callback<BookingsResponse> {
+                override fun onResponse(call: Call<BookingsResponse>, response: Response<BookingsResponse>) {
+                    if (response.isSuccessful) {
+                        Log.e("Gideon", "onSuccess: ${response.body()}")
+                        val bookingAdapter = BookingCarAdapter(response.body()!!.myBooked_cars, context!!)
                         binding?.shimmerLayout?.stopShimmer()
                         binding?.shimmerLayout?.visibility = View.GONE
-                        binding?.errorPage?.visibility = View.VISIBLE
-                        binding?.message?.text  = t.message
-                        binding?.swipeRefresh?.visibility = View.GONE
-                        Log.e("Gideon", "onFailure: ${t.message}")
+                        binding?.recyclerview?.adapter = bookingAdapter
+//                      recyclerview.apply {
+//                        layoutManager = LinearLayoutManager(context)
+//                        adapter = BookingCarAdapter(response.body()!!.myBooked_cars, context)
+//                      }
                     }
-                })
+                }
+
+                override fun onFailure(call: Call<BookingsResponse>, t: Throwable) {
+                    binding?.shimmerLayout?.stopShimmer()
+                    binding?.shimmerLayout?.visibility = View.GONE
+                    binding?.errorPage?.visibility = View.VISIBLE
+                    binding?.message?.text  = t.message
+                    binding?.swipeRefresh?.visibility = View.GONE
+                    Log.e("Gideon", "onFailure: ${t.message}")
+                }
+            })
         }
 //        swipeRefresh.setOnRefreshListener {
 //            apiClient = ApiClient
 //            context?.let {
-//                apiClient.getApiService(it).getBookedCars(clientId).enqueue(object : Callback<BookingsResponse> {
+//                apiClient.getApiService(it).getBookedCars(userId).enqueue(object : Callback<BookingsResponse> {
 //                        override fun onResponse(call: Call<BookingsResponse>, response: Response<BookingsResponse>) {
 //                            if (response.isSuccessful) {
 //                                Log.e("Gideon", "onSuccess: ${response.body()}")

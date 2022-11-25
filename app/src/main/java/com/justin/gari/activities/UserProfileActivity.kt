@@ -44,14 +44,11 @@ class UserProfileActivity : AppCompatActivity() {
         binding = ActivityProfileCompleteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val sharedPreferences: SharedPreferences =
-            getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        val clientId = sharedPreferences.getString("client_id", "default")
+        val userId = sharedPreferences.getString("user_id", "")
+        val roleId = sharedPreferences.getString("role_id", "")
 
-//        toggle = ActionBarDrawerToggle(this, binding.drawerLayout, R.string.open, R.string.close)
-//        binding.drawerLayout.addDrawerListener(toggle)
-//        toggle.syncState()
         apiClient = ApiClient
 
         if (supportActionBar != null) {
@@ -107,23 +104,16 @@ class UserProfileActivity : AppCompatActivity() {
             Log.i(ContentValues.TAG, "onNavigationItemSelected: " + item.itemId)
             when (item.itemId) {
                 R.id.home -> {
-                    startActivity(
-                        Intent(
-                            this@UserProfileActivity,
-                            MainActivity::class.java
-                        ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                    )
+                    startActivity(Intent(this@UserProfileActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.profile -> {
-                    val intentProfile =
-                        Intent(this@UserProfileActivity, UserProfileActivity::class.java)
+                    val intentProfile = Intent(this@UserProfileActivity, UserProfileActivity::class.java)
                     startActivity(intentProfile.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.myVehicles -> {
-                    val intentMyVehicles =
-                        Intent(this@UserProfileActivity, VehiclesActivity::class.java)
+                    val intentMyVehicles = Intent(this@UserProfileActivity, VehiclesActivity::class.java)
                     startActivity(intentMyVehicles.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     return@OnNavigationItemSelectedListener true
                 }
@@ -156,25 +146,18 @@ class UserProfileActivity : AppCompatActivity() {
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
         }
 
-        apiClient.getApiService(this).getUserDetails(clientId)
-            .enqueue(object : Callback<UserDetailsResponse> {
-                override fun onResponse(
-                    call: Call<UserDetailsResponse>,
-                    response: Response<UserDetailsResponse>
-                ) {
+        apiClient.getApiService(this).getUserDetails(userId, roleId).enqueue(object : Callback<UserDetailsResponse> {
+                override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
                     if (response.isSuccessful) {
                         Log.e("Gideon", "onSuccess: ${response.body()}")
-                        binding.tvName.text =
-                            response.body()!!.single_client.first_name.toString() + " " + response.body()!!.single_client.last_name.toString()
-//                        binding.tvLastName.text = response.body()!!.single_client.last_name.toString()
-                        binding.tvEmail.text = response.body()!!.single_client.email.toString()
-                        binding.tvMobile.text = response.body()!!.single_client.mobile.toString()
-                        binding.tvCounty.text = response.body()!!.single_client.county.toString()
-                        binding.tvDistrict.text =
-                            response.body()!!.single_client.district.toString()
-                        binding.tvEstate.text = response.body()!!.single_client.estate.toString()
-                        binding.tvLandMark.text =
-                            response.body()!!.single_client.landmark.toString()
+                        binding.tvName.text = response.body()!!.single_user.first_name.toString() + " " + response.body()!!.single_user.last_name.toString()
+//                        binding.tvLastName.text = response.body()!!.single_user.last_name.toString()
+                        binding.tvEmail.text = response.body()!!.single_user.email.toString()
+                        binding.tvMobile.text = response.body()!!.single_user.mobile.toString()
+                        binding.tvCounty.text = response.body()!!.single_user.county.toString()
+                        binding.tvDistrict.text = response.body()!!.single_user.district.toString()
+                        binding.tvEstate.text = response.body()!!.single_user.estate.toString()
+                        binding.tvLandMark.text = response.body()!!.single_user.landmark.toString()
                         Picasso.get()
                             .load(profileHeader)
                             .fit().centerCrop()
@@ -182,16 +165,16 @@ class UserProfileActivity : AppCompatActivity() {
                             .error(R.drawable.user)
                             .into(binding.profilePic)
 
-//                        binding.etFullName.setText(response.body()!!.single_client.contact1_name.toString())
-//                        binding.etRelationShip.setText(response.body()!!.single_client.contact1_relationship.toString())
-//                        binding.etEmergencyMobile.setText(response.body()!!.single_client.contact1_mobile.toString())
-//                        binding.etFullName2.setText(response.body()!!.single_client.contact2_name.toString())
-//                        binding.etRelationShip2.setText( response.body()!!.single_client.contact2_relationship.toString())
-//                        binding.etEmergencyMobile2.setText(response.body()!!.single_client.contact1_mobile.toString())
+//                        binding.etFullName.setText(response.body()!!.single_user.contact1_name.toString())
+//                        binding.etRelationShip.setText(response.body()!!.single_user.contact1_relationship.toString())
+//                        binding.etEmergencyMobile.setText(response.body()!!.single_user.contact1_mobile.toString())
+//                        binding.etFullName2.setText(response.body()!!.single_user.contact2_name.toString())
+//                        binding.etRelationShip2.setText( response.body()!!.single_user.contact2_relationship.toString())
+//                        binding.etEmergencyMobile2.setText(response.body()!!.single_user.contact1_mobile.toString())
 
 //                        //driver license
 //                        Picasso.get()
-//                            .load(response.body()!!.single_client.driver_licence_url)
+//                            .load(response.body()!!.single_user.driver_licence_url)
 //                            .fit().centerCrop()
 //                            .placeholder(R.drawable.click)
 //                            .error(R.drawable.click)
@@ -199,7 +182,7 @@ class UserProfileActivity : AppCompatActivity() {
 //
 //                        //national id
 //                        Picasso.get()
-//                            .load(response.body()!!.single_client.national_id_url)
+//                            .load(response.body()!!.single_user.national_id_url)
 //                            .fit().centerCrop()
 //                            .placeholder(R.drawable.click)
 //                            .error(R.drawable.click)
@@ -207,7 +190,7 @@ class UserProfileActivity : AppCompatActivity() {
 //
 //                        //userphoto
 //                        Picasso.get()
-//                            .load(response.body()!!.single_client.user_photo_url)
+//                            .load(response.body()!!.single_user.user_photo_url)
 //                            .fit().centerCrop()
 //                            .placeholder(R.drawable.click)
 //                            .error(R.drawable.click)
@@ -237,7 +220,7 @@ class UserProfileActivity : AppCompatActivity() {
 
 //        binding.btSubmit.setOnClickListener {
 //            val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-//            val client_id = sharedPreferences.getString("client_id", "default")
+//            val user_id = sharedPreferences.getString("user_id", "default")
 //
 //            val progressDialog5 = ProgressDialog(this@UserProfileActivity)
 //            progressDialog5.setCancelable(false) // set cancelable to false
@@ -254,7 +237,7 @@ class UserProfileActivity : AppCompatActivity() {
 //
 //            Log.e("Gideon", "onSuccess:$contactInfo")
 //
-//            apiClient.getApiService(this).contactUpdate(client_id, contactInfo).enqueue(object : Callback<UserDetailsResponse> {
+//            apiClient.getApiService(this).contactUpdate(user_id, contactInfo).enqueue(object : Callback<UserDetailsResponse> {
 //                    override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
 //                        if (response.isSuccessful) {
 //                            progressDialog5.dismiss()

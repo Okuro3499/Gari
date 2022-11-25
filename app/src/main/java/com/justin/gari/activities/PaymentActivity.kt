@@ -1,5 +1,6 @@
 package com.justin.gari.activities
 
+import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -7,23 +8,40 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.justin.gari.R
-import com.justin.gari.utils.SettingsManager
 import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityPaymentBinding
+import com.justin.gari.models.bookingCarModels.BookCar
+import com.justin.gari.models.bookingCarModels.BookCarResponse
+import com.justin.gari.utils.SettingsManager
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.nav_header.view.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.time.LocalDate
 
 class PaymentActivity : AppCompatActivity() {
     private val sharedPrefFile = "sharedPrefData"
     private lateinit var apiClient: ApiClient
-
     private lateinit var binding: ActivityPaymentBinding
     private lateinit var settingsManager: SettingsManager
+    var carId: String? = null
+    var userId: String? = null
+    var carName: String? = null
+    var drive: String? = null
+    var bookDateFrom: String? = null
+    var bookDateTo: String? = null
+    var destination: String? = null
+    var totalDays: String? = null
+    var totalAmount: String? = null
+    var firstNameHeader: String? = null
+    var lastNameHeader : String? = null
+    var amntPerDay : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         settingsManager = SettingsManager(this)
@@ -41,8 +59,8 @@ class PaymentActivity : AppCompatActivity() {
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
 
         val profileHeader = sharedPreferences.getString("userProfile", "default")
-        val firstNameHeader = sharedPreferences.getString("first_name", "")
-        val lastNameHeader = sharedPreferences.getString("last_name", "")
+        firstNameHeader = sharedPreferences.getString("first_name", "")
+        lastNameHeader = sharedPreferences.getString("last_name", "")
         val emailHeader = sharedPreferences.getString("email", "")
         val header = binding.navView.getHeaderView(0)
         header.firstName.text = firstNameHeader.toString()
@@ -67,6 +85,28 @@ class PaymentActivity : AppCompatActivity() {
                 restartApp()
             }
         }
+
+        carId = intent.getStringExtra("car_id")
+        userId = sharedPreferences.getString("user_id", "")
+        carName = intent.getStringExtra("car_name")
+        drive = intent.getStringExtra("drive")
+        bookDateFrom = intent.getStringExtra("book_date_from")
+        bookDateTo  = intent.getStringExtra("book_date_to")
+        destination = intent.getStringExtra("destination")
+        totalDays   = intent.getStringExtra("total_days")
+        totalAmount = intent.getStringExtra("total_amount")
+        amntPerDay = intent.getStringExtra("amntPerDay")
+
+        binding.name.text = "$firstNameHeader $lastNameHeader"
+        binding.carName.text = carName
+        binding.drive.text = drive
+        binding.dateFrom.text = bookDateFrom
+        binding.dateTo.text = bookDateTo
+        binding.days.text= totalDays
+        binding.amountPerDay.text = amntPerDay
+        binding.destination.text= destination
+        binding.totalAmount.text = totalAmount
+
 
         binding.nav.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
@@ -120,13 +160,15 @@ class PaymentActivity : AppCompatActivity() {
         })
 
         binding.back.setOnClickListener {
-            val intent = Intent(this@PaymentActivity, UserProfileActivity::class.java)
-            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+            val intent = Intent(this@PaymentActivity, DetailActivity::class.java)
+            startActivity(intent)
         }
 
         binding.mpesaButton.setOnClickListener {
+            book()
             if (binding.mpesa.visibility == View.GONE) {
                 binding.mpesa.visibility = View.VISIBLE
+
 
                 if (binding.visa.visibility == View.VISIBLE) {
                     binding.visa.visibility = View.GONE
@@ -140,12 +182,20 @@ class PaymentActivity : AppCompatActivity() {
 //            }
         }
 
+        binding.pay1.setOnClickListener{
+            book()
+        }
+
 //        binding.paypalButton.setOnClickListener {
 //            if (binding.mpesa.visibility == View.GONE) {
 //                binding.mpesa.visibility = View.VISIBLE
 //            } else if (binding.mpesa.visibility == View.VISIBLE) {
 //                binding.mpesa.visibility = View.GONE
 //            }
+//        }
+//
+//        binding.pay1.setOnClickListener{
+//
 //        }
 
         binding.visaButton.setOnClickListener {
@@ -163,6 +213,10 @@ class PaymentActivity : AppCompatActivity() {
 //            }
         }
 
+        binding.pay3.setOnClickListener{
+            book()
+        }
+
         binding.masterCardButton.setOnClickListener {
             if (binding.masterCard.visibility == View.GONE) {
                 binding.masterCard.visibility = View.VISIBLE
@@ -177,11 +231,58 @@ class PaymentActivity : AppCompatActivity() {
 //                binding.masterCard.visibility = View.GONE
 //            }
         }
+
+        binding.pay4.setOnClickListener{
+            book()
+        }
+    }
+
+    private fun book() {
+        apiClient = ApiClient
+        // display a progress dialog
+        val progressDialog = ProgressDialog(this@PaymentActivity)
+        progressDialog.setCancelable(false) // set cancelable to false
+        progressDialog.setMessage("Booking..") // set message
+        progressDialog.show()
+
+        val today: LocalDate = LocalDate.now()
+        val bookingInfo = BookCar(
+            carId?.toInt(),
+            userId?.toInt(),
+            bookDateFrom,
+            bookDateTo,
+            destination,
+            drive,
+            totalDays?.toInt(),
+            totalAmount?.toInt(),
+            carName,
+            "$firstNameHeader $lastNameHeader",
+            "$firstNameHeader $lastNameHeader",
+            today.toString(),
+            bookDateFrom,
+            bookDateTo
+        )
+
+        Log.e("Gideon", "onSuccess: $bookingInfo")
+        apiClient.getApiService(this).bookingCar(bookingInfo).enqueue(object : Callback<BookCarResponse> {
+            override fun onResponse(call: Call<BookCarResponse>, response: Response<BookCarResponse>) {
+                if (response.isSuccessful) {
+                    progressDialog.dismiss()
+//                    Snackbar.make(it, "Booked Successfully", Snackbar.LENGTH_SHORT).show()
+                    Log.e("Gideon", "onSuccess: ${response.body()}")
+
+                }
+            }
+
+            override fun onFailure(call: Call<BookCarResponse>, t: Throwable) {
+                progressDialog.dismiss()
+//                Snackbar.make(it, "${t.message}", Snackbar.LENGTH_SHORT).show()
+                Log.e("Gideon", "onFailure: ${t.message}")
+            }
+        })
     }
 
     private fun restartApp() {
-        val i = Intent(applicationContext, PaymentActivity::class.java)
-        startActivity(i)
-        finish()
+        recreate()
     }
 }

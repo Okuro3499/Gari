@@ -69,36 +69,29 @@ class LoginActivity : AppCompatActivity() {
                 )
                 apiClient.getApiService(this).loginUser(loginInfo).enqueue(object : Callback<UserLoginResponse> {
                     override fun onResponse(call: Call<UserLoginResponse>, response: Response<UserLoginResponse>) {
-                            if (response.isSuccessful) {
-                                progressDialog.dismiss()
-                                Snackbar.make(it, "Login Successful", Snackbar.LENGTH_SHORT).show()
-//                        Toast.makeText(this@LoginActivity, "Login Successful", Toast.LENGTH_LONG).show()
-                                Log.e("Gideon", "onSuccess: ${response.body()}")
-                                editor.putString("client_id", response.body()!!.user.client_id)
-                                editor.putString("first_name", response.body()!!.user.first_name)
-                                editor.putString("last_name", response.body()!!.user.last_name)
-                                editor.putString("email", response.body()!!.user.email)
-                                editor.putString(
-                                    "userProfile",
-                                    response.body()!!.user.user_photo_url
-                                )
-                                editor.apply()
-
-                                response.body()!!.accessToken?.let { it1 ->
-                                    sessionManager.saveAuthToken(
-                                        it1
-                                    )
-                                }
-
-                                val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-                            }
-                        }
-
-                        override fun onFailure(call: Call<UserLoginResponse>, t: Throwable) {
+                        if (response.isSuccessful) {
                             progressDialog.dismiss()
-                            Snackbar.make(it, "${t.message}", Snackbar.LENGTH_SHORT).show()
-//                    Toast.makeText(this@LoginActivity, "${t.message}", Toast.LENGTH_LONG).show()
+                            Snackbar.make(it, "Login Successful", Snackbar.LENGTH_SHORT).show()
+                            Log.e("Gideon", "onSuccess: ${response.body()}")
+
+                            editor.putString("user_id", response.body()!!.users.user_id)
+                            editor.putString("role_id", response.body()!!.users.role_id)
+                            editor.putString("first_name", response.body()!!.users.first_name)
+                            editor.putString("last_name", response.body()!!.users.last_name)
+                            editor.putString("email", response.body()!!.users.email)
+                            editor.putString("userProfile", response.body()!!.users.user_photo_url)
+                            editor.apply()
+
+                        response.body()!!.accessToken?.let { it1 -> sessionManager.saveAuthToken(it1) }
+
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+
+                override fun onFailure(call: Call<UserLoginResponse>, t: Throwable) {
+                    progressDialog.dismiss()
+                    Snackbar.make(it, "${t.message}", Snackbar.LENGTH_SHORT).show()
                             Log.e("Gideon", "onFailure: ${t.message}")
                         }
                     })

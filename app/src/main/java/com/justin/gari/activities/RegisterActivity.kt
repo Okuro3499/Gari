@@ -1,24 +1,31 @@
 package com.justin.gari.activities
 
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.widget.Switch
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.justin.gari.R
-import com.justin.gari.utils.SettingsManager
 import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityRegisterBinding
 import com.justin.gari.models.userModels.signUpModel.NewUserData
 import com.justin.gari.models.userModels.signUpModel.NewUserResponse
+import com.justin.gari.utils.SettingsManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.time.LocalDate
+
 
 class RegisterActivity : AppCompatActivity() {
+    private val sharedPrefFile = "sharedPrefData"
     private lateinit var apiClient: ApiClient
     private var theme: Switch? = null
     private lateinit var settingsManager: SettingsManager
@@ -40,7 +47,9 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         apiClient = ApiClient
+        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
 
+        Log.e("id",sharedPreferences.getString("roleID", "").toString())
         binding.btRegister.setOnClickListener {
             if (TextUtils.isEmpty(binding.etFirstName.text.toString().trim())) {
                 binding.etFirstName.error = "Kindly enter first name"
@@ -71,18 +80,26 @@ class RegisterActivity : AppCompatActivity() {
                 progressDialog.setMessage("Creating account...") // set message
                 progressDialog.show()
 
-                val signUpInfo = NewUserData(
-                    binding.etFirstName.text.toString().trim(),
-                    binding.etLastName.text.toString().trim(),
-                    binding.etEmailAddress.text.toString().trim(),
-                    binding.etMobile.text.toString().trim(),
-                    binding.etCounty.text.toString().trim(),
-                    binding.etDistrict.text.toString().trim(),
-                    binding.etEstate.text.toString().trim(),
-                    binding.etLandMark.text.toString().trim(),
-                    binding.etPassword.text.toString().trim()
-                )
+                val today: LocalDate = LocalDate.now()
 
+            val signUpInfo = NewUserData(
+                sharedPreferences.getString("roleID", "")?.toInt(),
+                binding.etFirstName.text.toString().trim(),
+                binding.etLastName.text.toString().trim(),
+                binding.etEmailAddress.text.toString().trim(),
+                binding.etMobile.text.toString().trim().toInt(),
+                binding.etCounty.text.toString().trim(),
+                binding.etDistrict.text.toString().trim(),
+                binding.etEstate.text.toString().trim(),
+                binding.etLandMark.text.toString().trim(),
+                binding.etPassword.text.toString().trim(),
+                sharedPreferences.getString("roleName", ""),
+                sharedPreferences.getString("roleDescription", ""),
+                binding.etFirstName.text.toString().trim() + " " + binding.etLastName.text.toString().trim(),
+                today.toString()
+            )
+
+                Log.d("data", signUpInfo.toString())
                 apiClient.getApiService(this).createUser(signUpInfo).enqueue(object : Callback<NewUserResponse> {
                     override fun onResponse(call: Call<NewUserResponse>, response: Response<NewUserResponse>) {
                         if (response.isSuccessful) {
@@ -109,4 +126,6 @@ class RegisterActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+
 }

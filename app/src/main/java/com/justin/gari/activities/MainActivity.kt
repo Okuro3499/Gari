@@ -1,6 +1,7 @@
 package com.justin.gari.activities
 
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -15,6 +16,7 @@ import com.justin.gari.adapters.CarAdapter
 import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityMainBinding
 import com.justin.gari.models.carModels.CarModel
+import com.justin.gari.models.roleModels.GetRolesResponse
 import com.justin.gari.utils.SettingsManager
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.nav_header.view.*
@@ -42,8 +44,7 @@ class MainActivity : AppCompatActivity() {
             supportActionBar!!.hide()
         }
 
-        val sharedPreferences: SharedPreferences =
-            getSharedPreferences(sharedPrefFile, MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE)
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
 
         binding.swipeRefresh.setOnRefreshListener {
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         getAllCars()
+        roles()
 
 //        val client_id = sharedPreferences.getString("client_id", "default")
 //        val editor: SharedPreferences.Editor = sharedPreferences.edit()
@@ -239,6 +241,7 @@ class MainActivity : AppCompatActivity() {
         apiClient = ApiClient
         apiClient.getApiService(this).getAllCars().enqueue(object : Callback<CarModel> {
             override fun onResponse(call: Call<CarModel>, response: Response<CarModel>) {
+                Log.e("id", response.toString())
                 if (response.isSuccessful) {
                     val carsAdapter = CarAdapter(response.body()!!.cars, this@MainActivity)
                     binding.shimmerLayout.stopShimmer();
@@ -256,6 +259,29 @@ class MainActivity : AppCompatActivity() {
                 binding.swipeRefresh.visibility = View.GONE
 
 //                Toast.makeText(this@MainActivity, "Check internet connectivity", Toast.LENGTH_LONG).show()
+                Log.e("Gideon", "onFailure: ${t.message}")
+            }
+        })
+    }
+
+    private fun roles() {
+        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        apiClient = ApiClient
+
+        apiClient.getApiService(this).getRoles("2").enqueue(object : Callback<GetRolesResponse> {
+
+            override fun onResponse(call: Call<GetRolesResponse>, response: Response<GetRolesResponse>) {
+                Log.e("id", response.toString())
+                if (response.isSuccessful) {
+                    editor.putString("roleID", response.body()!!.role_details.roleId.toString())
+                    editor.putString("roleName", response.body()!!.role_details.roleName)
+                    editor.putString("roleDescription", response.body()!!.role_details.roleDescription)
+                    editor.apply()
+                }
+            }
+
+            override fun onFailure(call: Call<GetRolesResponse>, t: Throwable) {
                 Log.e("Gideon", "onFailure: ${t.message}")
             }
         })

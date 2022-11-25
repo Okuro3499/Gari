@@ -147,24 +147,14 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/firstName"
+                android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/poppins_regular"
-                android:text="Gideon"
                 android:textColor="?attr/textColor"
                 android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/lastName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:fontFamily="@font/poppins_regular"
-                android:text="Okuro"
-                android:textColor="?attr/textColor"
-                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -191,7 +181,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/poppins_regular"
-                android:text="Toyota Noah"
                 android:textColor="?attr/textColor"
                 android:textSize="14sp" />
 
@@ -215,11 +204,11 @@
                 android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/drive"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/poppins_regular"
-                android:text="Self Drive"
                 android:textColor="?attr/textColor"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -248,7 +237,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/poppins_regular"
-                android:text="25/04/2022"
                 android:textColor="?attr/textColor"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -276,7 +264,89 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/poppins_regular"
-                android:text="25/04/2022"
+                android:textColor="?attr/textColor"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ltTotalDays"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ltDate">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Total Days:"
+                android:textColor="?attr/textColor"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/days"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="?attr/textColor"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ltPerDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ltDate"
+            app:layout_constraintTop_toBottomOf="@+id/ltDate">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Amount per day:"
+                android:textColor="?attr/textColor"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/amountPerDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/poppins_regular"
+                android:textColor="?attr/textColor"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ltDestination"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ltTotalDays">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Destination:"
+                android:textColor="?attr/textColor"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/destination"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/poppins_regular"
                 android:textColor="?attr/textColor"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -288,7 +358,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="2dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ltDate">
+            app:layout_constraintTop_toBottomOf="@+id/ltDestination">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -299,11 +369,11 @@
                 android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/totalAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/poppins_regular"
-                android:text="5000"
                 android:textColor="?attr/textColor"
                 android:textSize="14sp" />
         </LinearLayout>
