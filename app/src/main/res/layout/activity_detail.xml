@@ -667,6 +667,7 @@
                                 android:background="@drawable/custom_input"
                                 android:fontFamily="@font/poppins_regular"
                                 android:hint="@string/dd_mm_yyyy"
+                                android:textColor="@color/colorPrimary"
                                 android:padding="4dp"
                                 android:paddingStart="12dp"
                                 android:paddingEnd="8dp"
@@ -678,6 +679,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:textColor="?attr/textColor"
                             android:fontFamily="@font/poppins_bold"
                             android:text="to" />
 
@@ -700,6 +702,7 @@
                                 android:background="@drawable/custom_input"
                                 android:fontFamily="@font/poppins_regular"
                                 android:hint="@string/dd_mm_yyyy"
+                                android:textColor="@color/colorPrimary"
                                 android:padding="4dp"
                                 android:paddingStart="12dp"
                                 android:paddingEnd="8dp"

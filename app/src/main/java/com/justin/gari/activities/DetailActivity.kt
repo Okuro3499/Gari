@@ -103,14 +103,13 @@ class DetailActivity : AppCompatActivity() {
             updateLabelFrom()
         }
 
+
 //         datePicker = new DatePickerDialog(this)
 //        date1.setMinDate(System.currentTimeMillis() - 1000)
 //        DatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000)
         binding.ETDFrom.setOnClickListener {
-
            val datees = DatePickerDialog(
-                this@DetailActivity,
-                date1,
+                this@DetailActivity, date1,
                 myCalendarFrom[Calendar.YEAR],
                 myCalendarFrom[Calendar.MONTH],
                 myCalendarFrom[Calendar.DAY_OF_MONTH]
@@ -118,7 +117,6 @@ class DetailActivity : AppCompatActivity() {
             datees.datePicker.minDate = System.currentTimeMillis() - 1000
 
             datees.show()
-
         }
 
         //open date to dialog
@@ -180,8 +178,6 @@ class DetailActivity : AppCompatActivity() {
                     }
                 })
         }
-
-        //TODO: migrate booking actions
         //make car booking
         binding.btBook.setOnClickListener {
             if (binding.ETDFrom.text.toString().trim() == "") {

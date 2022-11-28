@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +24,9 @@ import kotlinx.android.synthetic.main.nav_header.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.time.LocalDate
+import java.text.SimpleDateFormat
+import java.time.*
+import java.util.*
 
 class PaymentActivity : AppCompatActivity() {
     private val sharedPrefFile = "sharedPrefData"
@@ -100,8 +103,8 @@ class PaymentActivity : AppCompatActivity() {
         binding.name.text = "$firstNameHeader $lastNameHeader"
         binding.carName.text = carName
         binding.drive.text = drive
-        binding.dateFrom.text = bookDateFrom
-        binding.dateTo.text = bookDateTo
+        binding.dateFrom.text = intent.getStringExtra("book_date_from")
+        binding.dateTo.text = intent.getStringExtra("book_date_to")
         binding.days.text= totalDays
         binding.amountPerDay.text = amntPerDay
         binding.destination.text= destination
@@ -165,7 +168,6 @@ class PaymentActivity : AppCompatActivity() {
         }
 
         binding.mpesaButton.setOnClickListener {
-            book()
             if (binding.mpesa.visibility == View.GONE) {
                 binding.mpesa.visibility = View.VISIBLE
 
@@ -183,7 +185,12 @@ class PaymentActivity : AppCompatActivity() {
         }
 
         binding.pay1.setOnClickListener{
-            book()
+            if (TextUtils.isEmpty(binding.phoneNumber.text.toString().trim())) {
+                binding.phoneNumber.error = "Kindly enter a phone number to pay!"
+            } else{
+                book()
+            }
+
         }
 
 //        binding.paypalButton.setOnClickListener {
@@ -214,7 +221,17 @@ class PaymentActivity : AppCompatActivity() {
         }
 
         binding.pay3.setOnClickListener{
-            book()
+            if (TextUtils.isEmpty(binding.visaCardNumber.text.toString().trim())) {
+                binding.visaCardNumber.error = "Kindly enter a card number to pay!"
+            } else if (TextUtils.isEmpty(binding.validity.text.toString().trim())) {
+                binding.validity.error = "Kindly enter card expiry date!"
+            } else if (TextUtils.isEmpty(binding.cvc.text.toString().trim())) {
+                binding.cvc.error = "Kindly enter CVV!"
+            } else if (TextUtils.isEmpty(binding.cardHolderName.text.toString().trim())) {
+                binding.cardHolderName.error = "Kindly enter card holder name!"
+            } else {
+                book()
+            }
         }
 
         binding.masterCardButton.setOnClickListener {
@@ -233,7 +250,26 @@ class PaymentActivity : AppCompatActivity() {
         }
 
         binding.pay4.setOnClickListener{
-            book()
+            if (TextUtils.isEmpty(binding.visaCardNumber.text.toString().trim())) {
+                binding.visaCardNumber.error = "Kindly enter a card number to pay!"
+            } else if (TextUtils.isEmpty(binding.validity.text.toString().trim())) {
+                binding.validity.error = "Kindly enter card expiry date!"
+            } else if (TextUtils.isEmpty(binding.cvc.text.toString().trim())) {
+                binding.cvc.error = "Kindly enter CVV!"
+            } else if (TextUtils.isEmpty(binding.cardHolderName.text.toString().trim())) {
+                binding.cardHolderName.error = "Kindly enter card holder name!"
+            } else {
+                book()
+            }
+        }
+
+        binding.home.setOnClickListener{
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+        }
+
+        binding.refresh.setOnClickListener {
+            recreate()
         }
     }
 
@@ -245,12 +281,20 @@ class PaymentActivity : AppCompatActivity() {
         progressDialog.setMessage("Booking..") // set message
         progressDialog.show()
 
-        val today: LocalDate = LocalDate.now()
+        val dateFrom = Date(bookDateFrom)
+        val dateTo = Date(bookDateTo)
+        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
+        val formatedDateFrom: String = formatter.format(dateFrom)
+        val formatedDateTo: String = formatter.format(dateTo)
+
+        val zoneNow: ZonedDateTime = ZonedDateTime.now(ZoneId.of("GMT+03:00"))
+        val dateTimeNow: LocalDateTime = zoneNow.toLocalDateTime()
+
         val bookingInfo = BookCar(
             carId?.toInt(),
             userId?.toInt(),
-            bookDateFrom,
-            bookDateTo,
+            formatedDateFrom,
+            formatedDateTo,
             destination,
             drive,
             totalDays?.toInt(),
@@ -258,9 +302,9 @@ class PaymentActivity : AppCompatActivity() {
             carName,
             "$firstNameHeader $lastNameHeader",
             "$firstNameHeader $lastNameHeader",
-            today.toString(),
-            bookDateFrom,
-            bookDateTo
+            dateTimeNow.toString(),
+            formatedDateFrom,
+            formatedDateTo,
         )
 
         Log.e("Gideon", "onSuccess: $bookingInfo")
@@ -268,6 +312,8 @@ class PaymentActivity : AppCompatActivity() {
             override fun onResponse(call: Call<BookCarResponse>, response: Response<BookCarResponse>) {
                 if (response.isSuccessful) {
                     progressDialog.dismiss()
+                    binding.successPage.visibility = View.VISIBLE
+                    binding.paymentPage.visibility  = View.GONE
 //                    Snackbar.make(it, "Booked Successfully", Snackbar.LENGTH_SHORT).show()
                     Log.e("Gideon", "onSuccess: ${response.body()}")
 
@@ -276,6 +322,9 @@ class PaymentActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<BookCarResponse>, t: Throwable) {
                 progressDialog.dismiss()
+                binding.errorPage.visibility = View.VISIBLE
+                binding.paymentPage.visibility = View.GONE
+                binding.message.text = t.message
 //                Snackbar.make(it, "${t.message}", Snackbar.LENGTH_SHORT).show()
                 Log.e("Gideon", "onFailure: ${t.message}")
             }
