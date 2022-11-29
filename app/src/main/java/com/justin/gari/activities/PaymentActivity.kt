@@ -12,7 +12,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
 import com.justin.gari.R
 import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityPaymentBinding
@@ -26,6 +25,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.time.*
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class PaymentActivity : AppCompatActivity() {
@@ -281,11 +281,13 @@ class PaymentActivity : AppCompatActivity() {
         progressDialog.setMessage("Booking..") // set message
         progressDialog.show()
 
-        val dateFrom = Date(bookDateFrom)
-        val dateTo = Date(bookDateTo)
-        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
-        val formatedDateFrom: String = formatter.format(dateFrom)
-        val formatedDateTo: String = formatter.format(dateTo)
+
+        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+        val dateFrom  = LocalDateTime.parse("$bookDateFrom 00:00", formatter)
+        val dateTo  = LocalDateTime.parse("$bookDateTo 00:00", formatter)
+
+        val formattedDateFrom: String = formatter.format(dateFrom)
+        val formattedDateTo: String = formatter.format(dateTo)
 
         val zoneNow: ZonedDateTime = ZonedDateTime.now(ZoneId.of("GMT+03:00"))
         val dateTimeNow: LocalDateTime = zoneNow.toLocalDateTime()
@@ -293,8 +295,8 @@ class PaymentActivity : AppCompatActivity() {
         val bookingInfo = BookCar(
             carId?.toInt(),
             userId?.toInt(),
-            formatedDateFrom,
-            formatedDateTo,
+            formattedDateFrom,
+            formattedDateTo,
             destination,
             drive,
             totalDays?.toInt(),
@@ -303,8 +305,8 @@ class PaymentActivity : AppCompatActivity() {
             "$firstNameHeader $lastNameHeader",
             "$firstNameHeader $lastNameHeader",
             dateTimeNow.toString(),
-            formatedDateFrom,
-            formatedDateTo,
+            formattedDateFrom,
+            formattedDateTo,
         )
 
         Log.e("Gideon", "onSuccess: $bookingInfo")
