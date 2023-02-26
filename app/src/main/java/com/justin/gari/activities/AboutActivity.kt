@@ -13,11 +13,12 @@ import com.justin.gari.R
 import com.justin.gari.utils.SettingsManager
 import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityAboutBinding
+import com.justin.gari.utils.SharedPrefManager
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.nav_header.view.*
 
 class AboutActivity : AppCompatActivity() {
-    private val sharedPrefFile = "sharedPrefData"
+    var pref: SharedPrefManager? = null
     private lateinit var apiClient: ApiClient
     private lateinit var binding: ActivityAboutBinding
     private lateinit var settingsManager: SettingsManager
@@ -28,6 +29,7 @@ class AboutActivity : AppCompatActivity() {
             setTheme(R.style.DarkGari)
         }
         else setTheme(R.style.Gari)
+
         super.onCreate(savedInstanceState)
         binding = ActivityAboutBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -37,9 +39,10 @@ class AboutActivity : AppCompatActivity() {
         }
 
         apiClient = ApiClient
+        pref = SharedPrefManager(this)
 
-        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+//        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+//        val editor: SharedPreferences.Editor = sharedPreferences.edit()
 
 //        val client_id = sharedPreferences.getString("client_id", "default")
 //        val editor: SharedPreferences.Editor = sharedPreferences.edit()
@@ -62,10 +65,10 @@ class AboutActivity : AppCompatActivity() {
 //                }
 //            })
 
-        val profileHeader = sharedPreferences.getString("userProfile", "default")
-        val firstNameHeader = sharedPreferences.getString("first_name", "")
-        val lastNameHeader = sharedPreferences.getString("last_name", "")
-        val emailHeader = sharedPreferences.getString("email", "")
+        val profileHeader = pref!!.getUSERPROFILEPHOTO()
+        val firstNameHeader = pref!!.getFIRSTNAME()
+        val lastNameHeader = pref!!.getLASTNAME()
+        val emailHeader = pref!!.getEMAIL()
         val header = binding.navView.getHeaderView(0)
         header.firstName.text = firstNameHeader.toString()
         header.lastName.text = lastNameHeader.toString()
@@ -118,8 +121,7 @@ class AboutActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {
-                    editor.clear()
-                    editor.apply()
+                    pref!!.clearAllDataExcept()
                     val intentLogout = Intent(this@AboutActivity, MainActivity::class.java)
                     startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
                     finish()

@@ -18,6 +18,7 @@ import com.justin.gari.databinding.ActivityPaymentBinding
 import com.justin.gari.models.bookingCarModels.BookCar
 import com.justin.gari.models.bookingCarModels.BookCarResponse
 import com.justin.gari.utils.SettingsManager
+import com.justin.gari.utils.SharedPrefManager
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.nav_header.view.*
 import retrofit2.Call
@@ -29,7 +30,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 class PaymentActivity : AppCompatActivity() {
-    private val sharedPrefFile = "sharedPrefData"
+    var pref: SharedPrefManager? = null
     private lateinit var apiClient: ApiClient
     private lateinit var binding: ActivityPaymentBinding
     private lateinit var settingsManager: SettingsManager
@@ -57,14 +58,14 @@ class PaymentActivity : AppCompatActivity() {
         binding = ActivityPaymentBinding.inflate(layoutInflater)
         setContentView(binding.root)
         apiClient = ApiClient
+        pref = SharedPrefManager(this)
+//        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+//        val editor: SharedPreferences.Editor = sharedPreferences.edit()
 
-        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
-
-        val profileHeader = sharedPreferences.getString("userProfile", "default")
-        firstNameHeader = sharedPreferences.getString("first_name", "")
-        lastNameHeader = sharedPreferences.getString("last_name", "")
-        val emailHeader = sharedPreferences.getString("email", "")
+        val profileHeader = pref!!.getUSERPROFILEPHOTO()
+         firstNameHeader = pref!!.getFIRSTNAME()
+         lastNameHeader = pref!!.getLASTNAME()
+        val emailHeader = pref!!.getEMAIL()
         val header = binding.navView.getHeaderView(0)
         header.firstName.text = firstNameHeader.toString()
         header.lastName.text = lastNameHeader.toString()
@@ -90,7 +91,7 @@ class PaymentActivity : AppCompatActivity() {
         }
 
         carId = intent.getStringExtra("car_id")
-        userId = sharedPreferences.getString("user_id", "")
+        userId = pref!!.getUSERID()
         carName = intent.getStringExtra("car_name")
         drive = intent.getStringExtra("drive")
         bookDateFrom = intent.getStringExtra("book_date_from")
@@ -109,7 +110,6 @@ class PaymentActivity : AppCompatActivity() {
         binding.amountPerDay.text = amntPerDay
         binding.destination.text= destination
         binding.totalAmount.text = totalAmount
-
 
         binding.nav.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
@@ -139,8 +139,7 @@ class PaymentActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {
-                    editor.clear()
-                    editor.apply()
+                    pref!!.clearAllDataExcept()
                     val intentLogout = Intent(this@PaymentActivity, MainActivity::class.java)
                     startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
                     finish()

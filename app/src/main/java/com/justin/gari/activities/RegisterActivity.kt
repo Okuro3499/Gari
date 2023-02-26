@@ -18,6 +18,7 @@ import com.justin.gari.databinding.ActivityRegisterBinding
 import com.justin.gari.models.userModels.signUpModel.NewUserData
 import com.justin.gari.models.userModels.signUpModel.NewUserResponse
 import com.justin.gari.utils.SettingsManager
+import com.justin.gari.utils.SharedPrefManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,7 +26,7 @@ import java.time.LocalDate
 
 
 class RegisterActivity : AppCompatActivity() {
-    private val sharedPrefFile = "sharedPrefData"
+    var pref: SharedPrefManager? = null
     private lateinit var apiClient: ApiClient
     private var theme: Switch? = null
     private lateinit var settingsManager: SettingsManager
@@ -47,9 +48,10 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         apiClient = ApiClient
-        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        pref = SharedPrefManager(this)
+//        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
 
-        Log.e("id",sharedPreferences.getString("roleID", "").toString())
+//        Log.e("id",sharedPreferences.getString("roleID", "").toString())
         binding.btRegister.setOnClickListener {
             if (TextUtils.isEmpty(binding.etFirstName.text.toString().trim())) {
                 binding.etFirstName.error = "Kindly enter first name"
@@ -82,8 +84,7 @@ class RegisterActivity : AppCompatActivity() {
 
                 val today: LocalDate = LocalDate.now()
 
-            val signUpInfo = NewUserData(
-                sharedPreferences.getString("roleID", "")?.toInt(),
+            val signUpInfo = NewUserData(pref!!.getROLEID()?.toInt(),
                 binding.etFirstName.text.toString().trim(),
                 binding.etLastName.text.toString().trim(),
                 binding.etEmailAddress.text.toString().trim(),
@@ -93,8 +94,8 @@ class RegisterActivity : AppCompatActivity() {
                 binding.etEstate.text.toString().trim(),
                 binding.etLandMark.text.toString().trim(),
                 binding.etPassword.text.toString().trim(),
-                sharedPreferences.getString("roleName", ""),
-                sharedPreferences.getString("roleDescription", ""),
+                pref!!.getROLENAME(),
+                pref!!.getROLEDESCRIPTION(),
                 binding.etFirstName.text.toString().trim() + " " + binding.etLastName.text.toString().trim(),
                 today.toString()
             )

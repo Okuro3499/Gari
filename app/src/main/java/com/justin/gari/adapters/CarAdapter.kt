@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Filter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
@@ -13,9 +14,10 @@ import com.justin.gari.R
 import com.justin.gari.activities.DetailActivity
 import com.justin.gari.models.carModels.Cars
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.nav_header.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
-internal class CarAdapter(private val carList: List<Cars>, val context: Context) : BaseAdapter() {
+class CarAdapter(private val carList: ArrayList<Cars>, val context: Context) : BaseAdapter() {
     private var layoutInflater: LayoutInflater? = null
     private lateinit var carNameTextView: TextView
     private lateinit var driveOptionTextView: TextView
@@ -24,9 +26,50 @@ internal class CarAdapter(private val carList: List<Cars>, val context: Context)
     private lateinit var carImageView: ImageView
     private lateinit var itemView : CardView
 
+    val initialCarDataList = ArrayList<Cars>().apply {
+        carList.let { addAll(it) }
+    }
+
     // below method is use to return the count of course list
     override fun getCount(): Int {
         return carList.size
+    }
+
+    fun getFilter(): Filter {
+        return carFilter
+    }
+
+    private val carFilter = object : Filter() {
+        override fun performFiltering(constraint: CharSequence?): FilterResults {
+            val filteredList: ArrayList<Cars> = ArrayList()
+            if (constraint == null || constraint.isEmpty()) {
+                initialCarDataList.let { filteredList.addAll(it) }
+            } else {
+                val query = constraint.toString().trim().toLowerCase()
+                initialCarDataList.forEach {
+                    if (it.car_name?.toLowerCase(Locale.ROOT)?.contains(query) == true) {
+                        filteredList.add(it)
+                    } else if(it.transmission?.toLowerCase(Locale.ROOT)?.contains(query) == true) {
+                        filteredList.add(it)
+                    } else if(it.engine?.toLowerCase(Locale.ROOT)?.contains(query) == true) {
+                        filteredList.add(it)
+                    }else if(it.drive?.toLowerCase(Locale.ROOT)?.contains(query) == true) {
+                        filteredList.add(it)
+                    }
+                }
+            }
+            val results = FilterResults()
+            results.values = filteredList
+            return results
+        }
+
+        override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+            if (results?.values is ArrayList<*>) {
+                carList.clear()
+                carList.addAll(results.values as ArrayList<Cars>)
+                notifyDataSetChanged()
+            }
+        }
     }
 
     // below function is use to return the item of grid view.

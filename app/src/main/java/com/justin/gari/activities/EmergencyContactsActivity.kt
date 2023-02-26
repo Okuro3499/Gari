@@ -17,6 +17,7 @@ import com.justin.gari.utils.SettingsManager
 import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityEmergencyContactsBinding
 import com.justin.gari.models.userModels.UserDetailsResponse
+import com.justin.gari.utils.SharedPrefManager
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import retrofit2.Call
@@ -25,7 +26,7 @@ import retrofit2.Response
 
 class EmergencyContactsActivity : AppCompatActivity() {
     lateinit var binding: ActivityEmergencyContactsBinding
-    private val sharedPrefFile = "sharedPrefData"
+    var pref: SharedPrefManager? = null
     private lateinit var apiClient: ApiClient
     private lateinit var settingsManager: SettingsManager
 
@@ -38,20 +39,22 @@ class EmergencyContactsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityEmergencyContactsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        val userId = sharedPreferences.getString("user_id", "")
-        val roleId = sharedPreferences.getString("role_id", "")
+        apiClient = ApiClient
+        pref = SharedPrefManager(this)
 
         if (supportActionBar != null) {
             supportActionBar!!.hide()
         }
+        val userId = pref!!.getUSERID()
+        val roleId = pref!!.getROLEID()
 
-        val profileHeader = sharedPreferences.getString("userProfile", "default")
-        val firstNameHeader = sharedPreferences.getString("first_name", "")
-        val lastNameHeader = sharedPreferences.getString("last_name", "")
-        val emailHeader = sharedPreferences.getString("email", "")
+//        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+//        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+
+        val profileHeader = pref!!.getUSERPROFILEPHOTO()
+        val firstNameHeader = pref!!.getFIRSTNAME()
+        val lastNameHeader = pref!!.getLASTNAME()
+        val emailHeader = pref!!.getEMAIL()
         val header: View = binding.navView.getHeaderView(0)
         val profileImage = header.findViewById(R.id.profile_image) as CircleImageView
         val firstNameTv = header.findViewById<View>(R.id.firstName) as TextView
@@ -110,8 +113,7 @@ class EmergencyContactsActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {
-                    editor.clear()
-                    editor.apply()
+                    pref!!.clearAllDataExcept()
                     val intentLogout = Intent(this@EmergencyContactsActivity, MainActivity::class.java)
                     startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
                     finish()

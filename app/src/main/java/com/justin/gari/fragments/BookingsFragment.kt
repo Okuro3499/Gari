@@ -12,13 +12,14 @@ import com.justin.gari.adapters.BookingCarAdapter
 import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.FragmentBookingsBinding
 import com.justin.gari.models.bookingCarModels.BookingsResponse
+import com.justin.gari.utils.SharedPrefManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class BookingsFragment : Fragment() {
     private lateinit var apiClient: ApiClient
-    private val sharedPrefFile = "sharedPrefData"
+    var pref: SharedPrefManager? = null
     private var binding: FragmentBookingsBinding? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -28,8 +29,8 @@ class BookingsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val sharedPreferences: SharedPreferences? = activity?.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-        val userId = sharedPreferences?.getString("user_id", "")
+        pref = SharedPrefManager(requireActivity())
+        val userId = pref!!.getUSERID()
         binding?.shimmerLayout?.startShimmer();
 
         apiClient = ApiClient

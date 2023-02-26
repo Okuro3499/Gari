@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -16,12 +17,13 @@ import androidx.core.view.GravityCompat
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
-import com.justin.gari.utils.SettingsManager
-import com.justin.gari.utils.URIPathHelper
 import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityUserSettingsBinding
 import com.justin.gari.models.uploadImagesModel.*
 import com.justin.gari.models.userModels.UserDetailsResponse
+import com.justin.gari.utils.SettingsManager
+import com.justin.gari.utils.SharedPrefManager
+import com.justin.gari.utils.URIPathHelper
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -31,11 +33,13 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileInputStream
 
 class UserSettingsActivity : AppCompatActivity() {
     lateinit var binding: ActivityUserSettingsBinding
-    private val sharedPrefFile = "sharedPrefData"
+    var pref: SharedPrefManager? = null
     private lateinit var apiClient: ApiClient
     private lateinit var settingsManager: SettingsManager
 
@@ -48,19 +52,20 @@ class UserSettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityUserSettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        val userId = sharedPreferences.getString("user_id", "")
-        val roleId = sharedPreferences.getString("role_id", "")
 
         if (supportActionBar != null) {
             supportActionBar!!.hide()
         }
 
-        val profileHeader = sharedPreferences.getString("userProfile", "default")
-        val firstNameHeader = sharedPreferences.getString("first_name", "")
-        val lastNameHeader = sharedPreferences.getString("last_name", "")
-        val emailHeader = sharedPreferences.getString("email", "")
+        apiClient = ApiClient
+        pref = SharedPrefManager(this)
+        val userId = pref!!.getUSERID()
+        val roleId = pref!!.getROLEID()
+
+        val profileHeader = pref!!.getUSERPROFILEPHOTO()
+        val firstNameHeader = pref!!.getFIRSTNAME()
+        val lastNameHeader = pref!!.getLASTNAME()
+        val emailHeader = pref!!.getEMAIL()
         val header: View = binding.navView.getHeaderView(0)
         val profileImage = header.findViewById(R.id.profile_image) as CircleImageView
         val firstNameTv = header.findViewById<View>(R.id.firstName) as TextView
@@ -120,8 +125,7 @@ class UserSettingsActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {
-                    editor.clear()
-                    editor.apply()
+                    pref!!.clearAllDataExcept()
                     val intentLogout = Intent(this@UserSettingsActivity, MainActivity::class.java)
                     startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
                     finish()
@@ -207,17 +211,35 @@ class UserSettingsActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 0) {
             if (resultCode == Activity.RESULT_OK) {
+                Log.i("data", "$data")
+
                 //Image Uri will not be null for RESULT_OK
                 val uri: Uri = data?.data!!
                 // Use Uri object instead of File to avoid storage permissions
-                imageDriverLicensePicker.setImageURI(data.data!!)
+                binding.ivDl.setImageURI(data.data!!)
                 val uriPathHelper = URIPathHelper()
+                Log.i("uri", "$uri")
                 val filePath = uriPathHelper.getPath(this, uri)!! //try and fix this line
 
                 Log.i("FilePath", filePath)
                 val file = File(filePath)
-                val driverLicense: RequestBody =
-                    file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+
+                try {
+                    val fis = FileInputStream(file)
+                    val baos = ByteArrayOutputStream()
+                    val buffer = ByteArray(1024)
+                    var len: Int
+                    while (fis.read(buffer).also { len = it } > -1) {
+                        baos.write(buffer, 0, len)
+                    }
+                    baos.flush()
+                    val imageBase64: String = Base64.encodeToString(baos.toByteArray(), Base64.NO_WRAP)
+                    Log.d("IMAGE", imageBase64)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
+                val driverLicense: RequestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
 
                 val dlButton = findViewById<Button>(R.id.btDlUpload)
                 dlButton.setOnClickListener { uploadDl(file, driverLicense) }
@@ -231,13 +253,13 @@ class UserSettingsActivity : AppCompatActivity() {
                 val uri: Uri = data?.data!!
                 // Use Uri object instead of File to avoid storage permissions
                 imageIdCardPicker.setImageURI(data.data!!)
+
                 val uriPathHelper = URIPathHelper()
                 val filePath = uriPathHelper.getPath(this, uri)!! //try and fix this line
 
                 Log.i("FilePath", filePath)
                 val file = File(filePath)
-                val identityCard: RequestBody =
-                    file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+                val identityCard: RequestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
 
                 val btIdUpload = findViewById<Button>(R.id.btIdUpload)
                 btIdUpload.setOnClickListener { uploadId(file, identityCard) }
@@ -270,9 +292,6 @@ class UserSettingsActivity : AppCompatActivity() {
     }
 
     private fun uploadDl(file: File, driverLicense: RequestBody) {
-        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-        val client_id = sharedPreferences.getString("client_id", "default")
-
         val progressDialog0 = ProgressDialog(this@UserSettingsActivity)
         progressDialog0.setCancelable(false) // set cancelable to false
         progressDialog0.setMessage("Uploading...") // set message
@@ -294,7 +313,7 @@ class UserSettingsActivity : AppCompatActivity() {
 
                         val dlUrl = DlUrl(response.body()!!.driverLicenceCloudinary)
 
-                        apiClient.getApiService(this@UserSettingsActivity).dlCloudinaryResponseToDb(client_id, dlUrl).enqueue(object : Callback<UserDetailsResponse> {
+                        apiClient.getApiService(this@UserSettingsActivity).dlCloudinaryResponseToDb(pref!!.getUSERID(), dlUrl).enqueue(object : Callback<UserDetailsResponse> {
                                 override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
                                     if (response.isSuccessful) {
                                         progressDialog1.dismiss()
@@ -317,9 +336,6 @@ class UserSettingsActivity : AppCompatActivity() {
     }
 
     private fun uploadId(file: File, identityCard: RequestBody) {
-        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-        val client_id = sharedPreferences.getString("client_id", "default")
-
         val progressDialog2 = ProgressDialog(this@UserSettingsActivity)
         progressDialog2.setCancelable(false) // set cancelable to false
         progressDialog2.setMessage("Uploading...") // set message
@@ -327,19 +343,18 @@ class UserSettingsActivity : AppCompatActivity() {
 
         val image = MultipartBody.Part.createFormData("image", file.name, identityCard)
         apiClient.getApiService(this).idCloudinary(image).enqueue(object : Callback<IdCloudinaryResponse> {
-                override fun onResponse(call: Call<IdCloudinaryResponse>, response: Response<IdCloudinaryResponse>) {
-                    Log.e("Gideon", "cloudinary: $response")
-                    if (response.isSuccessful) {
-                        progressDialog2.dismiss()
-                        Toast.makeText(this@UserSettingsActivity, "national id uploaded successfully", Toast.LENGTH_SHORT).show()
-                        val nationalIdUrl = NationalIdUrl(response.body()!!.nationalIdCloudinary)
-
+            override fun onResponse(call: Call<IdCloudinaryResponse>, response: Response<IdCloudinaryResponse>) {
+                Log.e("Gideon", "cloudinary: $response")
+                if (response.isSuccessful) {
+                    progressDialog2.dismiss()
+                    Toast.makeText(this@UserSettingsActivity, "national id uploaded successfully", Toast.LENGTH_SHORT).show()
+                    val nationalIdUrl = NationalIdUrl(response.body()!!.nationalIdCloudinary)
                         val progressDialog3 = ProgressDialog(this@UserSettingsActivity)
                         progressDialog3.setCancelable(false) // set cancelable to false
                         progressDialog3.setMessage("Securing image...") // set message
                         progressDialog3.show()
 
-                        apiClient.getApiService(this@UserSettingsActivity).nationalIdCloudinaryResponseToDb(client_id, nationalIdUrl).enqueue(object : Callback<UserDetailsResponse> {
+                        apiClient.getApiService(this@UserSettingsActivity).nationalIdCloudinaryResponseToDb(pref!!.getUSERID(), nationalIdUrl).enqueue(object : Callback<UserDetailsResponse> {
                                 override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
                                     if (response.isSuccessful) {
                                         progressDialog3.dismiss()
@@ -362,10 +377,6 @@ class UserSettingsActivity : AppCompatActivity() {
     }
 
     private fun uploadPhoto(file: File, userPhoto: RequestBody) {
-        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-        val client_id = sharedPreferences.getString("client_id", "default")
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
-
         val progressDialog4 = ProgressDialog(this@UserSettingsActivity)
         progressDialog4.setCancelable(false) // set cancelable to false
         progressDialog4.setMessage("Uploading...") // set message
@@ -384,9 +395,8 @@ class UserSettingsActivity : AppCompatActivity() {
                         progressDialog5.show()
 
                         val userPhotoUrl = UserPhotoUrl(response.body()!!.userPhotoCloudinary)
-                        editor.putString("userProfile", response.body()!!.userPhotoCloudinary)
-                        editor.apply()
-                        apiClient.getApiService(this@UserSettingsActivity).userPhotoCloudinaryResponseToDb(client_id, userPhotoUrl).enqueue(object : Callback<UserDetailsResponse> {
+                        pref!!.setUSERPROFILEPHOTO(response.body()!!.userPhotoCloudinary)
+                        apiClient.getApiService(this@UserSettingsActivity).userPhotoCloudinaryResponseToDb(pref!!.getUSERID(), userPhotoUrl).enqueue(object : Callback<UserDetailsResponse> {
                                 override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
                                     if (response.isSuccessful) {
                                         progressDialog5.dismiss()

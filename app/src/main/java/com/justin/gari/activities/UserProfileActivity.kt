@@ -19,6 +19,7 @@ import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityProfileCompleteBinding
 import com.justin.gari.models.userModels.UserDetailsResponse
 import com.justin.gari.utils.SettingsManager
+import com.justin.gari.utils.SharedPrefManager
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_profile_complete.*
@@ -28,7 +29,7 @@ import retrofit2.Response
 
 class UserProfileActivity : AppCompatActivity() {
     lateinit var toggle: ActionBarDrawerToggle
-    val sharedPrefFile = "sharedPrefData"
+    var pref: SharedPrefManager? = null
     lateinit var apiClient: ApiClient
     var theme: Switch? = null
     lateinit var settingsManager: SettingsManager
@@ -43,22 +44,20 @@ class UserProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileCompleteBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
-        val userId = sharedPreferences.getString("user_id", "")
-        val roleId = sharedPreferences.getString("role_id", "")
-
-        apiClient = ApiClient
-
         if (supportActionBar != null) {
             supportActionBar!!.hide()
         }
 
-        val profileHeader = sharedPreferences.getString("userProfile", "default")
-        val firstNameHeader = sharedPreferences.getString("first_name", "")
-        val lastNameHeader = sharedPreferences.getString("last_name", "")
-        val emailHeader = sharedPreferences.getString("email", "")
+        apiClient = ApiClient
+        pref = SharedPrefManager(this)
+
+        val userId = pref!!.getUSERID()
+        val roleId = pref!!.getROLEID()
+
+        val profileHeader = pref!!.getUSERPROFILEPHOTO()
+        val firstNameHeader = pref!!.getFIRSTNAME()
+        val lastNameHeader = pref!!.getLASTNAME()
+        val emailHeader = pref!!.getEMAIL()
         val header: View = binding.navView.getHeaderView(0)
         val profileImage = header.findViewById(R.id.profile_image) as CircleImageView
         val firstNameTv = header.findViewById<View>(R.id.firstName) as TextView
@@ -118,8 +117,7 @@ class UserProfileActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {
-                    editor.clear()
-                    editor.apply()
+                    pref!!.clearAllDataExcept()
                     val intentLogout = Intent(this@UserProfileActivity, MainActivity::class.java)
                     startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
                     finish()
@@ -150,14 +148,17 @@ class UserProfileActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
                     if (response.isSuccessful) {
                         Log.e("Gideon", "onSuccess: ${response.body()}")
-                        binding.tvName.text = response.body()!!.single_user.first_name.toString() + " " + response.body()!!.single_user.last_name.toString()
+                        val firstName = response.body()?.single_user?.first_name ?: ""
+                        val lastName = response.body()?.single_user?.last_name ?: ""
+                        val userName = getString(R.string.user_name, firstName, lastName)
+                        binding.tvName.text = userName
 //                        binding.tvLastName.text = response.body()!!.single_user.last_name.toString()
-                        binding.tvEmail.text = response.body()!!.single_user.email.toString()
-                        binding.tvMobile.text = response.body()!!.single_user.mobile.toString()
-                        binding.tvCounty.text = response.body()!!.single_user.county.toString()
-                        binding.tvDistrict.text = response.body()!!.single_user.district.toString()
-                        binding.tvEstate.text = response.body()!!.single_user.estate.toString()
-                        binding.tvLandMark.text = response.body()!!.single_user.landmark.toString()
+                        binding.tvEmail.text = "${response.body()!!.single_user.email}"
+                        binding.tvMobile.text = "${response.body()!!.single_user.mobile}"
+                        binding.tvCounty.text = "${response.body()!!.single_user.county}"
+                        binding.tvDistrict.text = "${response.body()!!.single_user.district}"
+                        binding.tvEstate.text = "${response.body()!!.single_user.estate}"
+                        binding.tvLandMark.text = "${response.body()!!.single_user.landmark}"
                         Picasso.get()
                             .load(profileHeader)
                             .fit().centerCrop()

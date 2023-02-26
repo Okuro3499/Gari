@@ -6,6 +6,6 @@ import com.google.gson.annotations.SerializedName
 data class CarModel(
     @Expose
     @SerializedName("cars")
-    var cars: List<Cars>
+    var cars: ArrayList<Cars>
 )
 

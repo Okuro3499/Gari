@@ -4,9 +4,7 @@ import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.app.ProgressDialog
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -25,6 +23,7 @@ import com.justin.gari.models.carModels.SingleCarModel
 import com.justin.gari.models.saveCarModels.SaveCar
 import com.justin.gari.models.saveCarModels.SaveCarResponse
 import com.justin.gari.utils.SettingsManager
+import com.justin.gari.utils.SharedPrefManager
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.nav_header.view.*
@@ -37,7 +36,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 class DetailActivity : AppCompatActivity() {
-    private val sharedPrefFile = "sharedPrefData"
+    var pref: SharedPrefManager? = null
     private lateinit var apiClient: ApiClient
     private lateinit var binding: ActivityDetailBinding
     private val myCalendarFrom: Calendar = Calendar.getInstance()
@@ -59,13 +58,14 @@ class DetailActivity : AppCompatActivity() {
             supportActionBar!!.hide()
         }
 
-        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        pref = SharedPrefManager(this)
+//        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+//        val editor: SharedPreferences.Editor = sharedPreferences.edit()
 
-        val profileHeader = sharedPreferences.getString("userProfile", "default")
-        val firstNameHeader = sharedPreferences.getString("first_name", "")
-        val lastNameHeader = sharedPreferences.getString("last_name", "")
-        val emailHeader = sharedPreferences.getString("email", "")
+        val profileHeader = pref!!.getUSERPROFILEPHOTO()
+        val firstNameHeader = pref!!.getFIRSTNAME()
+        val lastNameHeader = pref!!.getLASTNAME()
+        val emailHeader = pref!!.getEMAIL()
         val header = binding.navView.getHeaderView(0)
         header.firstName.text = firstNameHeader.toString()
         header.lastName.text = lastNameHeader.toString()
@@ -103,11 +103,10 @@ class DetailActivity : AppCompatActivity() {
             updateLabelFrom()
         }
 
-
-//         datePicker = new DatePickerDialog(this)
-//        date1.setMinDate(System.currentTimeMillis() - 1000)
-//        DatePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000)
         binding.ETDFrom.setOnClickListener {
+            if (binding.ETDTo.text.isEmpty()) {
+                binding.ETDTo.text = "";
+            }
            val datees = DatePickerDialog(
                 this@DetailActivity, date1,
                 myCalendarFrom[Calendar.YEAR],
@@ -115,7 +114,6 @@ class DetailActivity : AppCompatActivity() {
                 myCalendarFrom[Calendar.DAY_OF_MONTH]
             )
             datees.datePicker.minDate = System.currentTimeMillis() - 1000
-
             datees.show()
         }
 
@@ -124,18 +122,30 @@ class DetailActivity : AppCompatActivity() {
             myCalendarTo[Calendar.YEAR] = yearTo
             myCalendarTo[Calendar.MONTH] = monthTo
             myCalendarTo[Calendar.DAY_OF_MONTH] = dayTo
+
             updateLabelTo()
         }
+
         binding.ETDTo.setOnClickListener {
-            val datees2 =DatePickerDialog(
-                this@DetailActivity,
-                date2,
-                myCalendarTo[Calendar.YEAR],
-                myCalendarTo[Calendar.MONTH],
-                myCalendarTo[Calendar.DAY_OF_MONTH]
-            )
-            datees2.datePicker.minDate = System.currentTimeMillis() - 1000
-            datees2.show()
+            if (binding.ETDFrom.text.isNullOrEmpty()) {
+                Toast.makeText(this, "Please set date From first", Toast.LENGTH_SHORT).show()
+            } else {
+                val datees2 =DatePickerDialog(
+                    this@DetailActivity,
+                    date2,
+                    myCalendarTo[Calendar.YEAR],
+                    myCalendarTo[Calendar.MONTH],
+                    myCalendarTo[Calendar.DAY_OF_MONTH]
+                )
+                // Disable dates before the selected date in ETDFrom
+                val dateFormatFrom = SimpleDateFormat("dd/MM/yyyy", Locale.US)
+                val minDate = dateFormatFrom.parse(binding.ETDFrom.text.toString())?.time
+                Log.d("minDate", "$minDate")
+                if (minDate != null) {
+                    datees2.datePicker.minDate = minDate
+                }
+                datees2.show()
+            }
         }
 
         //get car details
@@ -160,7 +170,7 @@ class DetailActivity : AppCompatActivity() {
         binding.ibSave.setOnClickListener {
             val today: LocalDate = LocalDate.now()
             val car_id = carId
-            val user_id = sharedPreferences.getString("user_id", "")
+            val user_id = pref!!.getUSERID()
             val saveInfo = SaveCar(car_id, user_id, today.toString())
 
             apiClient.getApiService(this).saveCar(saveInfo).enqueue(object : Callback<SaveCarResponse> {
@@ -255,8 +265,7 @@ class DetailActivity : AppCompatActivity() {
                         return@OnNavigationItemSelectedListener true
                     }
                     R.id.logout -> {
-                        editor.clear()
-                        editor.apply()
+                        pref!!.clearAllDataExcept()
                         val intentLogout = Intent(this@DetailActivity, MainActivity::class.java)
                         startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
                         finish()
@@ -435,4 +444,6 @@ class DetailActivity : AppCompatActivity() {
         val intent = Intent(this@DetailActivity, MainActivity::class.java)
         startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
     }
+
+
 }

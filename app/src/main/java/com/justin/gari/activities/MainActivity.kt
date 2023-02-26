@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
@@ -18,6 +19,7 @@ import com.justin.gari.databinding.ActivityMainBinding
 import com.justin.gari.models.carModels.CarModel
 import com.justin.gari.models.roleModels.GetRolesResponse
 import com.justin.gari.utils.SettingsManager
+import com.justin.gari.utils.SharedPrefManager
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.nav_header.view.*
 import retrofit2.Call
@@ -29,7 +31,9 @@ class MainActivity : AppCompatActivity() {
     lateinit var apiClient: ApiClient
     lateinit var settingsManager: SettingsManager
     lateinit var binding: ActivityMainBinding
-    val sharedPrefFile = "sharedPrefData"
+    var pref: SharedPrefManager? = null
+//    val sharedPrefFile = "sharedPrefData"
+    var carsAdapter: CarAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         settingsManager = SettingsManager(this)
@@ -44,8 +48,7 @@ class MainActivity : AppCompatActivity() {
             supportActionBar!!.hide()
         }
 
-        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE)
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        pref = SharedPrefManager(this)
 
         binding.swipeRefresh.setOnRefreshListener {
             getAllData()
@@ -54,28 +57,10 @@ class MainActivity : AppCompatActivity() {
         getAllCars()
         roles()
 
-//        val client_id = sharedPreferences.getString("client_id", "default")
-//        val editor: SharedPreferences.Editor = sharedPreferences.edit()
-//        apiClient.getApiService(this).getUserImageInfo(client_id).enqueue(object : Callback<SingleClientImageInfoResponse> {
-//                override fun onResponse(call: Call<SingleClientImageInfoResponse>, response: Response<SingleClientImageInfoResponse>) {
-//                    if (response.isSuccessful) {
-//                        //fetching images to
-//                        val userProfile = response.body()!!.single_clientInfo.user_photo_url.toString().trim()
-//                        editor.putString("userPhoto", userProfile)
-//                        Log.e("Gideon", "onSuccess: ${response.body()!!.single_clientInfo.user_photo_url}")
-//                        editor.apply()
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<SingleClientImageInfoResponse>, t: Throwable) {
-//                    Log.e("Gideon", "onFailure: ${t.message}")
-//                }
-//            })
-
-        val profileHeader = sharedPreferences.getString("userProfile", "default")
-        val firstNameHeader = sharedPreferences.getString("first_name", "")
-        val lastNameHeader = sharedPreferences.getString("last_name", "")
-        val emailHeader = sharedPreferences.getString("email", "")
+        val profileHeader = pref!!.getUSERPROFILEPHOTO()
+        val firstNameHeader = pref!!.getFIRSTNAME()
+        val lastNameHeader = pref!!.getLASTNAME()
+        val emailHeader = pref!!.getEMAIL()
         val outHeader = binding.outNavView.getHeaderView(0)
         val header = binding.navView.getHeaderView(0)
         header.firstName.text = firstNameHeader.toString()
@@ -105,7 +90,8 @@ class MainActivity : AppCompatActivity() {
             binding.greeting.setText(R.string.night)
         }
 
-        if (firstNameHeader != "") {
+        Log.d("ghj", "${pref!!.getFIRSTNAME()}" )
+        if (pref!!.getFIRSTNAME() != "") {
             binding.name.text = ", $firstNameHeader"
         }
 
@@ -115,9 +101,11 @@ class MainActivity : AppCompatActivity() {
         header.themeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 settingsManager.setNightModeState(true)
+                pref!!.setSWITCHEDTHEME(true)
                 restartApp()
             } else {
                 settingsManager.setNightModeState(false)
+                pref!!.setSWITCHEDTHEME(false)
                 restartApp()
             }
         }
@@ -159,8 +147,7 @@ class MainActivity : AppCompatActivity() {
                         return@OnNavigationItemSelectedListener true
                     }
                     R.id.logout -> {
-                        editor.clear()
-                        editor.apply()
+                        pref!!.clearAllDataExcept()
                         val intentLogout = Intent(this@MainActivity, MainActivity::class.java)
                         startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
                         finish()
@@ -182,7 +169,8 @@ class MainActivity : AppCompatActivity() {
                 Log.i(TAG, "onNavigationItemSelected: nothing clicked")
                 false
             })
-        } else {
+        }
+        else {
             binding.drawerLayout.setDrawerLockMode(
                 DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
                 GravityCompat.START
@@ -234,6 +222,18 @@ class MainActivity : AppCompatActivity() {
             binding.shimmerLayout.visibility = View.VISIBLE
             getAllData()
         }
+
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                carsAdapter?.getFilter()?.filter(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                carsAdapter?.getFilter()?.filter(newText);
+                return true
+            }
+        })
     }
 
     private fun getAllCars() {
@@ -243,7 +243,7 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<CarModel>, response: Response<CarModel>) {
                 Log.e("id", response.toString())
                 if (response.isSuccessful) {
-                    val carsAdapter = CarAdapter(response.body()!!.cars, this@MainActivity)
+                    carsAdapter = CarAdapter(response.body()!!.cars, this@MainActivity)
                     binding.shimmerLayout.stopShimmer();
                     binding.shimmerLayout.visibility = View.GONE;
                     binding.recyclerview.adapter = carsAdapter
@@ -255,7 +255,7 @@ class MainActivity : AppCompatActivity() {
                 binding.shimmerLayout.visibility = View.GONE
                 binding.errorPage.visibility = View.VISIBLE
                 binding.message.text = t.message
-                binding.etSearch.visibility = View.GONE
+                binding.searchView.visibility = View.GONE
                 binding.swipeRefresh.visibility = View.GONE
 
 //                Toast.makeText(this@MainActivity, "Check internet connectivity", Toast.LENGTH_LONG).show()
@@ -265,8 +265,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun roles() {
-        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
         apiClient = ApiClient
 
         apiClient.getApiService(this).getRoles("2").enqueue(object : Callback<GetRolesResponse> {
@@ -274,10 +272,9 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call<GetRolesResponse>, response: Response<GetRolesResponse>) {
                 Log.e("id", response.toString())
                 if (response.isSuccessful) {
-                    editor.putString("roleID", response.body()!!.role_details.roleId.toString())
-                    editor.putString("roleName", response.body()!!.role_details.roleName)
-                    editor.putString("roleDescription", response.body()!!.role_details.roleDescription)
-                    editor.apply()
+                    pref!!.setROLEID(response.body()!!.role_details.roleId.toString())
+                    pref!!.setROLENAME(response.body()!!.role_details.roleName)
+                    pref!!.setROLEDESCRIPTION(response.body()!!.role_details.roleDescription)
                 }
             }
 
@@ -300,4 +297,6 @@ class MainActivity : AppCompatActivity() {
             getAllCars()
         }
     }
+
+
 }

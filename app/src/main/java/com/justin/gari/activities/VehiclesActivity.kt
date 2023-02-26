@@ -19,12 +19,13 @@ import com.justin.gari.adapters.MyVehiclesAdapter
 import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityVehiclesBinding
 import com.justin.gari.utils.SettingsManager
+import com.justin.gari.utils.SharedPrefManager
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
 class VehiclesActivity : AppCompatActivity() {
     private lateinit var apiClient: ApiClient
-    private val sharedPrefFile = "sharedPrefData"
+    var pref: SharedPrefManager? = null
     private var theme: Switch? = null
     private lateinit var settingsManager: SettingsManager
     lateinit var binding: ActivityVehiclesBinding
@@ -45,10 +46,8 @@ class VehiclesActivity : AppCompatActivity() {
             supportActionBar!!.hide()
         }
 
-        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
-
         apiClient = ApiClient
+        pref = SharedPrefManager(this)
 
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Bookings"))
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Saved"))
@@ -72,10 +71,10 @@ class VehiclesActivity : AppCompatActivity() {
             }
         })
 
-        val profileHeader = sharedPreferences.getString("userProfile", "default")
-        val firstNameHeader = sharedPreferences.getString("first_name", "")
-        val lastNameHeader = sharedPreferences.getString("last_name", "")
-        val emailHeader = sharedPreferences.getString("email", "")
+        val profileHeader = pref!!.getUSERPROFILEPHOTO()
+        val firstNameHeader = pref!!.getFIRSTNAME()
+        val lastNameHeader = pref!!.getLASTNAME()
+        val emailHeader = pref!!.getEMAIL()
         val header: View = binding.navView.getHeaderView(0)
         val profileImage = header.findViewById(R.id.profile_image) as CircleImageView
         val firstNameTv = header.findViewById<View>(R.id.firstName) as TextView
@@ -137,8 +136,7 @@ class VehiclesActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {
-                    editor.clear()
-                    editor.apply()
+                    pref!!.clearAllDataExcept()
                     val intentLogout = Intent(this@VehiclesActivity, MainActivity::class.java)
                     startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
                     finish()

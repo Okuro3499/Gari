@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.justin.gari.R
@@ -16,16 +17,19 @@ import com.justin.gari.api.SessionManager
 import com.justin.gari.databinding.ActivityLoginBinding
 import com.justin.gari.models.userModels.loginModel.UserLogin
 import com.justin.gari.models.userModels.loginModel.UserLoginResponse
+import com.justin.gari.utils.SharedPrefManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.system.exitProcess
 
 class LoginActivity : AppCompatActivity() {
-    private val sharedPrefFile = "sharedPrefData"
+    var pref: SharedPrefManager? = null
     private lateinit var sessionManager: SessionManager
     private lateinit var apiClient: ApiClient
     private lateinit var binding: ActivityLoginBinding
     private lateinit var settingsManager: SettingsManager
+    var theme: Switch? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         settingsManager = SettingsManager(this)
@@ -43,8 +47,14 @@ class LoginActivity : AppCompatActivity() {
 
         apiClient = ApiClient
         sessionManager = SessionManager(this)
-        val sharedPreferences: SharedPreferences =
-            getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        pref = SharedPrefManager(this)
+
+        if(pref!!.getSWITCHEDTHEME()){
+            settingsManager.setNightModeState(true)
+        } else if(!pref!!.getSWITCHEDTHEME()){
+            settingsManager.setNightModeState(false)
+        }
+
 
         //Login into user account
         binding.btLogin.setOnClickListener {
@@ -61,8 +71,6 @@ class LoginActivity : AppCompatActivity() {
                 progressDialog.setMessage("Logging in...") // set message
                 progressDialog.show()
 
-                val editor: SharedPreferences.Editor = sharedPreferences.edit()
-
                 val loginInfo = UserLogin(
                     binding.etEmailAddress.text.toString().trim(),
                     binding.etPassword.text.toString().trim()
@@ -74,14 +82,12 @@ class LoginActivity : AppCompatActivity() {
                             Snackbar.make(it, "Login Successful", Snackbar.LENGTH_SHORT).show()
                             Log.e("Gideon", "onSuccess: ${response.body()}")
 
-                            editor.putString("user_id", response.body()!!.users.user_id)
-                            editor.putString("role_id", response.body()!!.users.role_id)
-                            editor.putString("first_name", response.body()!!.users.first_name)
-                            editor.putString("last_name", response.body()!!.users.last_name)
-                            editor.putString("email", response.body()!!.users.email)
-                            editor.putString("userProfile", response.body()!!.users.user_photo_url)
-                            editor.apply()
-
+                            pref!!.setUSERID(response.body()!!.users.user_id)
+                            pref!!.setROLEID(response.body()!!.users.role_id)
+                            pref!!.setFIRSTNAME(response.body()!!.users.first_name)
+                            pref!!.setLASTNAME(response.body()!!.users.last_name)
+                            pref!!.setEMAIL(response.body()!!.users.email)
+                            pref!!.setUSERPROFILEPHOTO(response.body()!!.users.user_photo_url)
                         response.body()!!.accessToken?.let { it1 -> sessionManager.saveAuthToken(it1) }
 
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
@@ -92,9 +98,9 @@ class LoginActivity : AppCompatActivity() {
                 override fun onFailure(call: Call<UserLoginResponse>, t: Throwable) {
                     progressDialog.dismiss()
                     Snackbar.make(it, "${t.message}", Snackbar.LENGTH_SHORT).show()
-                            Log.e("Gideon", "onFailure: ${t.message}")
-                        }
-                    })
+                    Log.e("Gideon", "onFailure: ${t.message}")
+                }
+                })
             }
         }
 
@@ -103,6 +109,12 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
         }
+    }
+
+    override fun onBackPressed() {
+        finish()
+        finishAffinity()
+        exitProcess(0)
     }
 }
 

@@ -18,6 +18,7 @@ import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.FragmentBookingsBinding
 import com.justin.gari.databinding.FragmentSavedBinding
 import com.justin.gari.models.saveCarModels.SavedCarResponse
+import com.justin.gari.utils.SharedPrefManager
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,7 +26,7 @@ import retrofit2.Response
 
 class SavedFragment : Fragment() {
     private lateinit var apiClient: ApiClient
-    private val sharedPrefFile = "sharedPrefData"
+    var pref: SharedPrefManager? = null
     private var binding: FragmentSavedBinding? = null
 
     override fun onCreateView(
@@ -37,8 +38,8 @@ class SavedFragment : Fragment() {
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val sharedPreferences: SharedPreferences? = activity?.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-        val userId = sharedPreferences?.getString("user_id", "")
+        pref = SharedPrefManager(requireActivity())
+        val userId = pref!!.getUSERID()
 
         apiClient = ApiClient
         context?.let {
