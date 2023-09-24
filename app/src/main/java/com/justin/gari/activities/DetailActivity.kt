@@ -1,5 +1,6 @@
 package com.justin.gari.activities
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.app.ProgressDialog
@@ -9,7 +10,10 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.widget.Switch
+import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -22,11 +26,9 @@ import com.justin.gari.databinding.ActivityDetailBinding
 import com.justin.gari.models.carModels.SingleCarModel
 import com.justin.gari.models.saveCarModels.SaveCar
 import com.justin.gari.models.saveCarModels.SaveCarResponse
-import com.justin.gari.utils.SettingsManager
 import com.justin.gari.utils.SharedPrefManager
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_detail.*
-import kotlinx.android.synthetic.main.nav_header.view.*
+import de.hdodenhof.circleimageview.CircleImageView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -35,6 +37,7 @@ import java.time.LocalDate
 import java.util.*
 import java.util.concurrent.TimeUnit
 
+@SuppressLint("UseSwitchCompatOrMaterialCode")
 class DetailActivity : AppCompatActivity() {
     var pref: SharedPrefManager? = null
     private lateinit var apiClient: ApiClient
@@ -42,12 +45,13 @@ class DetailActivity : AppCompatActivity() {
     private val myCalendarFrom: Calendar = Calendar.getInstance()
     private val myCalendarTo: Calendar = Calendar.getInstance()
     var selectedDrive: String? = null
-    private lateinit var settingsManager: SettingsManager
-    var total : String? = null
+    var total: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        settingsManager = SettingsManager(this)
-        if (settingsManager.loadNightModeState()) {
+        apiClient = ApiClient()
+        pref = SharedPrefManager(this)
+        Log.d("NightModeState", "${pref!!.loadNightModeState()}")
+        if (pref!!.loadNightModeState()) {
             setTheme(R.style.DarkGari)
         } else setTheme(R.style.Gari)
 
@@ -58,34 +62,59 @@ class DetailActivity : AppCompatActivity() {
             supportActionBar!!.hide()
         }
 
-        pref = SharedPrefManager(this)
-//        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-//        val editor: SharedPreferences.Editor = sharedPreferences.edit()
-
         val profileHeader = pref!!.getUSERPROFILEPHOTO()
-        val firstNameHeader = pref!!.getFIRSTNAME()
-        val lastNameHeader = pref!!.getLASTNAME()
-        val emailHeader = pref!!.getEMAIL()
         val header = binding.navView.getHeaderView(0)
-        header.firstName.text = firstNameHeader.toString()
-        header.lastName.text = lastNameHeader.toString()
-        header.email.text = emailHeader.toString()
+        val outHeader = binding.outNavView.getHeaderView(0)
+        val firstNameTextView = header.findViewById<TextView>(R.id.firstName)
+        val emailTextView = header.findViewById<TextView>(R.id.email)
+        val profileImage = header.findViewById<CircleImageView>(R.id.profile_image)
+        val inSwitch = header.findViewById<Switch>(R.id.themeSwitch)
+        val outSwitch = outHeader.findViewById<Switch>(R.id.themeSwitch)
+        firstNameTextView.text = "${pref!!.getFIRSTNAME()}"
+        val firstName = firstNameTextView.text
+        emailTextView.text = pref!!.getEMAIL()
+
         Picasso.get()
             .load(profileHeader)
             .fit().centerCrop()
             .placeholder(R.drawable.user)
             .error(R.drawable.user)
-            .into(header.profile_image)
+            .into(profileImage)
 
-        if (settingsManager.loadNightModeState()) {
-            header.themeSwitch!!.isChecked = true
+        if (pref!!.loadNightModeState()) {
+            inSwitch.isChecked = true
+            outSwitch.isChecked = true
+            inSwitch.text = getString(R.string.light_mode)
+            outSwitch.text = getString(R.string.light_mode)
+        } else{
+            inSwitch.text = getString(R.string.dark_mode)
+            outSwitch.text = getString(R.string.dark_mode)
         }
-        header.themeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+
+        inSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                settingsManager.setNightModeState(true)
+                pref!!.setNightModeState(true)
+                pref!!.setSWITCHEDTHEME(true)
+                inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             } else {
-                settingsManager.setNightModeState(false)
+                pref!!.setNightModeState(false)
+                pref!!.setSWITCHEDTHEME(false)
+                inSwitch.text = getString(R.string.light_mode)
+                restartApp()
+            }
+        }
+
+        outHeader.findViewById<Switch>(R.id.themeSwitch).setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                pref!!.setNightModeState(true)
+                pref!!.setSWITCHEDTHEME(true)
+                outSwitch.text = getString(R.string.dark_mode)
+                restartApp()
+            } else {
+                pref!!.setNightModeState(false)
+                pref!!.setSWITCHEDTHEME(false)
+                outSwitch.text = getString(R.string.dark_mode)
                 restartApp()
             }
         }
@@ -105,9 +134,9 @@ class DetailActivity : AppCompatActivity() {
 
         binding.ETDFrom.setOnClickListener {
             if (binding.ETDTo.text.isEmpty()) {
-                binding.ETDTo.text = "";
+                binding.ETDTo.text = ""
             }
-           val datees = DatePickerDialog(
+            val datees = DatePickerDialog(
                 this@DetailActivity, date1,
                 myCalendarFrom[Calendar.YEAR],
                 myCalendarFrom[Calendar.MONTH],
@@ -130,7 +159,7 @@ class DetailActivity : AppCompatActivity() {
             if (binding.ETDFrom.text.isNullOrEmpty()) {
                 Toast.makeText(this, "Please set date From first", Toast.LENGTH_SHORT).show()
             } else {
-                val datees2 =DatePickerDialog(
+                val datees2 = DatePickerDialog(
                     this@DetailActivity,
                     date2,
                     myCalendarTo[Calendar.YEAR],
@@ -153,19 +182,6 @@ class DetailActivity : AppCompatActivity() {
         val carId = intent.getStringExtra("car_id")
         getCarDetails()
 
-        binding.nav.setOnClickListener {
-            if (firstNameHeader != "") {
-                binding.drawerLayout.openDrawer(GravityCompat.START)
-            } else {
-                binding.drawerLayout.openDrawer(GravityCompat.END)
-            }
-        }
-
-        binding.back.setOnClickListener {
-            val intent = Intent(this@DetailActivity, MainActivity::class.java)
-            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-        }
-
         //save car for future bookings
         binding.ibSave.setOnClickListener {
             val today: LocalDate = LocalDate.now()
@@ -174,20 +190,20 @@ class DetailActivity : AppCompatActivity() {
             val saveInfo = SaveCar(car_id, user_id, today.toString())
 
             apiClient.getApiService(this).saveCar(saveInfo).enqueue(object : Callback<SaveCarResponse> {
-                    override fun onResponse(call: Call<SaveCarResponse>,
-                        response: Response<SaveCarResponse>) {
-                        if (response.isSuccessful) {
-                            Snackbar.make(it, "Saved Successfully", Snackbar.LENGTH_SHORT).show()
-                            Log.e("Gideon", "onSuccess: ${response.body()}")
-                        }
+                override fun onResponse(call: Call<SaveCarResponse>, response: Response<SaveCarResponse>) {
+                    if (response.isSuccessful) {
+                        Snackbar.make(it, "Saved Successfully", Snackbar.LENGTH_SHORT).show()
+                        Log.e("Gideon", "onSuccess: ${response.body()}")
                     }
+                }
 
-                    override fun onFailure(call: Call<SaveCarResponse>, t: Throwable) {
-                        Snackbar.make(it, "Failed to save kindly retry", Snackbar.LENGTH_SHORT).show()
-                        Log.e("Gideon", "onFailure: ${t.message}")
-                    }
-                })
+                override fun onFailure(call: Call<SaveCarResponse>, t: Throwable) {
+                    Snackbar.make(it, "Failed to save kindly retry", Snackbar.LENGTH_SHORT).show()
+                    Log.e("Gideon", "onFailure: ${t.message}")
+                }
+            })
         }
+
         //make car booking
         binding.btBook.setOnClickListener {
             if (binding.ETDFrom.text.toString().trim() == "") {
@@ -195,7 +211,8 @@ class DetailActivity : AppCompatActivity() {
             } else if (binding.ETDTo.text.toString().trim() == "") {
                 binding.ETDTo.error = "Kindly choose to date"
             } else if (binding.radioDriveGroup.checkedRadioButtonId == -1) {
-                Toast.makeText(this@DetailActivity, "Kindly choose drive mode", Toast.LENGTH_LONG).show();
+                Toast.makeText(this@DetailActivity, "Kindly choose drive mode", Toast.LENGTH_LONG)
+                    .show()
             } else if (TextUtils.isEmpty(binding.etDestination.text.toString().trim())) {
                 binding.etDestination.error = "Kindly enter a destination!"
             } else {
@@ -207,14 +224,14 @@ class DetailActivity : AppCompatActivity() {
                 }
 
 
-                if (firstNameHeader != "") {
+                if ("$firstName" != "") {
                     val intent = Intent(this, PaymentActivity::class.java)
                     val car_id = carId
                     val book_date_from = binding.ETDFrom.text.toString().trim()
                     val book_date_to = binding.ETDTo.text.toString().trim()
                     val destination = binding.etDestination.text.toString().trim()
                     val drive = selectedDrive
-                    val total_days = tvTotalDays.text.toString().trim()
+                    val total_days = binding.tvTotalDays.text.toString().trim()
                     val total_amount = total
                     intent.putExtra("car_name", binding.tvCarName.text.toString())
                     intent.putExtra("drive", drive.toString())
@@ -222,8 +239,8 @@ class DetailActivity : AppCompatActivity() {
                     intent.putExtra("book_date_from", book_date_from)
                     intent.putExtra("book_date_to", book_date_to)
                     intent.putExtra("destination", destination)
-                    intent.putExtra("total_days",total_days)
-                    intent.putExtra("total_amount",total_amount)
+                    intent.putExtra("total_days", total_days)
+                    intent.putExtra("total_amount", total_amount)
                     intent.putExtra("amntPerDay", binding.tvPrice.text.toString())
 
                     startActivity(intent)
@@ -235,50 +252,56 @@ class DetailActivity : AppCompatActivity() {
             }
         }
 
-        if (firstNameHeader != "") {
-            binding.drawerLayout.setDrawerLockMode(
-                DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
-                GravityCompat.END
-            )
+        binding.nav.setOnClickListener {
+            if ("$firstName" != "") {
+                binding.drawerLayout.openDrawer(GravityCompat.START)
+            } else {
+                binding.drawerLayout.openDrawer(GravityCompat.END)
+            }
+        }
+
+        if ("$firstName" != "") {
+            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END)
             binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
                 Log.i(ContentValues.TAG, "onNavigationItemSelected: " + item.itemId)
+
                 when (item.itemId) {
                     R.id.home -> {
-                        startActivity(
-                            Intent(
-                                this@DetailActivity,
-                                MainActivity::class.java
-                            ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        )
+                        val intentHome = Intent(this, MainActivity::class.java)
+                        startActivity(intentHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        finish()
                         return@OnNavigationItemSelectedListener true
                     }
                     R.id.profile -> {
-                        val intentProfile =
-                            Intent(this@DetailActivity, UserProfileActivity::class.java)
+                        val intentProfile = Intent(this, UserProfileActivity::class.java)
                         startActivity(intentProfile.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        finish()
                         return@OnNavigationItemSelectedListener true
                     }
                     R.id.myVehicles -> {
-                        val intentMyVehicles =
-                            Intent(this@DetailActivity, VehiclesActivity::class.java)
+                        val intentMyVehicles = Intent(this, VehiclesActivity::class.java)
                         startActivity(intentMyVehicles.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        finish()
                         return@OnNavigationItemSelectedListener true
                     }
                     R.id.logout -> {
                         pref!!.clearAllDataExcept()
-                        val intentLogout = Intent(this@DetailActivity, MainActivity::class.java)
+                        val intentLogout = Intent(this, MainActivity::class.java)
                         startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
                         finish()
                         return@OnNavigationItemSelectedListener true
+
                     }
                     R.id.about -> {
-                        val intentAbout = Intent(this@DetailActivity, AboutActivity::class.java)
+                        val intentAbout = Intent(this, AboutActivity::class.java)
                         startActivity(intentAbout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        finish()
                         return@OnNavigationItemSelectedListener true
                     }
                     R.id.help -> {
-                        val intentHelp = Intent(this@DetailActivity, LoginActivity::class.java)
+                        val intentHelp = Intent(this, LoginActivity::class.java)
                         startActivity(intentHelp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        finish()
                         return@OnNavigationItemSelectedListener true
                     }
                 }
@@ -288,36 +311,29 @@ class DetailActivity : AppCompatActivity() {
             })
         }
         else {
-            binding.drawerLayout.setDrawerLockMode(
-                DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
-                GravityCompat.START
-            )
+            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.START)
             binding.outNavView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
                 Log.i(ContentValues.TAG, "onNavigationItemSelected: " + item.itemId)
 
                 when (item.itemId) {
                     R.id.login -> {
-                        startActivity(
-                            Intent(
-                                this@DetailActivity,
-                                LoginActivity::class.java
-                            ).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        )
+                        val intentLogin = Intent(this, LoginActivity::class.java)
+                        startActivity(intentLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        finish()
                         return@OnNavigationItemSelectedListener true
                     }
                     R.id.createAccount -> {
-                        val intentProfile =
-                            Intent(this@DetailActivity, RegisterActivity::class.java)
+                        val intentProfile = Intent(this, RegisterActivity::class.java)
                         startActivity(intentProfile.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                         return@OnNavigationItemSelectedListener true
                     }
                     R.id.about -> {
-                        val intentAbout = Intent(this@DetailActivity, AboutActivity::class.java)
+                        val intentAbout = Intent(this, AboutActivity::class.java)
                         startActivity(intentAbout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                         return@OnNavigationItemSelectedListener true
                     }
                     R.id.help -> {
-                        val intentHelp = Intent(this@DetailActivity, LoginActivity::class.java)
+                        val intentHelp = Intent(this, LoginActivity::class.java)
                         startActivity(intentHelp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                         return@OnNavigationItemSelectedListener true
                     }
@@ -327,6 +343,19 @@ class DetailActivity : AppCompatActivity() {
                 false
             })
         }
+
+        binding.back.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+            finish()
+        }
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onBackPressed()
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, callback)
     }
 
     private fun getCarDetails() {
@@ -336,13 +365,16 @@ class DetailActivity : AppCompatActivity() {
         progressDialog.setMessage("Fetching Details..") // set message
         progressDialog.show()
 
-        apiClient = ApiClient
         val carId = intent.getStringExtra("car_id")
-        apiClient.getApiService(this).getCarDetails(carId).enqueue(object : Callback<SingleCarModel> {
-                override fun onResponse(call: Call<SingleCarModel>, response: Response<SingleCarModel>) {
+        apiClient.getApiService(this).getCarDetails(carId)
+            .enqueue(object : Callback<SingleCarModel> {
+                override fun onResponse(
+                    call: Call<SingleCarModel>,
+                    response: Response<SingleCarModel>
+                ) {
                     if (response.isSuccessful) {
                         progressDialog.dismiss()
-                        binding.cons.visibility = View.VISIBLE;
+                        binding.cons.visibility = View.VISIBLE
 
                         //fetching images to slider
                         val imageUrls = arrayOf(
@@ -359,11 +391,14 @@ class DetailActivity : AppCompatActivity() {
 
                         binding.tvCarName.text = response.body()!!.single_car.car_name.toString()
                         binding.tvStatus.text = response.body()!!.single_car.status.toString()
-                        binding.tvTransmission.text = response.body()!!.single_car.transmission.toString()
+                        binding.tvTransmission.text =
+                            response.body()!!.single_car.transmission.toString()
                         binding.tvEngine.text = response.body()!!.single_car.engine.toString()
                         binding.tvColor.text = response.body()!!.single_car.color.toString()
-                        binding.tvRegistration.text = response.body()!!.single_car.registration.toString()
-                        binding.tvPassengers.text = response.body()!!.single_car.passengers.toString()
+                        binding.tvRegistration.text =
+                            response.body()!!.single_car.registration.toString()
+                        binding.tvPassengers.text =
+                            response.body()!!.single_car.passengers.toString()
                         binding.tvCompany.text = response.body()!!.single_car.company.toString()
                         binding.tvPrice.text = response.body()!!.single_car.price.toString()
                         binding.tvDoors.text = response.body()!!.single_car.doors.toString()
@@ -383,15 +418,16 @@ class DetailActivity : AppCompatActivity() {
                     binding.errorPage.visibility = View.VISIBLE
                     binding.message.text = t.message
 //                    binding.swipeRefresh.visibility = View.GONE
-                    //binding.shimmerLayout.stopShimmer();
-                    //binding.shimmerLayout.visibility = View.GONE;
+                    //binding.shimmerLayout.stopShimmer()
+                    //binding.shimmerLayout.visibility = View.GONE
                     Log.e("Gideon", "onFailure: ${t.message}")
                 }
             })
     }
 
     private fun restartApp() {
-        recreate()
+        finish()
+        startActivity(intent)
     }
 
     //get date from
@@ -427,23 +463,20 @@ class DetailActivity : AppCompatActivity() {
 
     //multiply Price And Days
     private fun multiplyPriceAndDays() {
-        val price = tvPrice.text.toString()
-        val noOfDays = tvTotalDays.text.toString()
+        val price = binding.tvPrice.text.toString()
+        val noOfDays = binding.tvTotalDays.text.toString()
         val finalPrice = price.toInt()
         val finalNoOfDays = noOfDays.toInt()
 
-        total = StringBuilder().apply {
-            append(finalPrice * finalNoOfDays)
-        }.toString()
-        binding.tvTotalAmount.text = "Ksh. $total"
+        total = StringBuilder().apply { append(finalPrice * finalNoOfDays) }.toString()
+        binding.tvTotalAmount.text = getString(R.string.total_amount, total)
     }
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
-        super.onBackPressed()
-        val intent = Intent(this@DetailActivity, MainActivity::class.java)
-        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
+        finish()
     }
-
-
 }

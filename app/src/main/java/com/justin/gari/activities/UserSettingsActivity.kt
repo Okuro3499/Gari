@@ -1,5 +1,6 @@
 package com.justin.gari.activities
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.ContentValues
@@ -12,6 +13,7 @@ import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -41,11 +43,15 @@ class UserSettingsActivity : AppCompatActivity() {
     lateinit var binding: ActivityUserSettingsBinding
     var pref: SharedPrefManager? = null
     private lateinit var apiClient: ApiClient
-    private lateinit var settingsManager: SettingsManager
+    var userId :String? = null
+    var roleId :String? = null
 
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     override fun onCreate(savedInstanceState: Bundle?) {
-        settingsManager = SettingsManager(this)
-        if (settingsManager.loadNightModeState()) {
+        apiClient = ApiClient()
+        pref = SharedPrefManager(this)
+        Log.d("NightModeState", "${pref!!.loadNightModeState()}")
+        if (pref!!.loadNightModeState()) {
             setTheme(R.style.DarkGari)
         } else setTheme(R.style.Gari)
 
@@ -57,23 +63,18 @@ class UserSettingsActivity : AppCompatActivity() {
             supportActionBar!!.hide()
         }
 
-        apiClient = ApiClient
-        pref = SharedPrefManager(this)
-        val userId = pref!!.getUSERID()
-        val roleId = pref!!.getROLEID()
+        userId = pref!!.getUSERID()
+        roleId = pref!!.getROLEID()
 
         val profileHeader = pref!!.getUSERPROFILEPHOTO()
-        val firstNameHeader = pref!!.getFIRSTNAME()
-        val lastNameHeader = pref!!.getLASTNAME()
-        val emailHeader = pref!!.getEMAIL()
-        val header: View = binding.navView.getHeaderView(0)
-        val profileImage = header.findViewById(R.id.profile_image) as CircleImageView
-        val firstNameTv = header.findViewById<View>(R.id.firstName) as TextView
-        firstNameTv.text = firstNameHeader.toString()
-        val lastNameTv = header.findViewById<View>(R.id.lastName) as TextView
-        lastNameTv.text = lastNameHeader.toString()
-        val emailTv = header.findViewById<View>(R.id.email) as TextView
-        emailTv.text = emailHeader.toString()
+        val header = binding.navView.getHeaderView(0)
+        val firstNameTextView = header.findViewById<TextView>(R.id.firstName)
+        val emailTextView = header.findViewById<TextView>(R.id.email)
+        val profileImage = header.findViewById<CircleImageView>(R.id.profile_image)
+        val inSwitch = header.findViewById<Switch>(R.id.themeSwitch)
+        firstNameTextView.text = "${pref!!.getFIRSTNAME()}"
+        val firstName = firstNameTextView.text
+        emailTextView.text = pref!!.getEMAIL()
 
         Picasso.get()
             .load(profileHeader)
@@ -82,17 +83,23 @@ class UserSettingsActivity : AppCompatActivity() {
             .error(R.drawable.user)
             .into(profileImage)
 
-        val switchTheme = header.findViewById(R.id.themeSwitch) as Switch
-        if (settingsManager.loadNightModeState()) {
-            switchTheme.isChecked = true
+        if (pref!!.loadNightModeState()) {
+            inSwitch.isChecked = true
+            inSwitch.text = getString(R.string.light_mode)
+        } else{
+            inSwitch.text = getString(R.string.dark_mode)
         }
 
-        switchTheme.setOnCheckedChangeListener { _, isChecked ->
+        inSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                settingsManager.setNightModeState(true)
+                pref!!.setNightModeState(true)
+                pref!!.setSWITCHEDTHEME(true)
+                inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             } else {
-                settingsManager.setNightModeState(false)
+                pref!!.setNightModeState(false)
+                pref!!.setSWITCHEDTHEME(false)
+                inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             }
         }
@@ -103,42 +110,44 @@ class UserSettingsActivity : AppCompatActivity() {
 
         binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
             Log.i(ContentValues.TAG, "onNavigationItemSelected: " + item.itemId)
+
             when (item.itemId) {
                 R.id.home -> {
-                    startActivity(
-                        Intent(this@UserSettingsActivity, MainActivity::class.java).addFlags(
-                            Intent.FLAG_ACTIVITY_CLEAR_TOP
-                        )
-                    )
+                    val intentHome = Intent(this, MainActivity::class.java)
+                    startActivity(intentHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    finish()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.profile -> {
-                    val intentProfile =
-                        Intent(this@UserSettingsActivity, UserProfileActivity::class.java)
+                    val intentProfile = Intent(this, UserProfileActivity::class.java)
                     startActivity(intentProfile.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    finish()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.myVehicles -> {
-                    val intentMyVehicles =
-                        Intent(this@UserSettingsActivity, VehiclesActivity::class.java)
+                    val intentMyVehicles = Intent(this, VehiclesActivity::class.java)
                     startActivity(intentMyVehicles.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    finish()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {
                     pref!!.clearAllDataExcept()
-                    val intentLogout = Intent(this@UserSettingsActivity, MainActivity::class.java)
+                    val intentLogout = Intent(this, MainActivity::class.java)
                     startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
                     finish()
                     return@OnNavigationItemSelectedListener true
+
                 }
                 R.id.about -> {
-                    val intentAbout = Intent(this@UserSettingsActivity, AboutActivity::class.java)
+                    val intentAbout = Intent(this, AboutActivity::class.java)
                     startActivity(intentAbout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    finish()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.help -> {
-                    val intentHelp = Intent(this@UserSettingsActivity, LoginActivity::class.java)
+                    val intentHelp = Intent(this, LoginActivity::class.java)
                     startActivity(intentHelp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    finish()
                     return@OnNavigationItemSelectedListener true
                 }
             }
@@ -147,62 +156,79 @@ class UserSettingsActivity : AppCompatActivity() {
             false
         })
 
-        binding.back.setOnClickListener {
-            val intent = Intent(this@UserSettingsActivity, UserProfileActivity::class.java)
-            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-        }
-
-        apiClient = ApiClient
-        apiClient.getApiService(this).getUserDetails(userId, roleId).enqueue(object : Callback<UserDetailsResponse> {
-                override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
-                    if (response.isSuccessful) {
-                        Log.e("Gideon", "onSuccess: ${response.body()}")
-                        //driver license
-                        Picasso.get()
-                            .load(response.body()!!.single_user.driver_licence_url)
-                            .fit().centerCrop()
-                            .placeholder(R.drawable.click)
-                            .error(R.drawable.click)
-                            .into(binding.ivDl)
-
-                        //national id
-                        Picasso.get()
-                            .load(response.body()!!.single_user.national_id_url)
-                            .fit().centerCrop()
-                            .placeholder(R.drawable.click)
-                            .error(R.drawable.click)
-                            .into(binding.ivId)
-
-                        //userphoto
-                        Picasso.get()
-                            .load(response.body()!!.single_user.user_photo_url)
-                            .fit().centerCrop()
-                            .placeholder(R.drawable.click)
-                            .error(R.drawable.click)
-                            .into(binding.ivPhoto)
-                    }
-                }
-
-                override fun onFailure(call: Call<UserDetailsResponse>, t: Throwable) {
-                    Log.e("Gideon", "onFailure: ${t.message}")
-                }
-            })
-
         binding.ivDl.setOnClickListener { ImagePicker.with(this).start(0) }
 
         binding.ivId.setOnClickListener { ImagePicker.with(this).start(1) }
 
         binding.ivPhoto.setOnClickListener { ImagePicker.with(this).start(2) }
 
+        binding.back.setOnClickListener {
+            val intent = Intent(this, UserProfileActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+            finish()
+        }
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onBackPressed()
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, callback)
+
+        getUserDetails()
+    }
+
+    private fun getUserDetails() {
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setCancelable(false) // set cancelable to false
+        progressDialog.setMessage("Fetching Details..") // set message
+        progressDialog.show()
+
+        apiClient.getApiService(this).getUserDetails(userId, roleId).enqueue(object : Callback<UserDetailsResponse> {
+            override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
+                if (response.isSuccessful) {
+                    progressDialog.dismiss()
+                    Log.e("Gideon", "onSuccess: ${response.body()}")
+                    //driver license
+                    Picasso.get()
+                        .load(response.body()!!.single_user.driver_licence_url)
+                        .fit().centerCrop()
+                        .placeholder(R.drawable.click)
+                        .error(R.drawable.click)
+                        .into(binding.ivDl)
+
+                    //national id
+                    Picasso.get()
+                        .load(response.body()!!.single_user.national_id_url)
+                        .fit().centerCrop()
+                        .placeholder(R.drawable.click)
+                        .error(R.drawable.click)
+                        .into(binding.ivId)
+
+                    //userphoto
+                    Picasso.get()
+                        .load(response.body()!!.single_user.user_photo_url)
+                        .fit().centerCrop()
+                        .placeholder(R.drawable.click)
+                        .error(R.drawable.click)
+                        .into(binding.ivPhoto)
+                }
+            }
+
+            override fun onFailure(call: Call<UserDetailsResponse>, t: Throwable) {
+                progressDialog.dismiss()
+                Log.e("Gideon", "onFailure: ${t.message}")
+            }
+        })
     }
 
     private fun restartApp() {
-        recreate()
-//        val i = Intent(applicationContext, UserProfileActivity::class.java)
-//        startActivity(i)
-//        finish()
+        finish()
+        startActivity(intent)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val imageDriverLicensePicker = findViewById<ImageView>(R.id.ivDl)
         val imageIdCardPicker = findViewById<ImageView>(R.id.ivId)
@@ -418,10 +444,11 @@ class UserSettingsActivity : AppCompatActivity() {
             })
     }
 
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        if (toggle.onOptionsItemSelected(item)) {
-//            true
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        val intent = Intent(this, UserProfileActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
+        finish()
+    }
 }

@@ -2,6 +2,11 @@
     <string name="app_name">Gari</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="dark_mode">Switch to Dark Mode</string>
+    <string name="light_mode">Switch to Light Mode</string>
+    <string name="total_amount">Ksh. %1$s</string>
+    <string name="username">, %1$s</string>
+    <string name="full_name_">%1$s %2$s</string>
     <string name="features"><u>Features</u></string>
     <string name="book"><u>Book</u></string>
     <string name="title_activity_login">LoginActivity</string>

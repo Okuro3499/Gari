@@ -1,14 +1,15 @@
 package com.justin.gari.activities
 
+import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Switch
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
@@ -28,41 +29,40 @@ class EmergencyContactsActivity : AppCompatActivity() {
     lateinit var binding: ActivityEmergencyContactsBinding
     var pref: SharedPrefManager? = null
     private lateinit var apiClient: ApiClient
-    private lateinit var settingsManager: SettingsManager
+    var userId :String? = null
+    var roleId :String? = null
 
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     override fun onCreate(savedInstanceState: Bundle?) {
-        settingsManager = SettingsManager(this)
-        if (settingsManager.loadNightModeState()) {
+        apiClient = ApiClient()
+        pref = SharedPrefManager(this)
+        Log.d("NightModeState", "${pref!!.loadNightModeState()}")
+        if (pref!!.loadNightModeState()) {
             setTheme(R.style.DarkGari)
         } else setTheme(R.style.Gari)
 
         super.onCreate(savedInstanceState)
         binding = ActivityEmergencyContactsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        apiClient = ApiClient
-        pref = SharedPrefManager(this)
 
         if (supportActionBar != null) {
             supportActionBar!!.hide()
         }
-        val userId = pref!!.getUSERID()
-        val roleId = pref!!.getROLEID()
 
-//        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-//        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        userId = pref!!.getUSERID()
+        roleId = pref!!.getROLEID()
 
         val profileHeader = pref!!.getUSERPROFILEPHOTO()
-        val firstNameHeader = pref!!.getFIRSTNAME()
-        val lastNameHeader = pref!!.getLASTNAME()
-        val emailHeader = pref!!.getEMAIL()
-        val header: View = binding.navView.getHeaderView(0)
-        val profileImage = header.findViewById(R.id.profile_image) as CircleImageView
-        val firstNameTv = header.findViewById<View>(R.id.firstName) as TextView
-        firstNameTv.text = firstNameHeader.toString()
-        val lastNameTv = header.findViewById<View>(R.id.lastName) as TextView
-        lastNameTv.text = lastNameHeader.toString()
-        val emailTv = header.findViewById<View>(R.id.email) as TextView
-        emailTv.text = emailHeader.toString()
+        val header = binding.navView.getHeaderView(0)
+        val firstNameTextView = header.findViewById<TextView>(R.id.firstName)
+        val lastNameTextView = header.findViewById<TextView>(R.id.lastName)
+        val emailTextView = header.findViewById<TextView>(R.id.email)
+        val profileImage = header.findViewById<CircleImageView>(R.id.profile_image)
+        val inSwitch = header.findViewById<Switch>(R.id.themeSwitch)
+        firstNameTextView.text = "${pref!!.getFIRSTNAME()}"
+        val firstName = firstNameTextView.text
+        lastNameTextView.text = pref!!.getLASTNAME()
+        emailTextView.text = pref!!.getEMAIL()
 
         Picasso.get()
             .load(profileHeader)
@@ -71,16 +71,23 @@ class EmergencyContactsActivity : AppCompatActivity() {
             .error(R.drawable.user)
             .into(profileImage)
 
-        val switchTheme = header.findViewById(R.id.themeSwitch) as Switch
-        if (settingsManager.loadNightModeState()) {
-            switchTheme.isChecked = true
+        if (pref!!.loadNightModeState()) {
+            inSwitch.isChecked = true
+            inSwitch.text = getString(R.string.light_mode)
+        } else{
+            inSwitch.text = getString(R.string.dark_mode)
         }
-        switchTheme.setOnCheckedChangeListener { _, isChecked ->
+
+        inSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                settingsManager.setNightModeState(true)
+                pref!!.setNightModeState(true)
+                pref!!.setSWITCHEDTHEME(true)
+                inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             } else {
-                settingsManager.setNightModeState(false)
+                pref!!.setNightModeState(false)
+                pref!!.setSWITCHEDTHEME(false)
+                inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             }
         }
@@ -91,44 +98,44 @@ class EmergencyContactsActivity : AppCompatActivity() {
 
         binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
             Log.i(ContentValues.TAG, "onNavigationItemSelected: " + item.itemId)
+
             when (item.itemId) {
                 R.id.home -> {
-                    startActivity(
-                        Intent(this@EmergencyContactsActivity, MainActivity::class.java).addFlags(
-                            Intent.FLAG_ACTIVITY_CLEAR_TOP
-                        )
-                    )
+                    val intentHome = Intent(this, MainActivity::class.java)
+                    startActivity(intentHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    finish()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.profile -> {
-                    val intentProfile =
-                        Intent(this@EmergencyContactsActivity, UserProfileActivity::class.java)
+                    val intentProfile = Intent(this, UserProfileActivity::class.java)
                     startActivity(intentProfile.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    finish()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.myVehicles -> {
-                    val intentMyVehicles =
-                        Intent(this@EmergencyContactsActivity, VehiclesActivity::class.java)
+                    val intentMyVehicles = Intent(this, VehiclesActivity::class.java)
                     startActivity(intentMyVehicles.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    finish()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {
                     pref!!.clearAllDataExcept()
-                    val intentLogout = Intent(this@EmergencyContactsActivity, MainActivity::class.java)
+                    val intentLogout = Intent(this, MainActivity::class.java)
                     startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
                     finish()
                     return@OnNavigationItemSelectedListener true
+
                 }
                 R.id.about -> {
-                    val intentAbout =
-                        Intent(this@EmergencyContactsActivity, AboutActivity::class.java)
+                    val intentAbout = Intent(this, AboutActivity::class.java)
                     startActivity(intentAbout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    finish()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.help -> {
-                    val intentHelp =
-                        Intent(this@EmergencyContactsActivity, LoginActivity::class.java)
+                    val intentHelp = Intent(this, LoginActivity::class.java)
                     startActivity(intentHelp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    finish()
                     return@OnNavigationItemSelectedListener true
                 }
             }
@@ -138,63 +145,77 @@ class EmergencyContactsActivity : AppCompatActivity() {
         })
 
         binding.back.setOnClickListener {
-            val intent = Intent(this@EmergencyContactsActivity, UserProfileActivity::class.java)
-            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+            val intent = Intent(this, UserProfileActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+            finish()
         }
 
-        apiClient = ApiClient
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onBackPressed()
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, callback)
+        getUserDetails()
+    }
+
+    private fun getUserDetails() {
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setCancelable(false) // set cancelable to false
+        progressDialog.setMessage("Fetching Details..") // set message
+        progressDialog.show()
+
         apiClient.getApiService(this).getUserDetails(userId, roleId).enqueue(object : Callback<UserDetailsResponse> {
             override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
                 if (response.isSuccessful) {
+                    progressDialog.dismiss()
                     Log.e("Gideon", "onSuccess: ${response.body()}")
 
                     binding.etFullName1.setText(
-                        if(response.body()!!.single_user.contact1_name.toString() == "null") {
-                            ""
-                        } else{
-                            response.body()!!.single_user.contact1_name.toString()
-                        })
+                        if(response.body()!!.single_user.contact1_name.toString() == "null") { "" }
+                        else { response.body()!!.single_user.contact1_name.toString() }
+                    )
                     binding.etRelationShip1.setText(
-                        if(response.body()!!.single_user.contact1_relationship.toString() == "null"){
-                            ""
-                        } else{
-                            response.body()!!.single_user.contact1_relationship.toString()
-                        })
+                        if(response.body()!!.single_user.contact1_relationship.toString() == "null"){ "" }
+                        else { response.body()!!.single_user.contact1_relationship.toString() }
+                    )
                     binding.etEmergencyMobile1.setText(
-                        if(response.body()!!.single_user.contact1_mobile.toString() == "null"){
-                            ""
-                        } else{
-                            response.body()!!.single_user.contact1_mobile.toString()
-                        })
+                        if(response.body()!!.single_user.contact1_mobile.toString() == "null"){ "" }
+                        else { response.body()!!.single_user.contact1_mobile.toString() }
+                    )
                     binding.etFullName2.setText(
-                        if(response.body()!!.single_user.contact2_name.toString() == "null"){
-                            ""
-                        } else{
-                            response.body()!!.single_user.contact2_name.toString()
-                        })
+                        if(response.body()!!.single_user.contact2_name.toString() == "null"){ "" }
+                        else { response.body()!!.single_user.contact2_name.toString() }
+                    )
                     binding.etRelationShip2.setText(
-                        if(response.body()!!.single_user.contact2_relationship.toString() == "null"){
-                            ""
-                        } else{
-                            response.body()!!.single_user.contact2_relationship.toString()
-                        })
+                        if(response.body()!!.single_user.contact2_relationship.toString() == "null"){ "" }
+                        else { response.body()!!.single_user.contact2_relationship.toString() }
+                    )
                     binding.etEmergencyMobile2.setText(
-                        if(response.body()!!.single_user.contact1_mobile.toString() == "null"){
-                            ""
-                        } else{
-                            response.body()!!.single_user.contact1_mobile.toString()
-                        })
+                        if(response.body()!!.single_user.contact1_mobile.toString() == "null"){ "" }
+                        else { response.body()!!.single_user.contact1_mobile.toString() }
+                    )
                 }
             }
 
             override fun onFailure(call: Call<UserDetailsResponse>, t: Throwable) {
+                progressDialog.dismiss()
                 Log.e("Gideon", "onFailure: ${t.message}")
             }
         })
-
     }
 
     private fun restartApp() {
-        recreate()
+        finish()
+        startActivity(intent)
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        val intent = Intent(this, UserProfileActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
+        finish()
     }
 }

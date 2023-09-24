@@ -1,5 +1,6 @@
 package com.justin.gari.activities
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -9,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Switch
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.viewpager2.widget.ViewPager2
@@ -26,28 +28,25 @@ import de.hdodenhof.circleimageview.CircleImageView
 class VehiclesActivity : AppCompatActivity() {
     private lateinit var apiClient: ApiClient
     var pref: SharedPrefManager? = null
-    private var theme: Switch? = null
-    private lateinit var settingsManager: SettingsManager
     lateinit var binding: ActivityVehiclesBinding
     private var adapter: MyVehiclesAdapter? = null
 
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     override fun onCreate(savedInstanceState: Bundle?) {
-        settingsManager = SettingsManager(this)
-        if (settingsManager.loadNightModeState()) {
+        apiClient = ApiClient()
+        pref = SharedPrefManager(this)
+        Log.d("NightModeState", "${pref!!.loadNightModeState()}")
+        if (pref!!.loadNightModeState()) {
             setTheme(R.style.DarkGari)
-        } else
-            setTheme(R.style.Gari)
-        super.onCreate(savedInstanceState)
+        } else setTheme(R.style.Gari)
 
+        super.onCreate(savedInstanceState)
 
         binding = ActivityVehiclesBinding.inflate(layoutInflater)
         setContentView(binding.root)
         if (supportActionBar != null) {
             supportActionBar!!.hide()
         }
-
-        apiClient = ApiClient
-        pref = SharedPrefManager(this)
 
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Bookings"))
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Saved"))
@@ -72,17 +71,15 @@ class VehiclesActivity : AppCompatActivity() {
         })
 
         val profileHeader = pref!!.getUSERPROFILEPHOTO()
-        val firstNameHeader = pref!!.getFIRSTNAME()
-        val lastNameHeader = pref!!.getLASTNAME()
-        val emailHeader = pref!!.getEMAIL()
-        val header: View = binding.navView.getHeaderView(0)
-        val profileImage = header.findViewById(R.id.profile_image) as CircleImageView
-        val firstNameTv = header.findViewById<View>(R.id.firstName) as TextView
-        val lastNameTv = header.findViewById<View>(R.id.lastName) as TextView
-        val emailTv = header.findViewById<View>(R.id.email) as TextView
-        firstNameTv.text = firstNameHeader.toString()
-        lastNameTv.text = lastNameHeader.toString()
-        emailTv.text = emailHeader.toString()
+        val header = binding.navView.getHeaderView(0)
+        val firstNameTextView = header.findViewById<TextView>(R.id.firstName)
+        val lastNameTextView = header.findViewById<TextView>(R.id.lastName)
+        val emailTextView = header.findViewById<TextView>(R.id.email)
+        val profileImage = header.findViewById<CircleImageView>(R.id.profile_image)
+        val inSwitch = header.findViewById<Switch>(R.id.themeSwitch)
+        firstNameTextView.text = pref!!.getFIRSTNAME()
+        lastNameTextView.text = pref!!.getLASTNAME()
+        emailTextView.text = pref!!.getEMAIL()
 
         Picasso.get()
             .load(profileHeader)
@@ -91,65 +88,71 @@ class VehiclesActivity : AppCompatActivity() {
             .error(R.drawable.user)
             .into(profileImage)
 
-        val switchTheme = header.findViewById(R.id.themeSwitch) as Switch
-        if (settingsManager.loadNightModeState()) {
-            switchTheme.isChecked = true
+        if (pref!!.loadNightModeState()) {
+            inSwitch.isChecked = true
+            inSwitch.text = getString(R.string.light_mode)
+        } else{
+            inSwitch.text = getString(R.string.dark_mode)
         }
-        switchTheme.setOnCheckedChangeListener { _, isChecked ->
+
+        inSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                settingsManager.setNightModeState(true)
+                pref!!.setNightModeState(true)
+                pref!!.setSWITCHEDTHEME(true)
+                inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             } else {
-                settingsManager.setNightModeState(false)
+                pref!!.setNightModeState(false)
+                pref!!.setSWITCHEDTHEME(false)
+                inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             }
         }
 
         binding.nav.setOnClickListener {
-            if (firstNameHeader != "") {
-                binding.drawerLayout.openDrawer(GravityCompat.START)
-            } else {
-                binding.drawerLayout.openDrawer(GravityCompat.END)
-            }
-        }
-
-        binding.back.setOnClickListener {
-            val intent = Intent(this@VehiclesActivity, MainActivity::class.java)
-            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+            binding.drawerLayout.openDrawer(GravityCompat.START)
         }
 
         binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
             Log.i(ContentValues.TAG, "onNavigationItemSelected: " + item.itemId)
+
             when (item.itemId) {
                 R.id.home -> {
-                    startActivity(Intent(this@VehiclesActivity, MainActivity::class.java))
+                    val intentHome = Intent(this, MainActivity::class.java)
+                    startActivity(intentHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    finish()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.profile -> {
-                    val intentProfile = Intent(this@VehiclesActivity, UserProfileActivity::class.java)
-                    startActivity(intentProfile)
+                    val intentProfile = Intent(this, UserProfileActivity::class.java)
+                    startActivity(intentProfile.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    finish()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.myVehicles -> {
-                    val intentMyVehicles = Intent(this@VehiclesActivity, VehiclesActivity::class.java)
-                    startActivity(intentMyVehicles)
+                    val intentMyVehicles = Intent(this, VehiclesActivity::class.java)
+                    startActivity(intentMyVehicles.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    finish()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {
                     pref!!.clearAllDataExcept()
-                    val intentLogout = Intent(this@VehiclesActivity, MainActivity::class.java)
+                    val intentLogout = Intent(this, MainActivity::class.java)
                     startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
                     finish()
                     return@OnNavigationItemSelectedListener true
+
                 }
                 R.id.about -> {
-                    val intentAbout = Intent(this@VehiclesActivity, AboutActivity::class.java)
-                    startActivity(intentAbout)
+                    val intentAbout = Intent(this, AboutActivity::class.java)
+                    startActivity(intentAbout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    finish()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.help -> {
-                    val intentHelp = Intent(this@VehiclesActivity, AboutActivity::class.java)
-                    startActivity(intentHelp)
+                    val intentHelp = Intent(this, LoginActivity::class.java)
+                    startActivity(intentHelp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    finish()
                     return@OnNavigationItemSelectedListener true
                 }
             }
@@ -157,6 +160,20 @@ class VehiclesActivity : AppCompatActivity() {
             Log.i(ContentValues.TAG, "onNavigationItemSelected: nothing clicked")
             false
         })
+
+        binding.back.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+            finish()
+        }
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onBackPressed()
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, callback)
     }
 
 //    private fun getUserImageInfo() {
@@ -186,8 +203,15 @@ class VehiclesActivity : AppCompatActivity() {
 //    }
 
     private fun restartApp() {
-        val i = Intent(applicationContext, VehiclesActivity::class.java)
-        startActivity(i)
+        finish()
+        startActivity(intent)
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
         finish()
     }
 }

@@ -9,7 +9,6 @@ class SharedPrefManager(var _context: Context) {
     var editor: SharedPreferences.Editor
     var SHARED_PREF_NAME = "GariSharedPrefData"
 
-
     var USERID= "userId"
     var ROLEID= "roleId"
     var ROLENAME= "roleName"
@@ -20,6 +19,7 @@ class SharedPrefManager(var _context: Context) {
     var USERPROFILEPHOTO = "userProfilePhoto"
     var SWITCHEDTHEME ="switchedTheme"
     var ONBOARDING ="onBoarding"
+    var NIGHTMODE = "nightMode"
 
     var EXCLUDED_KEYS = setOf(ONBOARDING)
 
@@ -144,7 +144,7 @@ class SharedPrefManager(var _context: Context) {
 
     @JvmName("getSWITCHEDTHEME1")
     fun getSWITCHEDTHEME(): Boolean {
-        return pref.getBoolean(SWITCHEDTHEME, false)
+        return pref.getBoolean(SWITCHEDTHEME, true)
     }
 
     @JvmName("setSWITCHEDTHEME1")
@@ -153,14 +153,21 @@ class SharedPrefManager(var _context: Context) {
         editor.apply()
     }
 
-    @JvmName("getONBOARDING1")
     fun getONBOARDING(): Boolean {
-        return pref.getBoolean(ONBOARDING, false)
+        return pref.getBoolean(ONBOARDING, true)
     }
 
-    @JvmName("setONBOARDING1")
     fun setONBOARDING(onBoarding: Boolean) {
         editor.putBoolean(ONBOARDING, onBoarding)
+        editor.apply()
+    }
+
+    fun loadNightModeState(): Boolean {
+        return pref.getBoolean(NIGHTMODE, true)
+    }
+
+    fun setNightModeState(nightMode: Boolean) {
+        editor.putBoolean(NIGHTMODE, nightMode)
         editor.apply()
     }
 

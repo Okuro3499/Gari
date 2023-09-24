@@ -116,4 +116,18 @@
         app:menu="@menu/nav_menu"
         app:subheaderColor="?attr/textColor" />
 
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/outNavView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:background="?attr/backgroundColor"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/logged_out_header"
+        app:itemIconTint="?attr/textColor"
+        app:itemTextAppearance="@font/poppins_regular"
+        app:itemTextColor="?attr/textColor"
+        app:menu="@menu/log_in_menu"
+        app:subheaderColor="?attr/textColor" />
+
 </androidx.drawerlayout.widget.DrawerLayout>

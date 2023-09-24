@@ -1,5 +1,7 @@
 package com.justin.gari.activities
 
+import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -10,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Switch
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -22,25 +25,27 @@ import com.justin.gari.utils.SettingsManager
 import com.justin.gari.utils.SharedPrefManager
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.activity_profile_complete.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+@SuppressLint("UseSwitchCompatOrMaterialCode")
 class UserProfileActivity : AppCompatActivity() {
-    lateinit var toggle: ActionBarDrawerToggle
     var pref: SharedPrefManager? = null
     lateinit var apiClient: ApiClient
-    var theme: Switch? = null
-    lateinit var settingsManager: SettingsManager
     lateinit var binding: ActivityProfileCompleteBinding
+    var userId :String? = null
+    var roleId :String? = null
+    var profileHeader:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        settingsManager = SettingsManager(this)
-        if (settingsManager.loadNightModeState()) {
+        apiClient = ApiClient()
+        pref = SharedPrefManager(this)
+        Log.d("NightModeState", "${pref!!.loadNightModeState()}")
+        if (pref!!.loadNightModeState()) {
             setTheme(R.style.DarkGari)
-        } else
-            setTheme(R.style.Gari)
+        } else setTheme(R.style.Gari)
+
         super.onCreate(savedInstanceState)
         binding = ActivityProfileCompleteBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -48,24 +53,19 @@ class UserProfileActivity : AppCompatActivity() {
             supportActionBar!!.hide()
         }
 
-        apiClient = ApiClient
-        pref = SharedPrefManager(this)
+        userId = pref!!.getUSERID()
+        roleId = pref!!.getROLEID()
 
-        val userId = pref!!.getUSERID()
-        val roleId = pref!!.getROLEID()
-
-        val profileHeader = pref!!.getUSERPROFILEPHOTO()
-        val firstNameHeader = pref!!.getFIRSTNAME()
-        val lastNameHeader = pref!!.getLASTNAME()
-        val emailHeader = pref!!.getEMAIL()
-        val header: View = binding.navView.getHeaderView(0)
-        val profileImage = header.findViewById(R.id.profile_image) as CircleImageView
-        val firstNameTv = header.findViewById<View>(R.id.firstName) as TextView
-        firstNameTv.text = firstNameHeader.toString()
-        val lastNameTv = header.findViewById<View>(R.id.lastName) as TextView
-        lastNameTv.text = lastNameHeader.toString()
-        val emailTv = header.findViewById<View>(R.id.email) as TextView
-        emailTv.text = emailHeader.toString()
+        profileHeader = pref!!.getUSERPROFILEPHOTO()
+        val header = binding.navView.getHeaderView(0)
+        val firstNameTextView = header.findViewById<TextView>(R.id.firstName)
+        val lastNameTextView = header.findViewById<TextView>(R.id.lastName)
+        val emailTextView = header.findViewById<TextView>(R.id.email)
+        val profileImage = header.findViewById<CircleImageView>(R.id.profile_image)
+        val inSwitch = header.findViewById<Switch>(R.id.themeSwitch)
+        firstNameTextView.text = "${pref!!.getFIRSTNAME()}"
+        val firstName = firstNameTextView.text
+        emailTextView.text = pref!!.getEMAIL()
 
         Picasso.get()
             .load(profileHeader)
@@ -74,23 +74,30 @@ class UserProfileActivity : AppCompatActivity() {
             .error(R.drawable.user)
             .into(profileImage)
 
+        if (pref!!.loadNightModeState()) {
+            inSwitch.isChecked = true
+            inSwitch.text = getString(R.string.light_mode)
+        } else{
+            inSwitch.text = getString(R.string.dark_mode)
+        }
+
         Picasso.get()
             .load(profileHeader)
             .fit().centerCrop()
             .placeholder(R.drawable.user)
             .error(R.drawable.user)
-            .into(profilePic)
+            .into(binding.profilePic)
 
-        val switchTheme = header.findViewById(R.id.themeSwitch) as Switch
-        if (settingsManager.loadNightModeState()) {
-            switchTheme.isChecked = true
-        }
-        switchTheme.setOnCheckedChangeListener { _, isChecked ->
+        inSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                settingsManager.setNightModeState(true)
+                pref!!.setNightModeState(true)
+                pref!!.setSWITCHEDTHEME(true)
+                inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             } else {
-                settingsManager.setNightModeState(false)
+                pref!!.setNightModeState(false)
+                pref!!.setSWITCHEDTHEME(false)
+                inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             }
         }
@@ -101,36 +108,44 @@ class UserProfileActivity : AppCompatActivity() {
 
         binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
             Log.i(ContentValues.TAG, "onNavigationItemSelected: " + item.itemId)
+
             when (item.itemId) {
                 R.id.home -> {
-                    startActivity(Intent(this@UserProfileActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    val intentHome = Intent(this, MainActivity::class.java)
+                    startActivity(intentHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    finish()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.profile -> {
-                    val intentProfile = Intent(this@UserProfileActivity, UserProfileActivity::class.java)
+                    val intentProfile = Intent(this, UserProfileActivity::class.java)
                     startActivity(intentProfile.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    finish()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.myVehicles -> {
-                    val intentMyVehicles = Intent(this@UserProfileActivity, VehiclesActivity::class.java)
+                    val intentMyVehicles = Intent(this, VehiclesActivity::class.java)
                     startActivity(intentMyVehicles.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    finish()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {
                     pref!!.clearAllDataExcept()
-                    val intentLogout = Intent(this@UserProfileActivity, MainActivity::class.java)
+                    val intentLogout = Intent(this, MainActivity::class.java)
                     startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
                     finish()
                     return@OnNavigationItemSelectedListener true
+
                 }
                 R.id.about -> {
-                    val intentAbout = Intent(this@UserProfileActivity, AboutActivity::class.java)
+                    val intentAbout = Intent(this, AboutActivity::class.java)
                     startActivity(intentAbout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    finish()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.help -> {
-                    val intentHelp = Intent(this@UserProfileActivity, LoginActivity::class.java)
+                    val intentHelp = Intent(this, LoginActivity::class.java)
                     startActivity(intentHelp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    finish()
                     return@OnNavigationItemSelectedListener true
                 }
             }
@@ -139,84 +154,25 @@ class UserProfileActivity : AppCompatActivity() {
             false
         })
 
-        binding.back.setOnClickListener {
-            val intent = Intent(this@UserProfileActivity, MainActivity::class.java)
-            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-        }
-
-        apiClient.getApiService(this).getUserDetails(userId, roleId).enqueue(object : Callback<UserDetailsResponse> {
-                override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
-                    if (response.isSuccessful) {
-                        Log.e("Gideon", "onSuccess: ${response.body()}")
-                        val firstName = response.body()?.single_user?.first_name ?: ""
-                        val lastName = response.body()?.single_user?.last_name ?: ""
-                        val userName = getString(R.string.user_name, firstName, lastName)
-                        binding.tvName.text = userName
-//                        binding.tvLastName.text = response.body()!!.single_user.last_name.toString()
-                        binding.tvEmail.text = "${response.body()!!.single_user.email}"
-                        binding.tvMobile.text = "${response.body()!!.single_user.mobile}"
-                        binding.tvCounty.text = "${response.body()!!.single_user.county}"
-                        binding.tvDistrict.text = "${response.body()!!.single_user.district}"
-                        binding.tvEstate.text = "${response.body()!!.single_user.estate}"
-                        binding.tvLandMark.text = "${response.body()!!.single_user.landmark}"
-                        Picasso.get()
-                            .load(profileHeader)
-                            .fit().centerCrop()
-                            .placeholder(R.drawable.user)
-                            .error(R.drawable.user)
-                            .into(binding.profilePic)
-
-//                        binding.etFullName.setText(response.body()!!.single_user.contact1_name.toString())
-//                        binding.etRelationShip.setText(response.body()!!.single_user.contact1_relationship.toString())
-//                        binding.etEmergencyMobile.setText(response.body()!!.single_user.contact1_mobile.toString())
-//                        binding.etFullName2.setText(response.body()!!.single_user.contact2_name.toString())
-//                        binding.etRelationShip2.setText( response.body()!!.single_user.contact2_relationship.toString())
-//                        binding.etEmergencyMobile2.setText(response.body()!!.single_user.contact1_mobile.toString())
-
-//                        //driver license
-//                        Picasso.get()
-//                            .load(response.body()!!.single_user.driver_licence_url)
-//                            .fit().centerCrop()
-//                            .placeholder(R.drawable.click)
-//                            .error(R.drawable.click)
-//                            .into(binding.ivDl)
-//
-//                        //national id
-//                        Picasso.get()
-//                            .load(response.body()!!.single_user.national_id_url)
-//                            .fit().centerCrop()
-//                            .placeholder(R.drawable.click)
-//                            .error(R.drawable.click)
-//                            .into(binding.ivId)
-//
-//                        //userphoto
-//                        Picasso.get()
-//                            .load(response.body()!!.single_user.user_photo_url)
-//                            .fit().centerCrop()
-//                            .placeholder(R.drawable.click)
-//                            .error(R.drawable.click)
-//                            .into(binding.ivPhoto)
-                    }
-                }
-
-                override fun onFailure(call: Call<UserDetailsResponse>, t: Throwable) {
-                    Log.e("Gideon", "onFailure: ${t.message}")
-                }
-            })
-
         binding.ltEditProfile.setOnClickListener {
-            val intent = Intent(this@UserProfileActivity, EditProfileActivity::class.java)
-            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+            val intent = Intent(this, EditProfileActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+            finish()
         }
 
         binding.ltUserSettings.setOnClickListener {
-            val intent = Intent(this@UserProfileActivity, UserSettingsActivity::class.java)
-            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+            val intent = Intent(this, UserSettingsActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+            finish()
         }
 
         binding.ltEmergency.setOnClickListener {
-            val intent = Intent(this@UserProfileActivity, EmergencyContactsActivity::class.java)
-            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+            val intent = Intent(this, EmergencyContactsActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+            finish()
         }
 
 //        binding.btSubmit.setOnClickListener {
@@ -259,12 +215,96 @@ class UserProfileActivity : AppCompatActivity() {
 //        binding.ivId.setOnClickListener { ImagePicker.with(this).start(1) }
 //
 //        binding.ivPhoto.setOnClickListener { ImagePicker.with(this).start(2) }
+
+
+        binding.back.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+            finish()
+        }
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onBackPressed()
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, callback)
+
+        getUserDetails()
+    }
+
+    private fun getUserDetails() {
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setCancelable(false) // set cancelable to false
+        progressDialog.setMessage("Fetching Details..") // set message
+        progressDialog.show()
+
+        apiClient.getApiService(this).getUserDetails(userId, roleId).enqueue(object : Callback<UserDetailsResponse> {
+            override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
+                if (response.isSuccessful) {
+                    progressDialog.dismiss()
+                    Log.e("Gideon", "onSuccess: ${response.body()}")
+                    val firstName = response.body()?.single_user?.first_name ?: ""
+                    val lastName = response.body()?.single_user?.last_name ?: ""
+                    val userName = getString(R.string.user_name, firstName, lastName)
+                    binding.tvName.text = userName
+                    binding.tvEmail.text = "${response.body()!!.single_user.email}"
+                    binding.tvMobile.text = "${response.body()!!.single_user.mobile}"
+                    binding.tvCounty.text = "${response.body()!!.single_user.county}"
+                    binding.tvDistrict.text = "${response.body()!!.single_user.district}"
+                    binding.tvEstate.text = "${response.body()!!.single_user.estate}"
+                    binding.tvLandMark.text = "${response.body()!!.single_user.landmark}"
+                    Picasso.get()
+                        .load(profileHeader)
+                        .fit().centerCrop()
+                        .placeholder(R.drawable.user)
+                        .error(R.drawable.user)
+                        .into(binding.profilePic)
+
+//                        binding.etFullName.setText(response.body()!!.single_user.contact1_name.toString())
+//                        binding.etRelationShip.setText(response.body()!!.single_user.contact1_relationship.toString())
+//                        binding.etEmergencyMobile.setText(response.body()!!.single_user.contact1_mobile.toString())
+//                        binding.etFullName2.setText(response.body()!!.single_user.contact2_name.toString())
+//                        binding.etRelationShip2.setText( response.body()!!.single_user.contact2_relationship.toString())
+//                        binding.etEmergencyMobile2.setText(response.body()!!.single_user.contact1_mobile.toString())
+
+//                        //driver license
+//                        Picasso.get()
+//                            .load(response.body()!!.single_user.driver_licence_url)
+//                            .fit().centerCrop()
+//                            .placeholder(R.drawable.click)
+//                            .error(R.drawable.click)
+//                            .into(binding.ivDl)
+//
+//                        //national id
+//                        Picasso.get()
+//                            .load(response.body()!!.single_user.national_id_url)
+//                            .fit().centerCrop()
+//                            .placeholder(R.drawable.click)
+//                            .error(R.drawable.click)
+//                            .into(binding.ivId)
+//
+//                        //userphoto
+//                        Picasso.get()
+//                            .load(response.body()!!.single_user.user_photo_url)
+//                            .fit().centerCrop()
+//                            .placeholder(R.drawable.click)
+//                            .error(R.drawable.click)
+//                            .into(binding.ivPhoto)
+                }
+            }
+
+            override fun onFailure(call: Call<UserDetailsResponse>, t: Throwable) {
+                progressDialog.dismiss()
+                Log.e("Gideon", "onFailure: ${t.message}")
+            }
+        })
     }
 
     private fun restartApp() {
-        val i = Intent(applicationContext, UserProfileActivity::class.java)
-        startActivity(i)
         finish()
+        startActivity(intent)
     }
 
 //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -337,10 +377,11 @@ class UserProfileActivity : AppCompatActivity() {
 //        }
 //    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (toggle.onOptionsItemSelected(item)) {
-            true
-        }
-        return super.onOptionsItemSelected(item)
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
+        finish()
     }
 }

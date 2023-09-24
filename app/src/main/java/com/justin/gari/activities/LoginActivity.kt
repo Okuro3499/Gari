@@ -1,17 +1,14 @@
 package com.justin.gari.activities
 
 import android.app.ProgressDialog
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
-import android.widget.Switch
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.justin.gari.R
-import com.justin.gari.utils.SettingsManager
 import com.justin.gari.api.ApiClient
 import com.justin.gari.api.SessionManager
 import com.justin.gari.databinding.ActivityLoginBinding
@@ -28,12 +25,12 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var sessionManager: SessionManager
     private lateinit var apiClient: ApiClient
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var settingsManager: SettingsManager
-    var theme: Switch? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        settingsManager = SettingsManager(this)
-        if (settingsManager.loadNightModeState()) {
+        apiClient = ApiClient()
+        pref = SharedPrefManager(this)
+        Log.d("NightModeState", "${pref!!.loadNightModeState()}")
+        if (pref!!.loadNightModeState()) {
             setTheme(R.style.DarkGari)
         } else setTheme(R.style.Gari)
 
@@ -45,16 +42,7 @@ class LoginActivity : AppCompatActivity() {
             supportActionBar!!.hide()
         }
 
-        apiClient = ApiClient
         sessionManager = SessionManager(this)
-        pref = SharedPrefManager(this)
-
-        if(pref!!.getSWITCHEDTHEME()){
-            settingsManager.setNightModeState(true)
-        } else if(!pref!!.getSWITCHEDTHEME()){
-            settingsManager.setNightModeState(false)
-        }
-
 
         //Login into user account
         binding.btLogin.setOnClickListener {
@@ -109,8 +97,16 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
         }
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onBackPressed()
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, callback)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         finish()
         finishAffinity()

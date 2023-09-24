@@ -1,7 +1,5 @@
 package com.justin.gari.fragments
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -33,7 +31,7 @@ class BookingsFragment : Fragment() {
         val userId = pref!!.getUSERID()
         binding?.shimmerLayout?.startShimmer();
 
-        apiClient = ApiClient
+        apiClient = ApiClient()
         context?.let {
             apiClient.getApiService(it).getBookedCars(userId).enqueue(object : Callback<BookingsResponse> {
                 override fun onResponse(call: Call<BookingsResponse>, response: Response<BookingsResponse>) {
