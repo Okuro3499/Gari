@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="backgroundColor">#F3F4F8</color>
+    <color name="colorPrimary">#282A3A</color>
+    <color name="grey1">#F1F5F9</color>
+    <color name="grey2">#CCCCCC</color>
+    <color name="button">#777986</color>
+    <color name="bookedBackground">#FFE4E6</color>
+    <color name="bookedText">#F43F5E</color>
+    <color name="availText">#14B8A6</color>
+    <color name="availBackground">#CCFBF1</color>
+    <color name="white">#FFFFFF</color>
+
     <!--reds-->
     <color name="md_red_50">#FFEBEE</color>
     <color name="md_red_100">#FFCDD2</color>

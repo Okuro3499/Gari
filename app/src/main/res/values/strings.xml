@@ -2,6 +2,11 @@
     <string name="app_name">Gari</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="dark_mode">Switch to Dark Mode</string>
+    <string name="light_mode">Switch to Light Mode</string>
+    <string name="total_amount">Ksh. %1$s</string>
+    <string name="username">, %1$s</string>
+    <string name="full_name_">%1$s %2$s</string>
     <string name="features"><u>Features</u></string>
     <string name="book"><u>Book</u></string>
     <string name="title_activity_login">LoginActivity</string>
@@ -18,11 +23,11 @@
     <string name="model">Model:</string>
     <string name="drive">Drive:</string>
     <string name="transmission">Transmission:</string>
-    <string name="price">Price:</string>
+    <string name="price">Price per day:</string>
     <string name="status">Status:</string>
     <string name="complete_profile">Complete Profile</string>
     <string name="name">Name:</string>
-    <string name="email">Email:</string>
+    <string name="email">Email</string>
     <string name="mobile">Mobile:</string>
     <string name="county">County:</string>
     <string name="district">District:</string>
@@ -51,7 +56,11 @@
     <string name="dd_mm_yyyy">dd/mm/yyyy</string>
     <string name="total">Total:</string>
     <string name="days">days</string>
-    <string name="destination">Destination:</string>
+    <string name="destination">Destination</string>
+    <string name="morning">Good Morning</string>
+    <string name="afternoon">Good Afternoon</string>
+    <string name="evening">Good Evening</string>
+    <string name="night">Good Night</string>
     <string name="book_now">Book Now</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
@@ -64,8 +73,9 @@
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="register">Register</string>
-    <string name="already_have_an_account_login">Already have an account? Login</string>
-    <string name="don_t_have_an_account_register">Don’t have an account? Register</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="don_t_have_an_account">Don’t have an account?</string>
+    <string name="create_account"><u>Create Account?</u></string>
     <string name="email_address">Email Address</string>
     <string name="radio_selfDrive">Self Drive</string>
     <string name="radio_chauffeured">Chauffeured</string>
@@ -76,6 +86,7 @@
     <string name="login_using_fingerprint">Login using Fingerprint</string>
     <string name="fingerprint">fingerprint</string>
     <string name="login">Login</string>
+    <string name="login2"><u>Login</u></string>
     <string name="remember_me">Remember me</string>
     <string name="check_for_updates">Check for Updates</string>
     <string name="updatebutton">updateButton</string>
@@ -91,6 +102,23 @@
     <string name="_0">0</string>
     <string name="visibility_toggle">visibility toggle</string>
     <string name="upload">Upload</string>
+    <string name="header1">Hire a car in very easy steps</string>
+    <string name="header2">Hire any car at very affordable rates</string>
+    <string name="header3">Choose the car you like from a variety</string>
+    <string name="subHeader1">Very easy steps to the car hire process</string>
+    <string name="subHeader2">Affordable rates for everyone</string>
+    <string name="subHeader3">We have variety of cars for you to choose from.</string>
+    <string name="skip">Skip</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="login_here">Login here</string>
+    <string name="create_your_account_here">Create your account here</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="my_vehicles">My Vehicles</string>
+    <string name="logout">Logout</string>
+    <string name="faq">FAQ</string>
+    <string name="need_assistance">Need Assistance?</string>
+    <string name="total_days">Total Days:</string>
+    <string name="user_name">%1$s %2$s</string>
 </resources>

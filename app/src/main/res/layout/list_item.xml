@@ -1,87 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/itemView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="10dp"
     android:layout_marginStart="10dp"
-    android:layout_marginEnd="10dp"
     android:layout_marginTop="4dp"
+    android:layout_marginEnd="10dp"
     android:layout_marginBottom="4dp"
-    app:cardElevation="6dp"
     app:cardBackgroundColor="?attr/backgroundColor"
+    app:cardElevation="6dp"
     app:cardUseCompatPadding="true">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/tvImage"
-            android:layout_width="100dp"
-            android:layout_height="100dp"/>
-
-        <TextView
-            android:id="@+id/titleCarName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@+id/tvImage"
-            android:text="@string/model"
-            android:textColor="?attr/textColor"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:layout_width="fill_parent"
+            android:layout_height="150dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toTopOf="@+id/tvCarName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvCarName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@+id/titleCarName"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/poppins_bold"
             android:text="Toyota Premio"
             android:textColor="?attr/textColor"
-            android:textSize="14sp" />
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvImage" />
 
         <TextView
             android:id="@+id/titleDriveOption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/titleCarName"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="4dp"
             android:layout_toEndOf="@+id/tvImage"
+            android:fontFamily="@font/poppins_light"
             android:text="@string/drive"
             android:textColor="?attr/textColor"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCarName" />
 
         <TextView
             android:id="@+id/tvDriveOption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvCarName"
             android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="4dp"
+            android:paddingEnd="4dp"
             android:layout_toEndOf="@+id/titleDriveOption"
+            android:fontFamily="@font/poppins_light"
             android:text="Self Drive/Chauffeured"
             android:textColor="?attr/textColor"
-            android:textSize="14sp" />
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@+id/titleDriveOption"
+            app:layout_constraintTop_toBottomOf="@+id/tvCarName" />
 
         <TextView
             android:id="@+id/titleTransmission"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/titleDriveOption"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="4dp"
             android:layout_toEndOf="@+id/tvImage"
+            android:fontFamily="@font/poppins_light"
             android:text="@string/transmission"
             android:textColor="?attr/textColor"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleDriveOption" />
 
         <TextView
             android:id="@+id/tvTransmission"
@@ -89,79 +90,44 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tvDriveOption"
             android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="5dp"
             android:layout_toEndOf="@+id/titleTransmission"
+            android:fontFamily="@font/poppins_light"
             android:text="Automatic"
             android:textColor="?attr/textColor"
-            android:textSize="14sp"
-             />
-
-        <TextView
-            android:id="@+id/titlePrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titleTransmission"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@+id/tvImage"
-            android:text="@string/price"
-            android:textColor="?attr/textColor"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@+id/titleTransmission"
+            app:layout_constraintTop_toBottomOf="@+id/titleDriveOption" />
 
         <TextView
             android:id="@+id/tvPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvTransmission"
             android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@+id/titlePrice"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/poppins_semi_bold"
             android:text="3500"
             android:textColor="?attr/textColor"
-            android:textSize="14sp"/>
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleTransmission" />
 
         <TextView
             android:id="@+id/titleRate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvTransmission"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="10dp"
             android:layout_toEndOf="@+id/tvPrice"
+            android:fontFamily="@font/poppins_semi_bold"
             android:text="@string/per_day"
             android:textColor="?attr/textColor"
-            android:textSize="14sp"/>
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvPrice" />
 
-        <TextView
-            android:id="@+id/titleStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/titlePrice"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@+id/tvImage"
-            android:text="@string/status"
-            android:textColor="?attr/textColor"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvPrice"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_toEndOf="@+id/titleStatus"
-            android:text="Available"
-            android:textColor="@color/md_green_800"
-            android:textSize="14sp" />
-
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
-
-
-
-
-

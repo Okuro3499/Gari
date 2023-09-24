@@ -1,49 +1,48 @@
 package com.justin.gari.activities
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
-import androidx.appcompat.app.ActionBarDrawerToggle
+import android.widget.Switch
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
-import com.justin.gari.SettingsManager
 import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityAboutBinding
+import com.justin.gari.utils.SharedPrefManager
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_about.*
-import kotlinx.android.synthetic.main.nav_header.view.*
+import de.hdodenhof.circleimageview.CircleImageView
+
 
 class AboutActivity : AppCompatActivity() {
-    lateinit var toggle: ActionBarDrawerToggle
-    private val sharedPrefFile = "sharedPrefData"
+    var pref: SharedPrefManager? = null
     private lateinit var apiClient: ApiClient
     private lateinit var binding: ActivityAboutBinding
-    private lateinit var settingsManager: SettingsManager
 
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     override fun onCreate(savedInstanceState: Bundle?) {
-        settingsManager = SettingsManager(this)
-        if (settingsManager.loadNightModeState() == true) {
+        apiClient = ApiClient()
+        pref = SharedPrefManager(this)
+        Log.d("NightModeState", "${pref!!.loadNightModeState()}")
+        if (pref!!.loadNightModeState()) {
             setTheme(R.style.DarkGari)
-        }
-        else setTheme(R.style.Gari)
+        } else setTheme(R.style.Gari)
+
         super.onCreate(savedInstanceState)
         binding = ActivityAboutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        apiClient = ApiClient
+        if (supportActionBar != null) {
+            supportActionBar!!.hide()
+        }
 
-        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-
-        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
-        binding.drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
+//        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+//        val editor: SharedPreferences.Editor = sharedPreferences.edit()
 
 //        val client_id = sharedPreferences.getString("client_id", "default")
 //        val editor: SharedPreferences.Editor = sharedPreferences.edit()
@@ -66,83 +65,172 @@ class AboutActivity : AppCompatActivity() {
 //                }
 //            })
 
-        val profileHeader = sharedPreferences.getString("userProfile", "default")
-        val firstNameHeader = sharedPreferences.getString("first_name", "default")
-        val lastNameHeader = sharedPreferences.getString("last_name", "default")
-        val emailHeader = sharedPreferences.getString("email", "default")
+        val profileHeader = pref!!.getUSERPROFILEPHOTO()
         val header = binding.navView.getHeaderView(0)
-        header.firstName.text = firstNameHeader.toString()
-        header.lastName.text = lastNameHeader.toString()
-        header.email.text = emailHeader.toString()
+        val outHeader = binding.outNavView.getHeaderView(0)
+        val firstNameTextView = header.findViewById<TextView>(R.id.firstName)
+        val emailTextView = header.findViewById<TextView>(R.id.email)
+        val profileImage = header.findViewById<CircleImageView>(R.id.profile_image)
+        val inSwitch = header.findViewById<Switch>(R.id.themeSwitch)
+        val outSwitch = outHeader.findViewById<Switch>(R.id.themeSwitch)
+        firstNameTextView.text = "${pref!!.getFIRSTNAME()}"
+        val firstName = firstNameTextView.text
+        emailTextView.text = pref!!.getEMAIL()
+
         Picasso.get()
             .load(profileHeader)
             .fit().centerCrop()
             .placeholder(R.drawable.user)
             .error(R.drawable.user)
-            .into(header.profile_image)
+            .into(profileImage)
 
-        if (settingsManager.loadNightModeState() == true) {
-            header.themeSwitch!!.isChecked = true
+        if (pref!!.loadNightModeState()) {
+            inSwitch.isChecked = true
+            outSwitch.isChecked = true
+            inSwitch.text = getString(R.string.light_mode)
+            outSwitch.text = getString(R.string.light_mode)
+        } else {
+            inSwitch.text = getString(R.string.dark_mode)
+            outSwitch.text = getString(R.string.dark_mode)
         }
-        header.themeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+
+        inSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                settingsManager.setNightModeState(true)
+                pref!!.setNightModeState(true)
+                pref!!.setSWITCHEDTHEME(true)
+                inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             } else {
-                settingsManager.setNightModeState(false)
+                pref!!.setNightModeState(false)
+                pref!!.setSWITCHEDTHEME(false)
+                inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             }
         }
 
-        binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
-            Log.i(ContentValues.TAG, "onNavigationItemSelected: " + item.itemId)
-            when (item.itemId) {
-                R.id.home -> {
-                    startActivity(Intent(this@AboutActivity, MainActivity::class.java))
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.profile -> {
-                    val intentProfile = Intent(this@AboutActivity, ProfileCompleteActivity::class.java)
-                    startActivity(intentProfile)
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.myVehicles -> {
-                    val intentMyVehicles = Intent(this@AboutActivity, VehiclesActivity::class.java)
-                    startActivity(intentMyVehicles)
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.logout -> {
-                    val intentLogin = Intent(this@AboutActivity, LoginActivity::class.java)
-                    startActivity(intentLogin)
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.about -> {
-                    val intentAbout = Intent(this@AboutActivity, AboutActivity::class.java)
-                    startActivity(intentAbout)
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.help -> {
-                    val intentHelp = Intent(this@AboutActivity, LoginActivity::class.java)
-                    startActivity(intentHelp)
-                    return@OnNavigationItemSelectedListener true
-                }
+        outHeader.findViewById<Switch>(R.id.themeSwitch).setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                pref!!.setNightModeState(true)
+                pref!!.setSWITCHEDTHEME(true)
+                outSwitch.text = getString(R.string.dark_mode)
+                restartApp()
+            } else {
+                pref!!.setNightModeState(false)
+                pref!!.setSWITCHEDTHEME(false)
+                outSwitch.text = getString(R.string.dark_mode)
+                restartApp()
             }
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-            Log.i(ContentValues.TAG, "onNavigationItemSelected: nothing clicked")
-            false
-        })
+        }
+
+        if ("$firstName" != "") {
+            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END)
+            binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
+                Log.i(ContentValues.TAG, "onNavigationItemSelected: " + item.itemId)
+
+                when (item.itemId) {
+                    R.id.home -> {
+                        val intentHome = Intent(this, MainActivity::class.java)
+                        startActivity(intentHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        finish()
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.profile -> {
+                        val intentProfile = Intent(this, UserProfileActivity::class.java)
+                        startActivity(intentProfile.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        finish()
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.myVehicles -> {
+                        val intentMyVehicles = Intent(this, VehiclesActivity::class.java)
+                        startActivity(intentMyVehicles.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        finish()
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.logout -> {
+                        pref!!.clearAllDataExcept()
+                        val intentLogout = Intent(this, MainActivity::class.java)
+                        startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                        finish()
+                        return@OnNavigationItemSelectedListener true
+
+                    }
+                    R.id.about -> {
+                        val intentAbout = Intent(this, AboutActivity::class.java)
+                        startActivity(intentAbout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        finish()
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.help -> {
+                        val intentHelp = Intent(this, LoginActivity::class.java)
+                        startActivity(intentHelp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        finish()
+                        return@OnNavigationItemSelectedListener true
+                    }
+                }
+                binding.drawerLayout.closeDrawer(GravityCompat.START)
+                Log.i(ContentValues.TAG, "onNavigationItemSelected: nothing clicked")
+                false
+            })
+        } else {
+            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.START)
+            binding.outNavView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
+                Log.i(ContentValues.TAG, "onNavigationItemSelected: " + item.itemId)
+
+                when (item.itemId) {
+                    R.id.login -> {
+                        val intentLogin = Intent(this, LoginActivity::class.java)
+                        startActivity(intentLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        finish()
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.createAccount -> {
+                        val intentProfile = Intent(this, RegisterActivity::class.java)
+                        startActivity(intentProfile.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.about -> {
+                        val intentAbout = Intent(this, AboutActivity::class.java)
+                        startActivity(intentAbout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.help -> {
+                        val intentHelp = Intent(this, LoginActivity::class.java)
+                        startActivity(intentHelp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        return@OnNavigationItemSelectedListener true
+                    }
+                }
+                binding.drawerLayout.closeDrawer(GravityCompat.END)
+                Log.i(ContentValues.TAG, "onNavigationItemSelected: nothing clicked")
+                false
+            })
+        }
+
+        binding.nav.setOnClickListener {
+            if ("$firstName" != "") {
+                binding.drawerLayout.openDrawer(GravityCompat.START)
+            } else {
+                binding.drawerLayout.openDrawer(GravityCompat.END)
+            }
+        }
+
+        binding.back.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun restartApp() {
-        val i = Intent(applicationContext, AboutActivity::class.java)
-        startActivity(i)
         finish()
+        startActivity(intent)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (toggle.onOptionsItemSelected(item)) {
-            true
-        }
-        return super.onOptionsItemSelected(item)
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
+        finish()
     }
 }

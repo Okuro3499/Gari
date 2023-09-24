@@ -1,78 +1,35 @@
 package com.justin.gari.models.userModels
 
-import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 data class User(
-    @SerializedName("client_id")
-    @Expose
-    val client_id: String?,
-
-    @SerializedName("first_name")
-    @Expose
-    val first_name: String?,
-
-    @SerializedName("last_name")
-    @Expose
-    val last_name: String?,
-
-    @SerializedName("email")
-    @Expose
-    val email: String?,
-
-    @SerializedName("mobile")
-    @Expose
-    val mobile: String?,
-
-    @SerializedName("county")
-    @Expose
-    val county: String?,
-
-    @SerializedName("district")
-    @Expose
-    val district: String?,
-
-    @SerializedName("estate")
-    @Expose
-    val estate: String?,
-
-    @SerializedName("landmark")
-    @Expose
-    val landmark: String?,
-
-    @SerializedName("driver_licence_url")
-    @Expose
-    val driver_licence_url: String?,
-
-    @SerializedName("national_id_url")
-    @Expose
-    val national_id_url: String?,
-
-    @SerializedName("user_photo_url")
-    @Expose
-    val user_photo_url: String?,
-
-    @SerializedName("contact1_name")
-    @Expose
-    val contact1_name: String?,
-
-    @SerializedName("contact1_relationship")
-    @Expose
-    val contact1_relationship: String?,
-
-    @SerializedName("contact1_mobile")
-    @Expose
-    val contact1_mobile: String?,
-
-    @SerializedName("contact2_name")
-    @Expose
-    val contact2_name: String?,
-
-    @SerializedName("contact2_relationship")
-    @Expose
-    val contact2_relationship: String?,
-
-    @SerializedName("contact2_mobile")
-    @Expose
-    val contact2_mobile: String?,
-    )
+    @SerializedName("user_id") val user_id: String?,
+    @SerializedName("role_id") val role_id: String?,
+    @SerializedName("first_name") val first_name: String?,
+    @SerializedName("last_name") val last_name: String?,
+    @SerializedName("email") val email: String?,
+    @SerializedName("mobile") val mobile: String?,
+    @SerializedName("county") val county: String?,
+    @SerializedName("district") val district: String?,
+    @SerializedName("estate") val estate: String?,
+    @SerializedName("landmark") val landmark: String?,
+    @SerializedName("password") val password: String?,
+    @SerializedName("driver_licence_url") val driver_licence_url: String?,
+    @SerializedName("national_id_url") val national_id_url: String?,
+    @SerializedName("user_photo_url") val user_photo_url: String?,
+    @SerializedName("contact1_name") val contact1_name: String?,
+    @SerializedName("contact1_relationship") val contact1_relationship: String?,
+    @SerializedName("contact1_mobile") val contact1_mobile: String?,
+    @SerializedName("contact2_name") val contact2_name: String?,
+    @SerializedName("contact2_relationship") val contact2_relationship: String?,
+    @SerializedName("contact2_mobile") val contact2_mobile: String?,
+    @SerializedName("partner_physical_address") val partner_physical_address: String?,
+    @SerializedName("postal_address") val postal_address: String?,
+    @SerializedName("url") val url: String?,
+    @SerializedName("role_name") val role_name: String?,
+    @SerializedName("role_description") val role_description: String?,
+    @SerializedName("created_by") val created_by: String?,
+    @SerializedName("created_on") val created_on: String?,
+    @SerializedName("modified_by") val modified_by: String?,
+    @SerializedName("last_modified_on") val last_modified_on: String?,
+)

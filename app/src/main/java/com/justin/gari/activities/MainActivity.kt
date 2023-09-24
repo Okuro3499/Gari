@@ -1,191 +1,300 @@
 package com.justin.gari.activities
 
+import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
-import androidx.appcompat.app.ActionBarDrawerToggle
+import android.widget.Switch
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.GravityCompat
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
-import com.justin.gari.SettingsManager
 import com.justin.gari.adapters.CarAdapter
 import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityMainBinding
 import com.justin.gari.models.carModels.CarModel
+import com.justin.gari.models.roleModels.GetRolesResponse
+import com.justin.gari.utils.SharedPrefManager
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.nav_header.view.*
+import de.hdodenhof.circleimageview.CircleImageView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    lateinit var toggle: ActionBarDrawerToggle
     lateinit var apiClient: ApiClient
-    lateinit var settingsManager: SettingsManager
     lateinit var binding: ActivityMainBinding
-    val sharedPrefFile = "sharedPrefData"
+    var pref: SharedPrefManager? = null
+    var carsAdapter: CarAdapter? = null
 
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     override fun onCreate(savedInstanceState: Bundle?) {
-        settingsManager = SettingsManager(this)
-        if (settingsManager.loadNightModeState() == true) {
+        apiClient = ApiClient()
+        pref = SharedPrefManager(this)
+        Log.d("NightModeState", "${pref!!.loadNightModeState()}")
+        if (pref!!.loadNightModeState()) {
             setTheme(R.style.DarkGari)
-        }
-        else setTheme(R.style.Gari)
+        } else setTheme(R.style.Gari)
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE)
-        binding.shimmerLayout.startShimmer();
+        if (supportActionBar != null) {
+            supportActionBar!!.hide()
+        }
 
         binding.swipeRefresh.setOnRefreshListener {
             getAllData()
         }
 
         getAllCars()
+        roles()
 
-        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
-        binding.drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-//        val client_id = sharedPreferences.getString("client_id", "default")
-//        val editor: SharedPreferences.Editor = sharedPreferences.edit()
-//        apiClient.getApiService(this).getUserImageInfo(client_id).enqueue(object : Callback<SingleClientImageInfoResponse> {
-//                override fun onResponse(call: Call<SingleClientImageInfoResponse>, response: Response<SingleClientImageInfoResponse>) {
-//                    if (response.isSuccessful) {
-//                        //fetching images to
-//                        val userProfile = response.body()!!.single_clientInfo.user_photo_url.toString().trim()
-//                        editor.putString("userPhoto", userProfile)
-//                        Log.e("Gideon", "onSuccess: ${response.body()!!.single_clientInfo.user_photo_url}")
-//                        editor.apply()
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<SingleClientImageInfoResponse>, t: Throwable) {
-//                    Log.e("Gideon", "onFailure: ${t.message}")
-//                }
-//            })
-
-        val profileHeader = sharedPreferences.getString("userProfile", "default")
-        val firstNameHeader = sharedPreferences.getString("first_name", "default")
-        val lastNameHeader = sharedPreferences.getString("last_name", "default")
-        val emailHeader = sharedPreferences.getString("email", "default")
+        val profileHeader = pref!!.getUSERPROFILEPHOTO()
         val header = binding.navView.getHeaderView(0)
-        header.firstName.text = firstNameHeader.toString()
-        header.lastName.text = lastNameHeader.toString()
-        header.email.text = emailHeader.toString()
+        val outHeader = binding.outNavView.getHeaderView(0)
+        val firstNameTextView = header.findViewById<TextView>(R.id.firstName)
+        val emailTextView = header.findViewById<TextView>(R.id.email)
+        val profileImage = header.findViewById<CircleImageView>(R.id.profile_image)
+        val inSwitch = header.findViewById<Switch>(R.id.themeSwitch)
+        val outSwitch = outHeader.findViewById<Switch>(R.id.themeSwitch)
+        firstNameTextView.text = "${pref!!.getFIRSTNAME()}"
+        val firstName = firstNameTextView.text
+        emailTextView.text = pref!!.getEMAIL()
+
         Picasso.get()
             .load(profileHeader)
             .fit().centerCrop()
             .placeholder(R.drawable.user)
             .error(R.drawable.user)
-            .into(header.profile_image)
+            .into(profileImage)
 
-        if (settingsManager.loadNightModeState() == true) {
-            header.themeSwitch!!.isChecked = true
+        if (pref!!.loadNightModeState()) {
+            inSwitch.isChecked = true
+            outSwitch.isChecked = true
+            inSwitch.text = getString(R.string.light_mode)
+            outSwitch.text = getString(R.string.light_mode)
+        } else{
+            inSwitch.text = getString(R.string.dark_mode)
+            outSwitch.text = getString(R.string.dark_mode)
         }
-        header.themeSwitch!!.setOnCheckedChangeListener { _, isChecked ->
+
+        inSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                settingsManager.setNightModeState(true)
+                pref!!.setNightModeState(true)
+                pref!!.setSWITCHEDTHEME(true)
+                inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             } else {
-                settingsManager.setNightModeState(false)
+                pref!!.setNightModeState(false)
+                pref!!.setSWITCHEDTHEME(false)
+                inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             }
         }
 
-        binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
-            Log.i(TAG, "onNavigationItemSelected: " + item.itemId)
-            //TODO: set visibility
-            when (item.itemId) {
-                R.id.home -> {
-                    startActivity(Intent(this@MainActivity, MainActivity::class.java))
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.profile -> {
-                    val intentProfile =
-                        Intent(this@MainActivity, ProfileCompleteActivity::class.java)
-                    startActivity(intentProfile)
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.myVehicles -> {
-                    val intentMyVehicles = Intent(this@MainActivity, VehiclesActivity::class.java)
-                    startActivity(intentMyVehicles)
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.logout -> {
-                    val intentLogin = Intent(this@MainActivity, LoginActivity::class.java)
-                    startActivity(intentLogin)
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.about -> {
-                    val intentAbout = Intent(this@MainActivity, AboutActivity::class.java)
-                    startActivity(intentAbout)
-                    return@OnNavigationItemSelectedListener true
-                }
-                R.id.help -> {
-                    val intentHelp = Intent(this@MainActivity, LoginActivity::class.java)
-                    startActivity(intentHelp)
-                    return@OnNavigationItemSelectedListener true
-                }
+        outHeader.findViewById<Switch>(R.id.themeSwitch).setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                pref!!.setNightModeState(true)
+                pref!!.setSWITCHEDTHEME(true)
+                outSwitch.text = getString(R.string.dark_mode)
+                restartApp()
+            } else {
+                pref!!.setNightModeState(false)
+                pref!!.setSWITCHEDTHEME(false)
+                outSwitch.text = getString(R.string.dark_mode)
+                restartApp()
             }
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-            Log.i(TAG, "onNavigationItemSelected: nothing clicked")
-            false
+        }
+
+        val c: Calendar = Calendar.getInstance()
+        val timeOfDay: Int = c.get(Calendar.HOUR_OF_DAY)
+
+        Log.d("timeOfDay", timeOfDay.toString() + "")
+        if (timeOfDay < 12) {
+            binding.greeting.setText(R.string.morning)
+        } else if (timeOfDay < 16) {
+            binding.greeting.setText(R.string.afternoon)
+        } else if (timeOfDay < 21) {
+            binding.greeting.setText(R.string.evening)
+        } else {
+            binding.greeting.setText(R.string.night)
+        }
+
+        Log.d("ghj", "$firstName ")
+        if (pref!!.getFIRSTNAME() != "") {
+            binding.name.text = getString(R.string.username, "$firstName")
+        }
+
+        if ("$firstName" != "") {
+            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.END)
+            binding.navView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
+                Log.i(TAG, "onNavigationItemSelected: " + item.itemId)
+
+                when (item.itemId) {
+                    R.id.home -> {
+                        val intentHome = Intent(this, MainActivity::class.java)
+                        startActivity(intentHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        finish()
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.profile -> {
+                        val intentProfile = Intent(this, UserProfileActivity::class.java)
+                        startActivity(intentProfile.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        finish()
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.myVehicles -> {
+                        val intentMyVehicles = Intent(this, VehiclesActivity::class.java)
+                        startActivity(intentMyVehicles.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        finish()
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.logout -> {
+                        pref!!.clearAllDataExcept()
+                        val intentLogout = Intent(this, MainActivity::class.java)
+                        startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                        finish()
+                        return@OnNavigationItemSelectedListener true
+
+                    }
+                    R.id.about -> {
+                        val intentAbout = Intent(this, AboutActivity::class.java)
+                        startActivity(intentAbout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        finish()
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.help -> {
+                        val intentHelp = Intent(this, LoginActivity::class.java)
+                        startActivity(intentHelp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        finish()
+                        return@OnNavigationItemSelectedListener true
+                    }
+                }
+                binding.drawerLayout.closeDrawer(GravityCompat.START)
+                Log.i(TAG, "onNavigationItemSelected: nothing clicked")
+                false
+            })
+        }
+        else {
+            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.START)
+            binding.outNavView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
+                Log.i(TAG, "onNavigationItemSelected: " + item.itemId)
+
+                when (item.itemId) {
+                    R.id.login -> {
+                        val intentLogin = Intent(this, LoginActivity::class.java)
+                        startActivity(intentLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        finish()
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.createAccount -> {
+                        val intentProfile = Intent(this, RegisterActivity::class.java)
+                        startActivity(intentProfile.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.about -> {
+                        val intentAbout = Intent(this, AboutActivity::class.java)
+                        startActivity(intentAbout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.help -> {
+                        val intentHelp = Intent(this, LoginActivity::class.java)
+                        startActivity(intentHelp.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        return@OnNavigationItemSelectedListener true
+                    }
+                }
+                binding.drawerLayout.closeDrawer(GravityCompat.END)
+                Log.i(TAG, "onNavigationItemSelected: nothing clicked")
+                false
+            })
+        }
+
+        binding.nav.setOnClickListener {
+            if ("$firstName" != "") {
+                binding.drawerLayout.openDrawer(GravityCompat.START)
+            } else {
+                binding.drawerLayout.openDrawer(GravityCompat.END)
+            }
+        }
+
+        binding.refresh.setOnClickListener {
+            binding.errorPage.visibility = View.GONE
+            binding.shimmerLayout.visibility = View.VISIBLE
+            getAllData()
+        }
+
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                carsAdapter?.getFilter()?.filter(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                carsAdapter?.getFilter()?.filter(newText)
+                return true
+            }
         })
     }
 
     private fun getAllCars() {
-        apiClient = ApiClient
+        binding.shimmerLayout.startShimmer()
         apiClient.getApiService(this).getAllCars().enqueue(object : Callback<CarModel> {
             override fun onResponse(call: Call<CarModel>, response: Response<CarModel>) {
+                Log.e("id", response.toString())
                 if (response.isSuccessful) {
-                    recyclerview.apply {
-                        binding.shimmerLayout.stopShimmer();
-                        binding.shimmerLayout.visibility = View.GONE;
-                        layoutManager = LinearLayoutManager(this@MainActivity)
-                        adapter = CarAdapter(response.body()!!.cars, context)
-                    }
+                    carsAdapter = CarAdapter(response.body()!!.cars, this@MainActivity)
+                    binding.shimmerLayout.stopShimmer()
+                    binding.shimmerLayout.visibility = View.GONE
+                    binding.recyclerview.adapter = carsAdapter
                 }
             }
 
             override fun onFailure(call: Call<CarModel>, t: Throwable) {
-                binding.shimmerLayout.stopShimmer();
-                binding.shimmerLayout.visibility = View.GONE;
-                Toast.makeText(this@MainActivity, "Check internet connectivity", Toast.LENGTH_LONG).show()
+                binding.shimmerLayout.stopShimmer()
+                binding.shimmerLayout.visibility = View.GONE
+                binding.errorPage.visibility = View.VISIBLE
+                binding.message.text = t.message
+                binding.searchView.visibility = View.GONE
+                binding.swipeRefresh.visibility = View.GONE
+
+                Log.e("Gideon", "onFailure: ${t.message}")
+            }
+        })
+    }
+
+    private fun roles() {
+        apiClient.getApiService(this).getRoles("2").enqueue(object : Callback<GetRolesResponse> {
+            override fun onResponse(call: Call<GetRolesResponse>, response: Response<GetRolesResponse>) {
+                Log.e("id", response.toString())
+                if (response.isSuccessful) {
+                    pref!!.setROLEID(response.body()!!.role_details.roleId.toString())
+                    pref!!.setROLENAME(response.body()!!.role_details.roleName)
+                    pref!!.setROLEDESCRIPTION(response.body()!!.role_details.roleDescription)
+                }
+            }
+
+            override fun onFailure(call: Call<GetRolesResponse>, t: Throwable) {
                 Log.e("Gideon", "onFailure: ${t.message}")
             }
         })
     }
 
     private fun restartApp() {
-        val i = Intent(applicationContext, MainActivity::class.java)
-        startActivity(i)
         finish()
+        startActivity(intent)
     }
 
     private fun getAllData() {
         if (binding.swipeRefresh.isRefreshing) {
             binding.swipeRefresh.isRefreshing = false
-
             getAllCars()
         }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (toggle.onOptionsItemSelected(item)) {
-            true
-        }
-        return super.onOptionsItemSelected(item)
     }
 }

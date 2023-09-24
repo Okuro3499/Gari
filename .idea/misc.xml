@@ -1,8 +1,65 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/back_select.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/back_unselect.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/button_bg_dark.xml" value="0.121" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/button_bg_light.xml" value="0.121" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/button_bg_white.xml" value="0.121" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/calendar1.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/call.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/circular_corners.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/custom_input.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/custom_input2.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/edit.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/edit1.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/emergencynone.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/err.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/home1.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/info1.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/login.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/login_signup_button.xml" value="0.121" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/logout1.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/menu.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/menu_white.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/menuwhite.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/nextpagedark.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/nextpagelight.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/nonselecteddark.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/outline_fingerprint_black_24dp.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/outline_update_black_24dp.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/outline_visibility_black_24dp.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/outline_visibility_off_black_24dp.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/payment_method_background.xml" value="0.121" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/phone1.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/search1.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/selecteddark.xml" value="0.121" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/settings.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/settings1.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/signup.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/tab_background.xml" value="0.121" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/drawable/user1.xml" value="0.1075" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/layout/activity_about.xml" value="0.18802083333333333" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/layout/activity_detail.xml" value="0.22" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/layout/activity_edit_profile.xml" value="0.18802083333333333" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/layout/activity_emergency_contacts.xml" value="0.18802083333333333" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/layout/activity_login.xml" value="0.1814814814814815" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/layout/activity_on_boarding.xml" value="0.18697916666666667" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/layout/activity_onboarding.xml" value="0.18802083333333333" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/layout/activity_payment.xml" value="0.22448979591836735" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/layout/activity_profile_complete.xml" value="0.18802083333333333" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/layout/activity_register.xml" value="0.18802083333333333" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/layout/activity_splashscreen.xml" value="0.18697916666666667" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/layout/activity_user_settings.xml" value="0.18802083333333333" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/layout/activity_vehicles.xml" value="0.18802083333333333" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/layout/fragment_bookings.xml" value="0.18802083333333333" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/layout/fragment_saved.xml" value="0.1" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/layout/onboard_item.xml" value="0.1" />
+        <entry key="..\:/APPs/Gari/app/src/main/res/menu/log_in_menu.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/HP/Desktop/contactSelector/Gari/app/src/main/res/drawable/custom_input.xml" value="0.1" />
         <entry key="..\:/Users/HP/Desktop/contactSelector/Gari/app/src/main/res/drawable/ic_baseline_date_range_24.xml" value="0.1655" />
         <entry key="..\:/Users/HP/Desktop/contactSelector/Gari/app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.1655" />

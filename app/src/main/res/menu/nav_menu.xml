@@ -4,31 +4,31 @@
     tools:showIn="navigation_view">
     <item
         android:id="@+id/home"
-        android:icon="@drawable/ic_baseline_home_24"
-        android:title="Home" />
+        android:icon="@drawable/home1"
+        android:title="@string/home" />
     <item
         android:id="@+id/profile"
-        android:icon="@drawable/ic_baseline_edit_24"
-        android:title="Profile" />
+        android:icon="@drawable/user1"
+        android:title="@string/profile" />
     <item
         android:id="@+id/myVehicles"
-        android:icon="@drawable/ic_baseline_folder_24"
-        android:title="My Vehicles" />
+        android:icon="@drawable/truck1"
+        android:title="@string/my_vehicles" />
     <item
         android:id="@+id/logout"
-        android:icon="@drawable/ic_baseline_exit_to_app_24"
-        android:title="Logout" />
+        android:icon="@drawable/logout1"
+        android:title="@string/logout" />
 
-    <item android:title="FAQ">
+    <item android:title="@string/faq">
         <menu>
             <item
                 android:id="@+id/about"
-                android:icon="@drawable/ic_baseline_info_24"
-                android:title="About Gari" />
+                android:icon="@drawable/info1"
+                android:title="@string/about_gari" />
             <item
                 android:id="@+id/help"
-                android:icon="@drawable/ic_baseline_help_outline_24"
-                android:title="Need Assistance?" />
+                android:icon="@drawable/helpcircle1"
+                android:title="@string/need_assistance" />
         </menu>
     </item>
 </menu>

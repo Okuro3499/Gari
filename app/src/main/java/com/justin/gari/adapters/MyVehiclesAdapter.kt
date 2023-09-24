@@ -1,52 +1,43 @@
 package com.justin.gari.adapters
 
-import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.lifecycle.Lifecycle
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.justin.gari.fragments.BookingsFragment
 
+class MyVehiclesAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
+    FragmentStateAdapter(fragmentManager, lifecycle) {
+    override fun createFragment(position: Int): Fragment {
+        return if (position == 1) {
+            BookingsFragment()
+        } else BookingsFragment()
+    }
 
-//class ViewPagerAdapter(supportFragmentManager: FragmentManager) : FragmentPagerAdapter(supportFragmentManager) {
-//    private val mFragmentList = ArrayList<Fragment>()
-//    private val mFragmentTitleList = ArrayList<String>()
+    override fun getItemCount(): Int {
+        return 2
+    }
+}
+
+//class MyVehiclesAdapter(fm: FragmentManager, behavior: Int) :
+//    FragmentPagerAdapter(fm, behavior) {
+//    private val fragmentArrayList: ArrayList<Fragment> = ArrayList()
+//    private val fragmentTitle: ArrayList<String> = ArrayList()
+//    override fun getItem(position: Int): Fragment {
+//        return fragmentArrayList[position]
+//    }
 //
 //    override fun getCount(): Int {
-//        return mFragmentList.size
-//    }
-//
-//    override fun getItem(position: Int): Fragment {
-//        return mFragmentList[position]
-//    }
-//
-//    override fun getPageTitle(position: Int): CharSequence? {
-//        return mFragmentTitleList[position]
+//        return fragmentArrayList.size
 //    }
 //
 //    fun addFragment(fragment: Fragment, title: String) {
-//        mFragmentList.add(fragment)
-//        mFragmentTitleList.add(title)
+//        fragmentArrayList.add(fragment)
+//        fragmentTitle.add(title)
+//    }
+//
+//    @Nullable
+//    override fun getPageTitle(position: Int): CharSequence? {
+//        return fragmentTitle[position]
 //    }
 //}
-
-class MyVehiclesAdapter(fm: FragmentManager, behavior: Int) :
-    FragmentPagerAdapter(fm, behavior) {
-    private val fragmentArrayList: ArrayList<Fragment> = ArrayList()
-    private val fragmentTitle: ArrayList<String> = ArrayList()
-    override fun getItem(position: Int): Fragment {
-        return fragmentArrayList[position]
-    }
-
-    override fun getCount(): Int {
-        return fragmentArrayList.size
-    }
-
-    fun addFragment(fragment: Fragment, title: String) {
-        fragmentArrayList.add(fragment)
-        fragmentTitle.add(title)
-    }
-
-    @Nullable
-    override fun getPageTitle(position: Int): CharSequence? {
-        return fragmentTitle[position]
-    }
-}
