@@ -25,7 +25,6 @@
         android:layout_marginTop="4dp"
         android:fontFamily="@font/poppins_bold"
         android:paddingTop="8dp"
-        android:text="Welcome To Gari"
         android:textColor="?attr/textColor"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
