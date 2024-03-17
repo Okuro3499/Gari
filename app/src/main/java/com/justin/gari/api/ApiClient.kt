@@ -17,11 +17,11 @@ class ApiClient {
         .setLenient()
         .create()
 
-    fun getApiService(context: Context): ApiService {
+    fun getApiService(): ApiService {
         if (!::apiService.isInitialized) {
             val retrofit = Retrofit.Builder()
 //                .baseUrl("https://apigari.herokuapp.com/")
-                .baseUrl("http://192.168.88.246:3001/")
+                .baseUrl("http://192.168.88.15:3001/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(
                     OkHttpClient.Builder()

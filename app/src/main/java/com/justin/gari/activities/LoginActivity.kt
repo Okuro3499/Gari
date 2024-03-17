@@ -1,17 +1,23 @@
 package com.justin.gari.activities
 
+import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import com.justin.gari.R
 import com.justin.gari.api.ApiClient
 import com.justin.gari.api.SessionManager
 import com.justin.gari.databinding.ActivityLoginBinding
+import com.justin.gari.databinding.DialogMessageBinding
+import com.justin.gari.models.ApiErrorResponse
 import com.justin.gari.models.userModels.loginModel.UserLogin
 import com.justin.gari.models.userModels.loginModel.UserLoginResponse
 import com.justin.gari.utils.SharedPrefManager
@@ -21,7 +27,7 @@ import retrofit2.Response
 import kotlin.system.exitProcess
 
 class LoginActivity : AppCompatActivity() {
-    var pref: SharedPrefManager? = null
+    lateinit var pref: SharedPrefManager
     private lateinit var sessionManager: SessionManager
     private lateinit var apiClient: ApiClient
     private lateinit var binding: ActivityLoginBinding
@@ -29,8 +35,8 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         apiClient = ApiClient()
         pref = SharedPrefManager(this)
-        Log.d("NightModeState", "${pref!!.loadNightModeState()}")
-        if (pref!!.loadNightModeState()) {
+        Log.d("NightModeState", "${pref.loadNightModeState()}")
+        if (pref.loadNightModeState()) {
             setTheme(R.style.DarkGari)
         } else setTheme(R.style.Gari)
 
@@ -39,55 +45,96 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         if (supportActionBar != null) {
-            supportActionBar!!.hide()
+            supportActionBar?.hide()
         }
 
         sessionManager = SessionManager(this)
 
         //Login into user account
-        binding.btLogin.setOnClickListener {
-            if (TextUtils.isEmpty(binding.etEmailAddress.text.toString().trim())) {
-                binding.etEmailAddress.error = "Kindly enter email"
-            } else if(!binding.etEmailAddress.text.toString().trim().matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+".toRegex())) {
-                binding.etEmailAddress.error = "Kindly enter a valid email!"
-            } else if (TextUtils.isEmpty(binding.etPassword.text.toString().trim())) {
-                binding.etPassword.error = "Kindly enter password"
+        binding.btLogin.setOnClickListener { it1 ->
+            if (TextUtils.isEmpty("${binding.etPhoneNo.text}".trim())) {
+                binding.etPhoneNo.error = getString(R.string.enter_mobile_number)
+            } else if(!"${binding.etPhoneNo.text}".trim().matches("^((\\+254|254|0)[0-9]{9})$".toRegex())) {
+                binding.etPhoneNo.error = getString(R.string.enter_a_valid_phone_no)
+            } else if (TextUtils.isEmpty("${binding.etPassword.text}".trim())) {
+                binding.etPassword.error = getString(R.string.enter_password)
             } else {
                 // display a progress dialog
                 val progressDialog = ProgressDialog(this@LoginActivity)
                 progressDialog.setCancelable(false) // set cancelable to false
-                progressDialog.setMessage("Logging in...") // set message
+                progressDialog.setMessage(getString(R.string.logging_in)) // set message
                 progressDialog.show()
+                val phoneNumber = "${binding.etPhoneNo.text}".trim().takeLast(9)
 
                 val loginInfo = UserLogin(
-                    binding.etEmailAddress.text.toString().trim(),
-                    binding.etPassword.text.toString().trim()
+                    phoneNumber,
+                    "${binding.etPassword.text}".trim()
                 )
-                apiClient.getApiService(this).loginUser(loginInfo).enqueue(object : Callback<UserLoginResponse> {
+                apiClient.getApiService().loginUser(loginInfo).enqueue(object : Callback<UserLoginResponse> {
                     override fun onResponse(call: Call<UserLoginResponse>, response: Response<UserLoginResponse>) {
-                        if (response.isSuccessful) {
+                        if (!response.isSuccessful) {
+                            val gson = Gson()
+                            val errorBody = response.errorBody()?.string()
+                            try {
+                                val errorResponse = gson.fromJson(errorBody, ApiErrorResponse::class.java)
+                                progressDialog.dismiss()
+                                val dialog = Dialog(this@LoginActivity)
+                                dialog.setCancelable(false)
+
+                                val dialogMessageBinding = DialogMessageBinding.inflate(layoutInflater)
+                                dialog.setContentView(dialogMessageBinding.root)
+                                dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+                                dialogMessageBinding.messageTitle.text = errorResponse.status ?: getString(R.string.failed_to_login)
+                                dialogMessageBinding.message.text = errorResponse.error ?: getString(R.string.kindly_contact_admin)
+                                dialogMessageBinding.btBack.setOnClickListener {
+                                    dialog.dismiss()
+                                }
+
+                                dialog.setCancelable(true)
+                                dialog.show()
+                            } catch (e: Exception) {
+                                Log.e("Error Parsing", "Error parsing error response", e)
+                            }
+                        } else {
                             progressDialog.dismiss()
-                            Snackbar.make(it, "Login Successful", Snackbar.LENGTH_SHORT).show()
+
                             Log.e("Gideon", "onSuccess: ${response.body()}")
+                            response.body()?.let {
+                                Snackbar.make(it1, "${it.status}", Snackbar.LENGTH_SHORT).show()
+                                pref.setUSERID(it.user?.user_id)
+                                pref.setROLEID(it.user?.role_id)
+                                pref.setFIRSTNAME(it.user?.first_name)
+                                pref.setLASTNAME(it.user?.last_name)
+                                pref.setEMAIL(it.user?.email)
+                                pref.setUSERPROFILEPHOTO(it.user?.user_photo_url)
+                                sessionManager.saveAuthToken(it.accessToken)
+                            }
 
-                            pref!!.setUSERID(response.body()!!.users.user_id)
-                            pref!!.setROLEID(response.body()!!.users.role_id)
-                            pref!!.setFIRSTNAME(response.body()!!.users.first_name)
-                            pref!!.setLASTNAME(response.body()!!.users.last_name)
-                            pref!!.setEMAIL(response.body()!!.users.email)
-                            pref!!.setUSERPROFILEPHOTO(response.body()!!.users.user_photo_url)
-                        response.body()!!.accessToken?.let { it1 -> sessionManager.saveAuthToken(it1) }
-
-                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                        startActivity(intent)
+                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                            startActivity(intent)
+                        }
                     }
-                }
 
-                override fun onFailure(call: Call<UserLoginResponse>, t: Throwable) {
-                    progressDialog.dismiss()
-                    Snackbar.make(it, "${t.message}", Snackbar.LENGTH_SHORT).show()
-                    Log.e("Gideon", "onFailure: ${t.message}")
-                }
+                    override fun onFailure(call: Call<UserLoginResponse>, t: Throwable) {
+                        progressDialog.dismiss()
+                        val dialog = Dialog(this@LoginActivity)
+                        dialog.setCancelable(false)
+
+                        val dialogMessageBinding = DialogMessageBinding.inflate(layoutInflater)
+                        dialog.setContentView(dialogMessageBinding.root)
+                        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+                        dialogMessageBinding.messageTitle.text = getString(R.string.failed_to_login)
+                        dialogMessageBinding.message.text = "${t.message}"
+                        dialogMessageBinding.btBack.setOnClickListener {
+                            dialog.dismiss()
+                        }
+
+                        dialog.setCancelable(true)
+                        dialog.show()
+                        Log.e("Gideon", "onFailure: ${t.message}")
+                    }
                 })
             }
         }
@@ -100,17 +147,11 @@ class LoginActivity : AppCompatActivity() {
 
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                onBackPressed()
+                finishAffinity()
+                exitProcess(0)
             }
         }
         onBackPressedDispatcher.addCallback(this, callback)
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        finish()
-        finishAffinity()
-        exitProcess(0)
     }
 }
 

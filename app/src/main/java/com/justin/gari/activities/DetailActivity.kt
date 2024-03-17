@@ -189,7 +189,7 @@ class DetailActivity : AppCompatActivity() {
             val user_id = pref!!.getUSERID()
             val saveInfo = SaveCar(car_id, user_id, today.toString())
 
-            apiClient.getApiService(this).saveCar(saveInfo).enqueue(object : Callback<SaveCarResponse> {
+            apiClient.getApiService().saveCar(saveInfo).enqueue(object : Callback<SaveCarResponse> {
                 override fun onResponse(call: Call<SaveCarResponse>, response: Response<SaveCarResponse>) {
                     if (response.isSuccessful) {
                         Snackbar.make(it, "Saved Successfully", Snackbar.LENGTH_SHORT).show()
@@ -366,7 +366,7 @@ class DetailActivity : AppCompatActivity() {
         progressDialog.show()
 
         val carId = intent.getStringExtra("car_id")
-        apiClient.getApiService(this).getCarDetails(carId)
+        apiClient.getApiService().getCarDetails(carId)
             .enqueue(object : Callback<SingleCarModel> {
                 override fun onResponse(
                     call: Call<SingleCarModel>,

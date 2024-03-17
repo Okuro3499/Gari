@@ -318,7 +318,7 @@ class PaymentActivity : AppCompatActivity() {
         )
 
         Log.e("Gideon", "onSuccess: $bookingInfo")
-        apiClient.getApiService(this).bookingCar(bookingInfo).enqueue(object : Callback<BookCarResponse> {
+        apiClient.getApiService().bookingCar(bookingInfo).enqueue(object : Callback<BookCarResponse> {
             override fun onResponse(call: Call<BookCarResponse>, response: Response<BookCarResponse>) {
                 if (response.isSuccessful) {
                     progressDialog.dismiss()

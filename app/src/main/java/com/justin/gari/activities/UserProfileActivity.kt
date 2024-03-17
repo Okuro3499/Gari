@@ -3,17 +3,12 @@ package com.justin.gari.activities
 import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
-import android.view.View
 import android.widget.Switch
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
@@ -21,7 +16,6 @@ import com.justin.gari.R
 import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityProfileCompleteBinding
 import com.justin.gari.models.userModels.UserDetailsResponse
-import com.justin.gari.utils.SettingsManager
 import com.justin.gari.utils.SharedPrefManager
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
@@ -240,7 +234,7 @@ class UserProfileActivity : AppCompatActivity() {
         progressDialog.setMessage("Fetching Details..") // set message
         progressDialog.show()
 
-        apiClient.getApiService(this).getUserDetails(userId, roleId).enqueue(object : Callback<UserDetailsResponse> {
+        apiClient.getApiService().getUserDetails(userId, roleId).enqueue(object : Callback<UserDetailsResponse> {
             override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
                 if (response.isSuccessful) {
                     progressDialog.dismiss()

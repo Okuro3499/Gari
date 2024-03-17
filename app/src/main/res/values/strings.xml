@@ -109,8 +109,6 @@
     <string name="subHeader2">Affordable rates for everyone</string>
     <string name="subHeader3">We have variety of cars for you to choose from.</string>
     <string name="skip">Skip</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="login_here">Login here</string>
     <string name="create_your_account_here">Create your account here</string>
     <string name="home">Home</string>
@@ -121,4 +119,19 @@
     <string name="need_assistance">Need Assistance?</string>
     <string name="total_days">Total Days:</string>
     <string name="user_name">%1$s %2$s</string>
+    <string name="phone_number">Phone number</string>
+    <string name="failed_to_register_user">Failed to register user!</string>
+    <string name="kindly_contact_admin">Kindly contact admin for assistance!</string>
+    <string name="enter_first_name">Kindly enter first name</string>
+    <string name="enter_last_name">Kindly enter last name</string>
+    <string name="enter_email">Kindly enter email</string>
+    <string name="enter_a_valid_email">Kindly enter a valid email!</string>
+    <string name="enter_mobile_number">Kindly enter mobile number</string>
+    <string name="enter_a_valid_phone_no">Kindly enter a valid phone no.</string>
+    <string name="enter_password">Kindly enter password</string>
+    <string name="passwords_do_not_match">Passwords do not match</string>
+    <string name="creating_account">Creating account…</string>
+    <string name="failed_to_login">Failed to login!</string>
+    <string name="logging_in">Logging in…</string>
+    <string name="ksh_price">Ksh. %1$s</string>
 </resources>

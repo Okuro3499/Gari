@@ -33,7 +33,7 @@ class BookingsFragment : Fragment() {
 
         apiClient = ApiClient()
         context?.let {
-            apiClient.getApiService(it).getBookedCars(userId).enqueue(object : Callback<BookingsResponse> {
+            apiClient.getApiService().getBookedCars(userId).enqueue(object : Callback<BookingsResponse> {
                 override fun onResponse(call: Call<BookingsResponse>, response: Response<BookingsResponse>) {
                     if (response.isSuccessful) {
                         Log.e("Gideon", "onSuccess: ${response.body()}")

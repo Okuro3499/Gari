@@ -33,7 +33,7 @@ class SavedFragment : Fragment() {
 
         apiClient = ApiClient()
         context?.let {
-            apiClient.getApiService(it).getSavedCars(userId)
+            apiClient.getApiService().getSavedCars(userId)
                 .enqueue(object : Callback<SavedCarResponse> {
                     override fun onResponse(call: Call<SavedCarResponse>, response: Response<SavedCarResponse>) {
                         Log.e("Gideon", "onSuccess: ${response.body()}")

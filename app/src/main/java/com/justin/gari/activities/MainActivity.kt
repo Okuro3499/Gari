@@ -37,8 +37,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         apiClient = ApiClient()
         pref = SharedPrefManager(this)
-        Log.d("NightModeState", "${pref!!.loadNightModeState()}")
-        if (pref!!.loadNightModeState()) {
+        Log.d("NightModeState", "${pref?.loadNightModeState()}")
+        if (pref?.loadNightModeState() == true) {
             setTheme(R.style.DarkGari)
         } else setTheme(R.style.Gari)
 
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         getAllCars()
         roles()
 
-        val profileHeader = pref!!.getUSERPROFILEPHOTO()
+        val profileHeader = pref?.getUSERPROFILEPHOTO()
         val header = binding.navView.getHeaderView(0)
         val outHeader = binding.outNavView.getHeaderView(0)
         val firstNameTextView = header.findViewById<TextView>(R.id.firstName)
@@ -64,9 +64,9 @@ class MainActivity : AppCompatActivity() {
         val profileImage = header.findViewById<CircleImageView>(R.id.profile_image)
         val inSwitch = header.findViewById<Switch>(R.id.themeSwitch)
         val outSwitch = outHeader.findViewById<Switch>(R.id.themeSwitch)
-        firstNameTextView.text = "${pref!!.getFIRSTNAME()}"
+        firstNameTextView.text = "${pref?.getFIRSTNAME()}"
         val firstName = firstNameTextView.text
-        emailTextView.text = pref!!.getEMAIL()
+        emailTextView.text = pref?.getEMAIL()
 
         Picasso.get()
             .load(profileHeader)
@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
             .error(R.drawable.user)
             .into(profileImage)
 
-        if (pref!!.loadNightModeState()) {
+        if (pref?.loadNightModeState() == true) {
             inSwitch.isChecked = true
             outSwitch.isChecked = true
             inSwitch.text = getString(R.string.light_mode)
@@ -87,13 +87,13 @@ class MainActivity : AppCompatActivity() {
 
         inSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                pref!!.setNightModeState(true)
-                pref!!.setSWITCHEDTHEME(true)
+                pref?.setNightModeState(true)
+                pref?.setSWITCHEDTHEME(true)
                 inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             } else {
-                pref!!.setNightModeState(false)
-                pref!!.setSWITCHEDTHEME(false)
+                pref?.setNightModeState(false)
+                pref?.setSWITCHEDTHEME(false)
                 inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             }
@@ -101,13 +101,13 @@ class MainActivity : AppCompatActivity() {
 
         outHeader.findViewById<Switch>(R.id.themeSwitch).setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                pref!!.setNightModeState(true)
-                pref!!.setSWITCHEDTHEME(true)
+                pref?.setNightModeState(true)
+                pref?.setSWITCHEDTHEME(true)
                 outSwitch.text = getString(R.string.dark_mode)
                 restartApp()
             } else {
-                pref!!.setNightModeState(false)
-                pref!!.setSWITCHEDTHEME(false)
+                pref?.setNightModeState(false)
+                pref?.setSWITCHEDTHEME(false)
                 outSwitch.text = getString(R.string.dark_mode)
                 restartApp()
             }
@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         Log.d("ghj", "$firstName ")
-        if (pref!!.getFIRSTNAME() != "") {
+        if (pref?.getFIRSTNAME() != "") {
             binding.name.text = getString(R.string.username, "$firstName")
         }
 
@@ -157,7 +157,7 @@ class MainActivity : AppCompatActivity() {
                         return@OnNavigationItemSelectedListener true
                     }
                     R.id.logout -> {
-                        pref!!.clearAllDataExcept()
+                        pref?.clearAllDataExcept()
                         val intentLogout = Intent(this, MainActivity::class.java)
                         startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
                         finish()
@@ -186,7 +186,6 @@ class MainActivity : AppCompatActivity() {
             binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, GravityCompat.START)
             binding.outNavView.setNavigationItemSelectedListener(NavigationView.OnNavigationItemSelectedListener { item ->
                 Log.i(TAG, "onNavigationItemSelected: " + item.itemId)
-
                 when (item.itemId) {
                     R.id.login -> {
                         val intentLogin = Intent(this, LoginActivity::class.java)
@@ -232,12 +231,12 @@ class MainActivity : AppCompatActivity() {
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                carsAdapter?.getFilter()?.filter(query)
+                carsAdapter?.filter?.filter(query)
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                carsAdapter?.getFilter()?.filter(newText)
+                carsAdapter?.filter?.filter(newText)
                 return true
             }
         })
@@ -245,11 +244,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun getAllCars() {
         binding.shimmerLayout.startShimmer()
-        apiClient.getApiService(this).getAllCars().enqueue(object : Callback<CarModel> {
+        apiClient.getApiService().getAllCars().enqueue(object : Callback<CarModel> {
             override fun onResponse(call: Call<CarModel>, response: Response<CarModel>) {
                 Log.e("id", response.toString())
                 if (response.isSuccessful) {
-                    carsAdapter = CarAdapter(response.body()!!.cars, this@MainActivity)
+                    carsAdapter = response.body()?.cars?.let {
+                        CarAdapter(it, this@MainActivity)
+                    }
                     binding.shimmerLayout.stopShimmer()
                     binding.shimmerLayout.visibility = View.GONE
                     binding.recyclerview.adapter = carsAdapter
@@ -270,13 +271,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun roles() {
-        apiClient.getApiService(this).getRoles("2").enqueue(object : Callback<GetRolesResponse> {
+        apiClient.getApiService().getRoles("2").enqueue(object : Callback<GetRolesResponse> {
             override fun onResponse(call: Call<GetRolesResponse>, response: Response<GetRolesResponse>) {
                 Log.e("id", response.toString())
                 if (response.isSuccessful) {
-                    pref!!.setROLEID(response.body()!!.role_details.roleId.toString())
-                    pref!!.setROLENAME(response.body()!!.role_details.roleName)
-                    pref!!.setROLEDESCRIPTION(response.body()!!.role_details.roleDescription)
+                    pref?.setROLEID(response.body()?.role_details?.roleId.toString())
+                    pref?.setROLENAME(response.body()?.role_details?.roleName)
+                    pref?.setROLEDESCRIPTION(response.body()?.role_details?.roleDescription)
                 }
             }
 

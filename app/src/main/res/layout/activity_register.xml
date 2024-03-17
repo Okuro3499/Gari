@@ -182,144 +182,144 @@
                 android:textColor="@color/md_black_1000" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <LinearLayout
-            android:id="@+id/linearLayout6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:baselineAligned="true"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edtMobile">
+<!--        <LinearLayout-->
+<!--            android:id="@+id/linearLayout6"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:baselineAligned="true"-->
+<!--            android:gravity="center"-->
+<!--            android:orientation="horizontal"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/edtMobile">-->
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/edtCounty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_weight="1"
-                app:boxBackgroundColor="@color/md_white_1000"
-                app:boxStrokeColor="@color/md_white_1000"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view1">
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                android:id="@+id/edtCounty"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:layout_marginEnd="20dp"-->
+<!--                android:layout_weight="1"-->
+<!--                app:boxBackgroundColor="@color/md_white_1000"-->
+<!--                app:boxStrokeColor="@color/md_white_1000"-->
+<!--                app:boxStrokeWidth="0dp"-->
+<!--                app:boxStrokeWidthFocused="0dp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/view1">-->
 
-                <EditText
-                    android:id="@+id/etCounty"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:autofillHints=""
-                    android:background="@drawable/custom_input"
-                    android:fontFamily="@font/poppins_regular"
-                    android:hint="@string/countie"
-                    android:inputType="text"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="8dp"
-                    android:textColor="@color/md_black_1000" />
-            </com.google.android.material.textfield.TextInputLayout>
+<!--                <EditText-->
+<!--                    android:id="@+id/etCounty"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:autofillHints=""-->
+<!--                    android:background="@drawable/custom_input"-->
+<!--                    android:fontFamily="@font/poppins_regular"-->
+<!--                    android:hint="@string/countie"-->
+<!--                    android:inputType="text"-->
+<!--                    android:paddingStart="12dp"-->
+<!--                    android:paddingEnd="8dp"-->
+<!--                    android:textColor="@color/md_black_1000" />-->
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/edtDistrict"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_weight="1"
-                app:boxBackgroundColor="@color/md_white_1000"
-                app:boxStrokeColor="@color/md_white_1000"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view1">
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                android:id="@+id/edtDistrict"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:layout_marginEnd="20dp"-->
+<!--                android:layout_weight="1"-->
+<!--                app:boxBackgroundColor="@color/md_white_1000"-->
+<!--                app:boxStrokeColor="@color/md_white_1000"-->
+<!--                app:boxStrokeWidth="0dp"-->
+<!--                app:boxStrokeWidthFocused="0dp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/view1">-->
 
-                <EditText
-                    android:id="@+id/etDistrict"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:autofillHints=""
-                    android:background="@drawable/custom_input"
-                    android:fontFamily="@font/poppins_regular"
-                    android:hint="@string/distric"
-                    android:inputType="text"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="8dp"
-                    android:textColor="@color/md_black_1000" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
+<!--                <EditText-->
+<!--                    android:id="@+id/etDistrict"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:autofillHints=""-->
+<!--                    android:background="@drawable/custom_input"-->
+<!--                    android:fontFamily="@font/poppins_regular"-->
+<!--                    android:hint="@string/distric"-->
+<!--                    android:inputType="text"-->
+<!--                    android:paddingStart="12dp"-->
+<!--                    android:paddingEnd="8dp"-->
+<!--                    android:textColor="@color/md_black_1000" />-->
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+<!--        </LinearLayout>-->
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/edtEstate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            app:boxBackgroundColor="@color/md_white_1000"
-            app:boxStrokeColor="@color/md_white_1000"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/edtEstate"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="20dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginEnd="20dp"-->
+<!--            android:layout_weight="1"-->
+<!--            app:boxBackgroundColor="@color/md_white_1000"-->
+<!--            app:boxStrokeColor="@color/md_white_1000"-->
+<!--            app:boxStrokeWidth="0dp"-->
+<!--            app:boxStrokeWidthFocused="0dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/linearLayout6">-->
 
-            <EditText
-                android:id="@+id/etEstate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:autofillHints=""
-                android:background="@drawable/custom_input"
-                android:fontFamily="@font/poppins_regular"
-                android:hint="@string/estat"
-                android:inputType="text"
-                android:paddingStart="12dp"
-                android:paddingEnd="8dp"
-                android:textColor="@color/md_black_1000" />
-        </com.google.android.material.textfield.TextInputLayout>
+<!--            <EditText-->
+<!--                android:id="@+id/etEstate"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerHorizontal="true"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:autofillHints=""-->
+<!--                android:background="@drawable/custom_input"-->
+<!--                android:fontFamily="@font/poppins_regular"-->
+<!--                android:hint="@string/estat"-->
+<!--                android:inputType="text"-->
+<!--                android:paddingStart="12dp"-->
+<!--                android:paddingEnd="8dp"-->
+<!--                android:textColor="@color/md_black_1000" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/edtLandMark"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            app:boxBackgroundColor="@color/md_white_1000"
-            app:boxStrokeColor="@color/md_white_1000"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edtEstate">
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/edtLandMark"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="20dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginEnd="20dp"-->
+<!--            android:layout_weight="1"-->
+<!--            app:boxBackgroundColor="@color/md_white_1000"-->
+<!--            app:boxStrokeColor="@color/md_white_1000"-->
+<!--            app:boxStrokeWidth="0dp"-->
+<!--            app:boxStrokeWidthFocused="0dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/edtEstate">-->
 
-            <EditText
-                android:id="@+id/etLandMark"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:autofillHints=""
-                android:background="@drawable/custom_input"
-                android:fontFamily="@font/poppins_regular"
-                android:hint="@string/landmak"
-                android:inputType="text"
-                android:paddingStart="12dp"
-                android:paddingEnd="8dp"
-                android:textColor="@color/md_black_1000" />
-        </com.google.android.material.textfield.TextInputLayout>
+<!--            <EditText-->
+<!--                android:id="@+id/etLandMark"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerHorizontal="true"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:autofillHints=""-->
+<!--                android:background="@drawable/custom_input"-->
+<!--                android:fontFamily="@font/poppins_regular"-->
+<!--                android:hint="@string/landmak"-->
+<!--                android:inputType="text"-->
+<!--                android:paddingStart="12dp"-->
+<!--                android:paddingEnd="8dp"-->
+<!--                android:textColor="@color/md_black_1000" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/edtPassword"
@@ -334,7 +334,7 @@
             app:boxStrokeWidthFocused="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edtLandMark"
+            app:layout_constraintTop_toBottomOf="@+id/edtMobile"
             app:passwordToggleEnabled="true">
 
             <EditText

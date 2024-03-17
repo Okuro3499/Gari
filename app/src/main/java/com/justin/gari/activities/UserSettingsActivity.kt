@@ -4,14 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
-import android.view.View
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +20,6 @@ import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityUserSettingsBinding
 import com.justin.gari.models.uploadImagesModel.*
 import com.justin.gari.models.userModels.UserDetailsResponse
-import com.justin.gari.utils.SettingsManager
 import com.justin.gari.utils.SharedPrefManager
 import com.justin.gari.utils.URIPathHelper
 import com.squareup.picasso.Picasso
@@ -185,7 +181,7 @@ class UserSettingsActivity : AppCompatActivity() {
         progressDialog.setMessage("Fetching Details..") // set message
         progressDialog.show()
 
-        apiClient.getApiService(this).getUserDetails(userId, roleId).enqueue(object : Callback<UserDetailsResponse> {
+        apiClient.getApiService().getUserDetails(userId, roleId).enqueue(object : Callback<UserDetailsResponse> {
             override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
                 if (response.isSuccessful) {
                     progressDialog.dismiss()
@@ -324,7 +320,7 @@ class UserSettingsActivity : AppCompatActivity() {
         progressDialog0.show()
 
         val image = MultipartBody.Part.createFormData("image", file.name, driverLicense)
-        apiClient.getApiService(this).dlCloudinary(image).enqueue(object : Callback<DlCloudinaryResponse> {
+        apiClient.getApiService().dlCloudinary(image).enqueue(object : Callback<DlCloudinaryResponse> {
                 override fun onResponse(call: Call<DlCloudinaryResponse>, response: Response<DlCloudinaryResponse>) {
                     Log.e("Gideon", "cloudinary: $response")
                     if (response.isSuccessful) {
@@ -339,7 +335,7 @@ class UserSettingsActivity : AppCompatActivity() {
 
                         val dlUrl = DlUrl(response.body()!!.driverLicenceCloudinary)
 
-                        apiClient.getApiService(this@UserSettingsActivity).dlCloudinaryResponseToDb(pref!!.getUSERID(), dlUrl).enqueue(object : Callback<UserDetailsResponse> {
+                        apiClient.getApiService().dlCloudinaryResponseToDb(pref!!.getUSERID(), dlUrl).enqueue(object : Callback<UserDetailsResponse> {
                                 override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
                                     if (response.isSuccessful) {
                                         progressDialog1.dismiss()
@@ -368,7 +364,7 @@ class UserSettingsActivity : AppCompatActivity() {
         progressDialog2.show()
 
         val image = MultipartBody.Part.createFormData("image", file.name, identityCard)
-        apiClient.getApiService(this).idCloudinary(image).enqueue(object : Callback<IdCloudinaryResponse> {
+        apiClient.getApiService().idCloudinary(image).enqueue(object : Callback<IdCloudinaryResponse> {
             override fun onResponse(call: Call<IdCloudinaryResponse>, response: Response<IdCloudinaryResponse>) {
                 Log.e("Gideon", "cloudinary: $response")
                 if (response.isSuccessful) {
@@ -380,7 +376,8 @@ class UserSettingsActivity : AppCompatActivity() {
                         progressDialog3.setMessage("Securing image...") // set message
                         progressDialog3.show()
 
-                        apiClient.getApiService(this@UserSettingsActivity).nationalIdCloudinaryResponseToDb(pref!!.getUSERID(), nationalIdUrl).enqueue(object : Callback<UserDetailsResponse> {
+                        apiClient.getApiService()
+                            .nationalIdCloudinaryResponseToDb(pref!!.getUSERID(), nationalIdUrl).enqueue(object : Callback<UserDetailsResponse> {
                                 override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
                                     if (response.isSuccessful) {
                                         progressDialog3.dismiss()
@@ -409,7 +406,7 @@ class UserSettingsActivity : AppCompatActivity() {
         progressDialog4.show()
 
         val image = MultipartBody.Part.createFormData("image", file.name, userPhoto)
-        apiClient.getApiService(this).userPhotoCloudinary(image).enqueue(object : Callback<UserPhotoCloudinaryResponse> {
+        apiClient.getApiService().userPhotoCloudinary(image).enqueue(object : Callback<UserPhotoCloudinaryResponse> {
                 override fun onResponse(call: Call<UserPhotoCloudinaryResponse>, response: Response<UserPhotoCloudinaryResponse>) {
                     Log.e("Gideon", "cloudinary: $response")
                     if (response.isSuccessful) {
@@ -422,7 +419,8 @@ class UserSettingsActivity : AppCompatActivity() {
 
                         val userPhotoUrl = UserPhotoUrl(response.body()!!.userPhotoCloudinary)
                         pref!!.setUSERPROFILEPHOTO(response.body()!!.userPhotoCloudinary)
-                        apiClient.getApiService(this@UserSettingsActivity).userPhotoCloudinaryResponseToDb(pref!!.getUSERID(), userPhotoUrl).enqueue(object : Callback<UserDetailsResponse> {
+                        apiClient.getApiService()
+                            .userPhotoCloudinaryResponseToDb(pref!!.getUSERID(), userPhotoUrl).enqueue(object : Callback<UserDetailsResponse> {
                                 override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
                                     if (response.isSuccessful) {
                                         progressDialog5.dismiss()
