@@ -1,6 +1,5 @@
 package com.justin.gari.activities
 
-import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Intent
@@ -8,9 +7,9 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import android.widget.Switch
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
@@ -29,29 +28,28 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-@SuppressLint("UseSwitchCompatOrMaterialCode")
 class PaymentActivity : AppCompatActivity() {
-    var pref: SharedPrefManager? = null
+    lateinit var pref: SharedPrefManager
     private lateinit var apiClient: ApiClient
     private lateinit var binding: ActivityPaymentBinding
-    var carId: String? = null
-    var userId: String? = null
-    var carName: String? = null
+    private var carId: String? = null
+    private var userId: String? = null
+    private var carName: String? = null
     var drive: String? = null
-    var bookDateFrom: String? = null
-    var bookDateTo: String? = null
-    var destination: String? = null
-    var totalDays: String? = null
-    var totalAmount: String? = null
-    var firstNameHeader: String? = null
-    var lastNameHeader: String? = null
-    var amntPerDay: String? = null
+    private var bookDateFrom: String? = null
+    private var bookDateTo: String? = null
+    private var destination: String? = null
+    private var totalDays: String? = null
+    private var totalAmount: String? = null
+    private var firstNameHeader: String? = null
+    private var lastNameHeader: String? = null
+    private var amntPerDay: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         apiClient = ApiClient()
         pref = SharedPrefManager(this)
-        Log.d("NightModeState", "${pref!!.loadNightModeState()}")
-        if (pref!!.loadNightModeState()) {
+        Log.d("NightModeState", "${pref.loadNightModeState()}")
+        if (pref.loadNightModeState()) {
             setTheme(R.style.DarkGari)
         } else setTheme(R.style.Gari)
 
@@ -59,20 +57,20 @@ class PaymentActivity : AppCompatActivity() {
         binding = ActivityPaymentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val profileHeader = pref!!.getUSERPROFILEPHOTO()
+        val profileHeader = pref.getUSERPROFILEPHOTO()
         val header = binding.navView.getHeaderView(0)
         val firstNameTextView = header.findViewById<TextView>(R.id.firstName)
         val lastNameTextView = header.findViewById<TextView>(R.id.lastName)
         val emailTextView = header.findViewById<TextView>(R.id.email)
         val profileImage = header.findViewById<CircleImageView>(R.id.profile_image)
-        val inSwitch = header.findViewById<Switch>(R.id.themeSwitch)
-        firstNameTextView.text = "${pref!!.getFIRSTNAME()}"
+        val inSwitch = header.findViewById<SwitchCompat>(R.id.themeSwitch)
+        firstNameTextView.text = "${pref.getFIRSTNAME()}"
         val firstName = firstNameTextView.text
 
-        emailTextView.text = pref!!.getEMAIL()
+        emailTextView.text = pref.getEMAIL()
 
-        firstNameHeader = pref!!.getFIRSTNAME()
-        lastNameHeader = pref!!.getLASTNAME()
+        firstNameHeader = pref.getFIRSTNAME()
+        lastNameHeader = pref.getLASTNAME()
 
         Picasso.get()
             .load(profileHeader)
@@ -81,7 +79,7 @@ class PaymentActivity : AppCompatActivity() {
             .error(R.drawable.user)
             .into(profileImage)
 
-        if (pref!!.loadNightModeState()) {
+        if (pref.loadNightModeState()) {
             inSwitch.isChecked = true
             inSwitch.text = getString(R.string.light_mode)
         } else{
@@ -90,20 +88,20 @@ class PaymentActivity : AppCompatActivity() {
 
         inSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                pref!!.setNightModeState(true)
-                pref!!.setSWITCHEDTHEME(true)
+                pref.setNightModeState(true)
+                pref.setSWITCHEDTHEME(true)
                 inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             } else {
-                pref!!.setNightModeState(false)
-                pref!!.setSWITCHEDTHEME(false)
+                pref.setNightModeState(false)
+                pref.setSWITCHEDTHEME(false)
                 inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             }
         }
 
         carId = intent.getStringExtra("car_id")
-        userId = pref!!.getUSERID()
+        userId = pref.getUSERID()
         carName = intent.getStringExtra("car_name")
         drive = intent.getStringExtra("drive")
         bookDateFrom = intent.getStringExtra("book_date_from")
@@ -150,7 +148,7 @@ class PaymentActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {
-                    pref!!.clearAllDataExcept()
+                    pref.clearAllDataExcept()
                     val intentLogout = Intent(this, MainActivity::class.java)
                     startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
                     finish()

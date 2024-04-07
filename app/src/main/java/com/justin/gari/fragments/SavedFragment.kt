@@ -17,30 +17,30 @@ import retrofit2.Response
 
 class SavedFragment : Fragment() {
     private lateinit var apiClient: ApiClient
-    var pref: SharedPrefManager? = null
-    private var binding: FragmentSavedBinding? = null
+    lateinit var pref: SharedPrefManager
+    private lateinit var binding: FragmentSavedBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentSavedBinding.inflate(inflater, container, false);
-        return binding!!.root;
+        binding = FragmentSavedBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         pref = SharedPrefManager(requireActivity())
-        val userId = pref!!.getUSERID()
+        val userId = pref.getUSERID()
 
         apiClient = ApiClient()
-        context?.let {
+        context.let {
             apiClient.getApiService().getSavedCars(userId)
                 .enqueue(object : Callback<SavedCarResponse> {
                     override fun onResponse(call: Call<SavedCarResponse>, response: Response<SavedCarResponse>) {
                         Log.e("Gideon", "onSuccess: ${response.body()}")
                         val savedAdapter = SavedCarAdapter(response.body()!!.saved_cars, context!!)
-                        binding?.shimmerLayout?.stopShimmer()
-                        binding?.shimmerLayout?.visibility = View.GONE;
-                        binding?.recyclerview?.adapter = savedAdapter
+                        binding.shimmerLayout.stopShimmer()
+                        binding.shimmerLayout.visibility = View.GONE
+                        binding.recyclerview.adapter = savedAdapter
 //                  if (response.isSuccessful) { recyclerview.apply {
 //                      layoutManager = LinearLayoutManager(context)
 //                      adapter = SavedCarAdapter(response.body()!!.saved_cars, context)
@@ -49,11 +49,11 @@ class SavedFragment : Fragment() {
                     }
 
                     override fun onFailure(call: Call<SavedCarResponse>, t: Throwable) {
-                        binding?.shimmerLayout?.stopShimmer()
-                        binding?.shimmerLayout?.visibility = View.GONE
-                        binding?.errorPage?.visibility = View.VISIBLE
-                        binding?.message?.text = t.message
-                        binding?.swipeRefresh?.visibility = View.GONE
+                        binding.shimmerLayout.stopShimmer()
+                        binding.shimmerLayout.visibility = View.GONE
+                        binding.errorPage.visibility = View.VISIBLE
+                        binding.message.text = t.message
+                        binding.swipeRefresh.visibility = View.GONE
                         Log.e("Gideon", "onFailure: ${t.message}")
                     }
                 })
@@ -61,7 +61,7 @@ class SavedFragment : Fragment() {
 
 //        swipeRefresh.setOnRefreshListener {
 //            apiClient = ApiClient
-//            context?.let {
+//            context.let {
 //                apiClient.getApiService(it).getSavedCars(userId)
 //                    .enqueue(object : Callback<SavedCarResponse> {
 //                        override fun onResponse(

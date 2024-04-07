@@ -23,15 +23,15 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class RegisterActivity : AppCompatActivity() {
-    var pref: SharedPrefManager? = null
+    lateinit var pref: SharedPrefManager
     private lateinit var apiClient: ApiClient
     lateinit var binding: ActivityRegisterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         apiClient = ApiClient()
         pref = SharedPrefManager(this)
-        Log.d("NightModeState", "${pref?.loadNightModeState()}")
-        if (pref?.loadNightModeState() == true) {
+        Log.d("NightModeState", "${pref.loadNightModeState()}")
+        if (pref.loadNightModeState()) {
             setTheme(R.style.DarkGari)
         } else setTheme(R.style.Gari)
 

@@ -6,10 +6,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Switch
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
@@ -25,7 +25,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
+import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
     lateinit var apiClient: ApiClient
@@ -62,8 +62,8 @@ class MainActivity : AppCompatActivity() {
         val firstNameTextView = header.findViewById<TextView>(R.id.firstName)
         val emailTextView = header.findViewById<TextView>(R.id.email)
         val profileImage = header.findViewById<CircleImageView>(R.id.profile_image)
-        val inSwitch = header.findViewById<Switch>(R.id.themeSwitch)
-        val outSwitch = outHeader.findViewById<Switch>(R.id.themeSwitch)
+        val inSwitch = header.findViewById<SwitchCompat>(R.id.themeSwitch)
+        val outSwitch = outHeader.findViewById<SwitchCompat>(R.id.themeSwitch)
         firstNameTextView.text = "${pref?.getFIRSTNAME()}"
         val firstName = firstNameTextView.text
         emailTextView.text = pref?.getEMAIL()
@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        outHeader.findViewById<Switch>(R.id.themeSwitch).setOnCheckedChangeListener { _, isChecked ->
+        outHeader.findViewById<SwitchCompat>(R.id.themeSwitch).setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 pref?.setNightModeState(true)
                 pref?.setSWITCHEDTHEME(true)

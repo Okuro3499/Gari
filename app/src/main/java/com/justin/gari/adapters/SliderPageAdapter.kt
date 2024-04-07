@@ -8,11 +8,7 @@ import androidx.viewpager.widget.PagerAdapter
 import com.justin.gari.R
 import com.squareup.picasso.Picasso
 
-class SliderPageAdapter internal constructor(
-    val context: Context,
-    val imageUrls: Array<String>
-) :
-    PagerAdapter() {
+class SliderPageAdapter internal constructor(val context: Context, private val imageUrls: Array<String>) : PagerAdapter() {
     override fun getCount(): Int {
         return imageUrls.size
     }
@@ -36,5 +32,4 @@ class SliderPageAdapter internal constructor(
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         container.removeView(`object` as View)
     }
-
 }

@@ -13,7 +13,7 @@ import com.justin.gari.activities.onBoarding.OnBoardItem
 
 internal class OnBoardAdapter(private val mContext: Context, items: ArrayList<OnBoardItem>) :
     PagerAdapter() {
-    var onBoardItems: ArrayList<OnBoardItem>
+    private var onBoardItems: ArrayList<OnBoardItem>
     override fun getCount(): Int {
         return onBoardItems.size
     }

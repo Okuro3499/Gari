@@ -39,7 +39,7 @@ internal class BookingCarAdapter(private val bookedCarList: List<BookingsRespons
     }
 
     // in below function we are getting individual item of grid view.
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var convertView = convertView
 
         // on blow line we are checking if layout inflater

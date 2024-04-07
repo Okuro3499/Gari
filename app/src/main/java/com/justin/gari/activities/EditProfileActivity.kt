@@ -6,10 +6,10 @@ import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Switch
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
@@ -24,7 +24,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class EditProfileActivity : AppCompatActivity() {
-    var pref: SharedPrefManager? = null
+    lateinit var pref: SharedPrefManager
     lateinit var apiClient: ApiClient
     lateinit var binding: ActivityEditProfileBinding
     var userId :String? = null
@@ -34,8 +34,8 @@ class EditProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         apiClient = ApiClient()
         pref = SharedPrefManager(this)
-        Log.d("NightModeState", "${pref!!.loadNightModeState()}")
-        if (pref!!.loadNightModeState()) {
+        Log.d("NightModeState", "${pref.loadNightModeState()}")
+        if (pref.loadNightModeState()) {
             setTheme(R.style.DarkGari)
         } else setTheme(R.style.Gari)
 
@@ -47,18 +47,18 @@ class EditProfileActivity : AppCompatActivity() {
             supportActionBar!!.hide()
         }
 
-        userId = pref!!.getUSERID()
-        roleId = pref!!.getROLEID()
+        userId = pref.getUSERID()
+        roleId = pref.getROLEID()
 
-        val profileHeader = pref!!.getUSERPROFILEPHOTO()
+        val profileHeader = pref.getUSERPROFILEPHOTO()
         val header = binding.navView.getHeaderView(0)
         val firstNameTextView = header.findViewById<TextView>(R.id.firstName)
         val emailTextView = header.findViewById<TextView>(R.id.email)
         val profileImage = header.findViewById<CircleImageView>(R.id.profile_image)
-        val inSwitch = header.findViewById<Switch>(R.id.themeSwitch)
-        firstNameTextView.text = "${pref!!.getFIRSTNAME()}"
+        val inSwitch = header.findViewById<SwitchCompat>(R.id.themeSwitch)
+        firstNameTextView.text = "${pref.getFIRSTNAME()}"
         val firstName = firstNameTextView.text
-        emailTextView.text = pref!!.getEMAIL()
+        emailTextView.text = pref.getEMAIL()
 
         Picasso.get()
             .load(profileHeader)
@@ -67,7 +67,7 @@ class EditProfileActivity : AppCompatActivity() {
             .error(R.drawable.user)
             .into(profileImage)
 
-        if (pref!!.loadNightModeState()) {
+        if (pref.loadNightModeState()) {
             inSwitch.isChecked = true
             inSwitch.text = getString(R.string.light_mode)
         } else{
@@ -76,13 +76,13 @@ class EditProfileActivity : AppCompatActivity() {
 
         inSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                pref!!.setNightModeState(true)
-                pref!!.setSWITCHEDTHEME(true)
+                pref.setNightModeState(true)
+                pref.setSWITCHEDTHEME(true)
                 inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             } else {
-                pref!!.setNightModeState(false)
-                pref!!.setSWITCHEDTHEME(false)
+                pref.setNightModeState(false)
+                pref.setSWITCHEDTHEME(false)
                 inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             }
@@ -115,7 +115,7 @@ class EditProfileActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {
-                    pref!!.clearAllDataExcept()
+                    pref.clearAllDataExcept()
                     val intentLogout = Intent(this, MainActivity::class.java)
                     startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
                     finish()
@@ -194,6 +194,7 @@ class EditProfileActivity : AppCompatActivity() {
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
+        super.onBackPressed()
         val intent = Intent(this, UserProfileActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)

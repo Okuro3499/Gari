@@ -2,16 +2,13 @@ package com.justin.gari.activities
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.Switch
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.GravityCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.navigation.NavigationView
@@ -20,14 +17,13 @@ import com.justin.gari.R
 import com.justin.gari.adapters.MyVehiclesAdapter
 import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityVehiclesBinding
-import com.justin.gari.utils.SettingsManager
 import com.justin.gari.utils.SharedPrefManager
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
 class VehiclesActivity : AppCompatActivity() {
     private lateinit var apiClient: ApiClient
-    var pref: SharedPrefManager? = null
+    lateinit var pref: SharedPrefManager
     lateinit var binding: ActivityVehiclesBinding
     private var adapter: MyVehiclesAdapter? = null
 
@@ -35,8 +31,8 @@ class VehiclesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         apiClient = ApiClient()
         pref = SharedPrefManager(this)
-        Log.d("NightModeState", "${pref!!.loadNightModeState()}")
-        if (pref!!.loadNightModeState()) {
+        Log.d("NightModeState", "${pref.loadNightModeState()}")
+        if (pref.loadNightModeState()) {
             setTheme(R.style.DarkGari)
         } else setTheme(R.style.Gari)
 
@@ -70,16 +66,16 @@ class VehiclesActivity : AppCompatActivity() {
             }
         })
 
-        val profileHeader = pref!!.getUSERPROFILEPHOTO()
+        val profileHeader = pref.getUSERPROFILEPHOTO()
         val header = binding.navView.getHeaderView(0)
         val firstNameTextView = header.findViewById<TextView>(R.id.firstName)
         val lastNameTextView = header.findViewById<TextView>(R.id.lastName)
         val emailTextView = header.findViewById<TextView>(R.id.email)
         val profileImage = header.findViewById<CircleImageView>(R.id.profile_image)
-        val inSwitch = header.findViewById<Switch>(R.id.themeSwitch)
-        firstNameTextView.text = pref!!.getFIRSTNAME()
-        lastNameTextView.text = pref!!.getLASTNAME()
-        emailTextView.text = pref!!.getEMAIL()
+        val inSwitch = header.findViewById<SwitchCompat>(R.id.themeSwitch)
+        firstNameTextView.text = pref.getFIRSTNAME()
+        lastNameTextView.text = pref.getLASTNAME()
+        emailTextView.text = pref.getEMAIL()
 
         Picasso.get()
             .load(profileHeader)
@@ -88,7 +84,7 @@ class VehiclesActivity : AppCompatActivity() {
             .error(R.drawable.user)
             .into(profileImage)
 
-        if (pref!!.loadNightModeState()) {
+        if (pref.loadNightModeState()) {
             inSwitch.isChecked = true
             inSwitch.text = getString(R.string.light_mode)
         } else{
@@ -97,13 +93,13 @@ class VehiclesActivity : AppCompatActivity() {
 
         inSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                pref!!.setNightModeState(true)
-                pref!!.setSWITCHEDTHEME(true)
+                pref.setNightModeState(true)
+                pref.setSWITCHEDTHEME(true)
                 inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             } else {
-                pref!!.setNightModeState(false)
-                pref!!.setSWITCHEDTHEME(false)
+                pref.setNightModeState(false)
+                pref.setSWITCHEDTHEME(false)
                 inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             }
@@ -136,7 +132,7 @@ class VehiclesActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {
-                    pref!!.clearAllDataExcept()
+                    pref.clearAllDataExcept()
                     val intentLogout = Intent(this, MainActivity::class.java)
                     startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
                     finish()
@@ -209,6 +205,7 @@ class VehiclesActivity : AppCompatActivity() {
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
+        super.onBackPressed()
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)

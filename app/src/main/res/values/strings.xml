@@ -43,7 +43,7 @@
     <string name="Mobile">Mobile</string>
     <string name="second_contact">Second Contact</string>
     <string name="submit">Submit</string>
-    <string name="engine">Engine:</string>
+    <string name="cc">CC:</string>
     <string name="color">Color:</string>
     <string name="registration">Registration:</string>
     <string name="passengers">Passengers:</string>
@@ -134,4 +134,7 @@
     <string name="failed_to_login">Failed to login!</string>
     <string name="logging_in">Logging in…</string>
     <string name="ksh_price">Ksh. %1$s</string>
+    <string name="dates">Dates</string>
+    <string name="fuel">Fuel</string>
+    <string name="specifications">Specifications</string>
 </resources>

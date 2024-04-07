@@ -9,8 +9,6 @@ class SettingsManager(context: Context) {
         mySettings = context.getSharedPreferences("filename", Context.MODE_PRIVATE)
     }
 
-
-
     fun setNightModeState(state: Boolean?) {
         val editor: SharedPreferences.Editor = mySettings.edit()
         editor.putBoolean("Night Mode", state!!)

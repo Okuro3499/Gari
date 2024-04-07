@@ -1,13 +1,12 @@
 package com.justin.gari.activities
 
-import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Switch
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
@@ -20,16 +19,15 @@ import de.hdodenhof.circleimageview.CircleImageView
 
 
 class AboutActivity : AppCompatActivity() {
-    var pref: SharedPrefManager? = null
+    lateinit var pref: SharedPrefManager
     private lateinit var apiClient: ApiClient
     private lateinit var binding: ActivityAboutBinding
 
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
     override fun onCreate(savedInstanceState: Bundle?) {
         apiClient = ApiClient()
         pref = SharedPrefManager(this)
-        Log.d("NightModeState", "${pref!!.loadNightModeState()}")
-        if (pref!!.loadNightModeState()) {
+        Log.d("NightModeState", "${pref.loadNightModeState()}")
+        if (pref.loadNightModeState()) {
             setTheme(R.style.DarkGari)
         } else setTheme(R.style.Gari)
 
@@ -38,7 +36,7 @@ class AboutActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         if (supportActionBar != null) {
-            supportActionBar!!.hide()
+            supportActionBar?.hide()
         }
 
 //        val sharedPreferences: SharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
@@ -65,17 +63,17 @@ class AboutActivity : AppCompatActivity() {
 //                }
 //            })
 
-        val profileHeader = pref!!.getUSERPROFILEPHOTO()
+        val profileHeader = pref.getUSERPROFILEPHOTO()
         val header = binding.navView.getHeaderView(0)
         val outHeader = binding.outNavView.getHeaderView(0)
         val firstNameTextView = header.findViewById<TextView>(R.id.firstName)
         val emailTextView = header.findViewById<TextView>(R.id.email)
         val profileImage = header.findViewById<CircleImageView>(R.id.profile_image)
-        val inSwitch = header.findViewById<Switch>(R.id.themeSwitch)
-        val outSwitch = outHeader.findViewById<Switch>(R.id.themeSwitch)
-        firstNameTextView.text = "${pref!!.getFIRSTNAME()}"
+        val inSwitch = header.findViewById<SwitchCompat>(R.id.themeSwitch)
+        val outSwitch = outHeader.findViewById<SwitchCompat>(R.id.themeSwitch)
+        firstNameTextView.text = "${pref.getFIRSTNAME()}"
         val firstName = firstNameTextView.text
-        emailTextView.text = pref!!.getEMAIL()
+        emailTextView.text = pref.getEMAIL()
 
         Picasso.get()
             .load(profileHeader)
@@ -84,7 +82,7 @@ class AboutActivity : AppCompatActivity() {
             .error(R.drawable.user)
             .into(profileImage)
 
-        if (pref!!.loadNightModeState()) {
+        if (pref.loadNightModeState()) {
             inSwitch.isChecked = true
             outSwitch.isChecked = true
             inSwitch.text = getString(R.string.light_mode)
@@ -96,27 +94,27 @@ class AboutActivity : AppCompatActivity() {
 
         inSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                pref!!.setNightModeState(true)
-                pref!!.setSWITCHEDTHEME(true)
+                pref.setNightModeState(true)
+                pref.setSWITCHEDTHEME(true)
                 inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             } else {
-                pref!!.setNightModeState(false)
-                pref!!.setSWITCHEDTHEME(false)
+                pref.setNightModeState(false)
+                pref.setSWITCHEDTHEME(false)
                 inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             }
         }
 
-        outHeader.findViewById<Switch>(R.id.themeSwitch).setOnCheckedChangeListener { _, isChecked ->
+        outHeader.findViewById<SwitchCompat>(R.id.themeSwitch).setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                pref!!.setNightModeState(true)
-                pref!!.setSWITCHEDTHEME(true)
+                pref.setNightModeState(true)
+                pref.setSWITCHEDTHEME(true)
                 outSwitch.text = getString(R.string.dark_mode)
                 restartApp()
             } else {
-                pref!!.setNightModeState(false)
-                pref!!.setSWITCHEDTHEME(false)
+                pref.setNightModeState(false)
+                pref.setSWITCHEDTHEME(false)
                 outSwitch.text = getString(R.string.dark_mode)
                 restartApp()
             }
@@ -147,7 +145,7 @@ class AboutActivity : AppCompatActivity() {
                         return@OnNavigationItemSelectedListener true
                     }
                     R.id.logout -> {
-                        pref!!.clearAllDataExcept()
+                        pref.clearAllDataExcept()
                         val intentLogout = Intent(this, MainActivity::class.java)
                         startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
                         finish()
@@ -228,6 +226,7 @@ class AboutActivity : AppCompatActivity() {
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
+        super.onBackPressed()
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)

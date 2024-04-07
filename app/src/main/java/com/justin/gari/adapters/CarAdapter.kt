@@ -2,6 +2,7 @@ package com.justin.gari.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,9 +48,10 @@ class CarAdapter(private var carList: List<Car>, val context: Context) : BaseAda
 
             itemView.setOnClickListener {
                 val intent = Intent(context, DetailActivity::class.java).apply {
-                    putExtra("car_id", car.car_id.toString())
+                    putExtra("car", car)
                     addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 }
+                Log.d("CarAdapter", "Car ID: $car")
                 context.startActivity(intent)
             }
         }

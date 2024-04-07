@@ -1,6 +1,5 @@
 package com.justin.gari.activities
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.ContentValues
@@ -9,16 +8,25 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.GravityCompat
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.navigation.NavigationView
 import com.justin.gari.R
 import com.justin.gari.api.ApiClient
 import com.justin.gari.databinding.ActivityUserSettingsBinding
-import com.justin.gari.models.uploadImagesModel.*
+import com.justin.gari.models.uploadImagesModel.DlCloudinaryResponse
+import com.justin.gari.models.uploadImagesModel.DlUrl
+import com.justin.gari.models.uploadImagesModel.IdCloudinaryResponse
+import com.justin.gari.models.uploadImagesModel.NationalIdUrl
+import com.justin.gari.models.uploadImagesModel.UserPhotoCloudinaryResponse
+import com.justin.gari.models.uploadImagesModel.UserPhotoUrl
 import com.justin.gari.models.userModels.UserDetailsResponse
 import com.justin.gari.utils.SharedPrefManager
 import com.justin.gari.utils.URIPathHelper
@@ -37,17 +45,16 @@ import java.io.FileInputStream
 
 class UserSettingsActivity : AppCompatActivity() {
     lateinit var binding: ActivityUserSettingsBinding
-    var pref: SharedPrefManager? = null
+    lateinit var pref: SharedPrefManager
     private lateinit var apiClient: ApiClient
-    var userId :String? = null
-    var roleId :String? = null
+    private var userId :String? = null
+    private var roleId :String? = null
 
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
     override fun onCreate(savedInstanceState: Bundle?) {
         apiClient = ApiClient()
         pref = SharedPrefManager(this)
-        Log.d("NightModeState", "${pref!!.loadNightModeState()}")
-        if (pref!!.loadNightModeState()) {
+        Log.d("NightModeState", "${pref.loadNightModeState()}")
+        if (pref.loadNightModeState()) {
             setTheme(R.style.DarkGari)
         } else setTheme(R.style.Gari)
 
@@ -59,18 +66,18 @@ class UserSettingsActivity : AppCompatActivity() {
             supportActionBar!!.hide()
         }
 
-        userId = pref!!.getUSERID()
-        roleId = pref!!.getROLEID()
+        userId = pref.getUSERID()
+        roleId = pref.getROLEID()
 
-        val profileHeader = pref!!.getUSERPROFILEPHOTO()
+        val profileHeader = pref.getUSERPROFILEPHOTO()
         val header = binding.navView.getHeaderView(0)
         val firstNameTextView = header.findViewById<TextView>(R.id.firstName)
         val emailTextView = header.findViewById<TextView>(R.id.email)
         val profileImage = header.findViewById<CircleImageView>(R.id.profile_image)
-        val inSwitch = header.findViewById<Switch>(R.id.themeSwitch)
-        firstNameTextView.text = "${pref!!.getFIRSTNAME()}"
+        val inSwitch = header.findViewById<SwitchCompat>(R.id.themeSwitch)
+        firstNameTextView.text = "${pref.getFIRSTNAME()}"
         val firstName = firstNameTextView.text
-        emailTextView.text = pref!!.getEMAIL()
+        emailTextView.text = pref.getEMAIL()
 
         Picasso.get()
             .load(profileHeader)
@@ -79,7 +86,7 @@ class UserSettingsActivity : AppCompatActivity() {
             .error(R.drawable.user)
             .into(profileImage)
 
-        if (pref!!.loadNightModeState()) {
+        if (pref.loadNightModeState()) {
             inSwitch.isChecked = true
             inSwitch.text = getString(R.string.light_mode)
         } else{
@@ -88,13 +95,13 @@ class UserSettingsActivity : AppCompatActivity() {
 
         inSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                pref!!.setNightModeState(true)
-                pref!!.setSWITCHEDTHEME(true)
+                pref.setNightModeState(true)
+                pref.setSWITCHEDTHEME(true)
                 inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             } else {
-                pref!!.setNightModeState(false)
-                pref!!.setSWITCHEDTHEME(false)
+                pref.setNightModeState(false)
+                pref.setSWITCHEDTHEME(false)
                 inSwitch.text = getString(R.string.light_mode)
                 restartApp()
             }
@@ -127,7 +134,7 @@ class UserSettingsActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.logout -> {
-                    pref!!.clearAllDataExcept()
+                    pref.clearAllDataExcept()
                     val intentLogout = Intent(this, MainActivity::class.java)
                     startActivity(intentLogout.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
                     finish()
@@ -335,7 +342,7 @@ class UserSettingsActivity : AppCompatActivity() {
 
                         val dlUrl = DlUrl(response.body()!!.driverLicenceCloudinary)
 
-                        apiClient.getApiService().dlCloudinaryResponseToDb(pref!!.getUSERID(), dlUrl).enqueue(object : Callback<UserDetailsResponse> {
+                        apiClient.getApiService().dlCloudinaryResponseToDb(pref.getUSERID(), dlUrl).enqueue(object : Callback<UserDetailsResponse> {
                                 override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
                                     if (response.isSuccessful) {
                                         progressDialog1.dismiss()
@@ -377,7 +384,7 @@ class UserSettingsActivity : AppCompatActivity() {
                         progressDialog3.show()
 
                         apiClient.getApiService()
-                            .nationalIdCloudinaryResponseToDb(pref!!.getUSERID(), nationalIdUrl).enqueue(object : Callback<UserDetailsResponse> {
+                            .nationalIdCloudinaryResponseToDb(pref.getUSERID(), nationalIdUrl).enqueue(object : Callback<UserDetailsResponse> {
                                 override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
                                     if (response.isSuccessful) {
                                         progressDialog3.dismiss()
@@ -418,9 +425,9 @@ class UserSettingsActivity : AppCompatActivity() {
                         progressDialog5.show()
 
                         val userPhotoUrl = UserPhotoUrl(response.body()!!.userPhotoCloudinary)
-                        pref!!.setUSERPROFILEPHOTO(response.body()!!.userPhotoCloudinary)
+                        pref.setUSERPROFILEPHOTO(response.body()!!.userPhotoCloudinary)
                         apiClient.getApiService()
-                            .userPhotoCloudinaryResponseToDb(pref!!.getUSERID(), userPhotoUrl).enqueue(object : Callback<UserDetailsResponse> {
+                            .userPhotoCloudinaryResponseToDb(pref.getUSERID(), userPhotoUrl).enqueue(object : Callback<UserDetailsResponse> {
                                 override fun onResponse(call: Call<UserDetailsResponse>, response: Response<UserDetailsResponse>) {
                                     if (response.isSuccessful) {
                                         progressDialog5.dismiss()
@@ -444,6 +451,7 @@ class UserSettingsActivity : AppCompatActivity() {
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
+        super.onBackPressed()
         val intent = Intent(this, UserProfileActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)

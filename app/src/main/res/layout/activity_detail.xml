@@ -8,6 +8,10 @@
     android:background="?attr/backgroundColor"
     tools:context=".activities.DetailActivity">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -220,7 +224,7 @@
                         android:layout_marginStart="6dp"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/poppins_bold"
-                        android:text="Specifications"
+                        android:text="@string/specifications"
                         android:textColor="?attr/textColor"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvStatus" />
@@ -274,7 +278,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/linearLayout4"
+                            android:id="@+id/linearLayout2"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_columnWeight="1"
@@ -284,10 +288,7 @@
                             android:layout_marginEnd="4dp"
                             android:background="?attr/backgroundColor"
                             android:orientation="vertical"
-                            android:padding="4dp"
-                            app:layout_constraintEnd_toStartOf="@+id/linearLayout7"
-                            app:layout_constraintStart_toEndOf="@+id/linearLayout"
-                            app:layout_constraintTop_toBottomOf="@+id/textView">
+                            android:padding="4dp">
 
                             <TextView
                                 android:id="@+id/titleColor"
@@ -312,7 +313,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/linearLayout7"
+                            android:id="@+id/linearLayout3"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_columnWeight="1"
@@ -321,9 +322,7 @@
                             android:layout_marginEnd="10dp"
                             android:background="?attr/backgroundColor"
                             android:orientation="vertical"
-                            android:padding="4dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView">
+                            android:padding="4dp">
 
                             <TextView
                                 android:id="@+id/titlePassengers"
@@ -348,7 +347,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/linearLayout8"
+                            android:id="@+id/linearLayout4"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_columnWeight="1"
@@ -357,9 +356,7 @@
                             android:layout_marginTop="10dp"
                             android:background="?attr/backgroundColor"
                             android:orientation="vertical"
-                            android:padding="4dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+                            android:padding="4dp">
 
                             <TextView
                                 android:id="@+id/titleTransmission"
@@ -384,7 +381,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/linearLayout9"
+                            android:id="@+id/linearLayout5"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_columnWeight="1"
@@ -394,18 +391,15 @@
                             android:layout_marginEnd="4dp"
                             android:background="?attr/backgroundColor"
                             android:orientation="vertical"
-                            android:padding="4dp"
-                            app:layout_constraintEnd_toStartOf="@+id/linearLayout10"
-                            app:layout_constraintStart_toEndOf="@+id/linearLayout8"
-                            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+                            android:padding="4dp">
 
                             <TextView
-                                android:id="@+id/titleEngine"
+                                android:id="@+id/titleCc"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:fontFamily="@font/poppins_light"
-                                android:text="@string/engine"
+                                android:text="@string/cc"
                                 android:textColor="?attr/textColor"
                                 android:textSize="14sp" />
 
@@ -422,7 +416,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/linearLayout12"
+                            android:id="@+id/linearLayout6"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_columnWeight="1"
@@ -454,21 +448,9 @@
                                 android:textSize="14sp" />
 
                         </LinearLayout>
-                    </GridLayout>
-
-                    <GridLayout
-                        android:id="@+id/grid2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:columnCount="3"
-                        android:gravity="center"
-                        android:rowCount="1"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/grid1">
 
                         <LinearLayout
-                            android:id="@+id/linearLayout11"
+                            android:id="@+id/linearLayout7"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_columnWeight="1"
@@ -478,9 +460,7 @@
                             android:layout_marginEnd="4dp"
                             android:background="?attr/backgroundColor"
                             android:orientation="vertical"
-                            android:padding="4dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
+                            android:padding="4dp">
 
                             <TextView
                                 android:id="@+id/titleCompany"
@@ -505,7 +485,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/linearLayout10"
+                            android:id="@+id/linearLayout8"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_columnWeight="1"
@@ -514,9 +494,7 @@
                             android:layout_marginEnd="10dp"
                             android:background="?attr/backgroundColor"
                             android:orientation="vertical"
-                            android:padding="4dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+                            android:padding="4dp">
 
                             <TextView
                                 android:id="@+id/titleDriveOption"
@@ -538,6 +516,40 @@
                                 android:textColor="?attr/textColor"
                                 android:textSize="14sp" />
                         </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/linearLayout9"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:layout_gravity="fill_horizontal"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:background="?attr/backgroundColor"
+                            android:orientation="vertical"
+                            android:padding="4dp">
+
+                            <TextView
+                                android:id="@+id/titleFuel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/poppins_light"
+                                android:text="@string/fuel"
+                                android:textColor="?attr/textColor"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tvFuel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/poppins_regular"
+                                android:textColor="?attr/textColor"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
                     </GridLayout>
 
                     <TextView
@@ -547,85 +559,23 @@
                         android:layout_marginStart="6dp"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/poppins_bold"
-                        android:text="Features"
+                        android:text="@string/features"
                         android:textColor="?attr/textColor"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/grid2" />
+                        app:layout_constraintTop_toBottomOf="@+id/grid1" />
 
                     <GridLayout
-                        android:id="@+id/grid3"
+                        android:id="@+id/gridFeatures"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?attr/backgroundColor"
                         android:columnCount="3"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
                         android:gravity="center"
-                        android:rowCount="1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView2">
-
-                        <TextView
-                            android:id="@+id/tvFeature1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_columnWeight="1"
-                            android:layout_gravity="fill_horizontal"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
-                            android:orientation="vertical"
-                            android:padding="4dp"
-                            android:textColor="?attr/textColor" />
-
-                        <TextView
-                            android:id="@+id/tvFeature2"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_columnWeight="1"
-                            android:layout_gravity="fill_horizontal"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="4dp"
-                            android:orientation="vertical"
-                            android:padding="4dp"
-                            android:textColor="?attr/textColor" />
-
-                        <TextView
-                            android:id="@+id/tvFeature3"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_columnWeight="1"
-                            android:layout_gravity="fill_horizontal"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:orientation="vertical"
-                            android:padding="4dp"
-                            android:textColor="?attr/textColor" />
-
-                        <TextView
-                            android:id="@+id/tvFeature4"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_columnWeight="1"
-                            android:layout_gravity="fill_horizontal"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
-                            android:orientation="vertical"
-                            android:padding="4dp"
-                            android:textColor="?attr/textColor" />
-
-                        <TextView
-                            android:id="@+id/tvFeature5"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_columnWeight="1"
-                            android:layout_gravity="fill_horizontal"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginTop="10dp"
-                            android:orientation="vertical"
-                            android:padding="4dp"
-                            android:textColor="?attr/textColor" />
-
-                    </GridLayout>
+                        app:layout_constraintTop_toBottomOf="@+id/textView2"/>
 
                     <TextView
                         android:id="@+id/titleDates"
@@ -634,10 +584,10 @@
                         android:layout_marginStart="6dp"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/poppins_bold"
-                        android:text="Dates"
+                        android:text="@string/dates"
                         android:textColor="?attr/textColor"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/grid3" />
+                        app:layout_constraintTop_toBottomOf="@+id/gridFeatures" />
 
                     <LinearLayout
                         android:id="@+id/ltDates"
@@ -916,6 +866,8 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
         <!--        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navView"

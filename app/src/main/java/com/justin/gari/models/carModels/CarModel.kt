@@ -1,9 +1,12 @@
 package com.justin.gari.models.carModels
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
 data class CarModel(
     val cars: List<Car>
 )
 
+@Parcelize
 data class Car(
     val car_id: Int,
     val car_name: String,
@@ -24,6 +27,6 @@ data class Car(
     val modified_by: Int?,
     val modified_date: String?,
     val drive: List<String>?
-)
+) : Parcelable
 
 

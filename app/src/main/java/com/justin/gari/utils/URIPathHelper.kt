@@ -9,7 +9,6 @@ import android.provider.DocumentsContract
 import android.provider.MediaStore
 
 class URIPathHelper {
-
     fun getPath(context: Context, uri: Uri): String? {
         val isKitKatorAbove = true
 
@@ -63,8 +62,8 @@ class URIPathHelper {
         try {
             cursor = uri?.let { context.contentResolver.query(it, projection, selection, selectionArgs,null) }
             if (cursor != null && cursor.moveToFirst()) {
-                val column_index: Int = cursor.getColumnIndexOrThrow(column)
-                return cursor.getString(column_index)
+                val columnIndex: Int = cursor.getColumnIndexOrThrow(column)
+                return cursor.getString(columnIndex)
             }
         } finally {
             cursor?.close()

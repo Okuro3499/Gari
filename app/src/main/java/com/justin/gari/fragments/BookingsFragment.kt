@@ -17,19 +17,19 @@ import retrofit2.Response
 
 class BookingsFragment : Fragment() {
     private lateinit var apiClient: ApiClient
-    var pref: SharedPrefManager? = null
-    private var binding: FragmentBookingsBinding? = null
+    lateinit var pref: SharedPrefManager
+    private lateinit var binding: FragmentBookingsBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentBookingsBinding.inflate(inflater, container, false);
-        return binding!!.root;
+        binding = FragmentBookingsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         pref = SharedPrefManager(requireActivity())
-        val userId = pref!!.getUSERID()
-        binding?.shimmerLayout?.startShimmer();
+        val userId = pref.getUSERID()
+        binding.shimmerLayout.startShimmer()
 
         apiClient = ApiClient()
         context?.let {
@@ -38,9 +38,9 @@ class BookingsFragment : Fragment() {
                     if (response.isSuccessful) {
                         Log.e("Gideon", "onSuccess: ${response.body()}")
                         val bookingAdapter = BookingCarAdapter(response.body()!!.myBooked_cars, context!!)
-                        binding?.shimmerLayout?.stopShimmer()
-                        binding?.shimmerLayout?.visibility = View.GONE
-                        binding?.recyclerview?.adapter = bookingAdapter
+                        binding.shimmerLayout.stopShimmer()
+                        binding.shimmerLayout.visibility = View.GONE
+                        binding.recyclerview.adapter = bookingAdapter
 //                      recyclerview.apply {
 //                        layoutManager = LinearLayoutManager(context)
 //                        adapter = BookingCarAdapter(response.body()!!.myBooked_cars, context)
@@ -49,11 +49,11 @@ class BookingsFragment : Fragment() {
                 }
 
                 override fun onFailure(call: Call<BookingsResponse>, t: Throwable) {
-                    binding?.shimmerLayout?.stopShimmer()
-                    binding?.shimmerLayout?.visibility = View.GONE
-                    binding?.errorPage?.visibility = View.VISIBLE
-                    binding?.message?.text  = t.message
-                    binding?.swipeRefresh?.visibility = View.GONE
+                    binding.shimmerLayout.stopShimmer()
+                    binding.shimmerLayout.visibility = View.GONE
+                    binding.errorPage.visibility = View.VISIBLE
+                    binding.message.text  = t.message
+                    binding.swipeRefresh.visibility = View.GONE
                     Log.e("Gideon", "onFailure: ${t.message}")
                 }
             })
